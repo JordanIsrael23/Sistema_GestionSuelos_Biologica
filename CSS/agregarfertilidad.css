@@ -13,9 +13,8 @@ body {
   flex-direction: column;
 }
 
-
 .header {
-  background-color: rgba(76, 175, 80, 0.9); 
+  background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
   color: white;
   text-align: center;
   padding: 10px 0;
@@ -32,9 +31,8 @@ body {
   letter-spacing: 1.5px;
 }
 
-
 .login-container {
-  background-color: rgba(255, 255, 255, 0.9); 
+  background-color: rgba(255, 255, 255, 0.9); /* Blanco */
   padding: 30px 40px;
   border-radius: 12px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
@@ -43,11 +41,10 @@ body {
   width: 320px;
 }
 
-
 .login-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #4CAF50;
+  color: #009900; /* Verde seguro */
 }
 
 label {
@@ -55,34 +52,33 @@ label {
   text-align: left;
   margin-bottom: 8px;
   font-weight: bold;
-  color: #333;
+  color: #333333; /* Gris seguro */
 }
 
 input, textarea {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc; /* Gris claro seguro */
   border-radius: 6px;
   font-size: 16px;
   transition: border-color 0.3s;
 }
 
 input:focus, textarea:focus {
-  border-color: #4CAF50;
+  border-color: #009900; /* Verde seguro */
   outline: none;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Verde seguro */
 }
 
 textarea {
   resize: none; 
 }
 
-
 button {
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50;
+  background-color: #009900; /* Verde seguro */
   color: white;
   border: none;
   border-radius: 6px;
@@ -92,13 +88,14 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #00cc00; /* Verde claro seguro */
   transform: scale(1.05);
 }
 
 button:active {
   transform: scale(0.95);
 }
+
 .back-icon {
   position: absolute;
   left: 15px; /* Ajusta según el espacio que quieras dejar */
@@ -111,7 +108,6 @@ button:active {
   width: 24px; /* Tamaño del ícono */
   height: 24px;
 }
-
 
 @keyframes fadeIn {
   from {
