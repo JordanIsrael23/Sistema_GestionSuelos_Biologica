@@ -1,15 +1,16 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background-image: url('../IMG/login.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  background-image: url('../IMG/fondofertilidad.jpeg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
 
 
@@ -17,14 +18,13 @@ body {
   background-color: rgba(76, 175, 80, 0.9); 
   color: white;
   text-align: center;
-  padding: 10px 0; 
+  padding: 10px 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
 
 .header h1 {
   margin: 0;
@@ -40,14 +40,15 @@ body {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   animation: fadeIn 0.8s ease-in-out;
+  width: 320px;
 }
+
 
 .login-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #4CAF50;
 }
-
 
 label {
   display: block;
@@ -57,7 +58,7 @@ label {
   color: #333;
 }
 
-input {
+input, textarea {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -67,11 +68,16 @@ input {
   transition: border-color 0.3s;
 }
 
-input:focus {
+input:focus, textarea:focus {
   border-color: #4CAF50;
   outline: none;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
+
+textarea {
+  resize: none; 
+}
+
 
 button {
   width: 100%;
@@ -93,7 +99,6 @@ button:hover {
 button:active {
   transform: scale(0.95);
 }
-
 .back-icon {
   position: absolute;
   left: 15px; /* Ajusta según el espacio que quieras dejar */

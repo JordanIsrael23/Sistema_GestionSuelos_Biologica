@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Informe</title>
+  <!-- Favicon -->
+  <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
+  <link rel="stylesheet" href="../CSS/crearinforme.css">
+</head>
+<body>
+  <header class="header">
+    <!-- Ícono de la flecha -->
+    <a href="javascript:history.back()" class="back-icon">
+      <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+    </a>
+    <h1>Gestión Biológica de Suelos</h1>
+  </header>
+  <div class="form-container">
+    <form action="" method="POST" class="formulario">
+      <div class="columna-izquierda">
+        <h2>Crear Informe</h2>
+        <label for="id">ID</label>
+        <input type="text" id="id" name="id" placeholder="Ingresa el ID" required>
+
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" placeholder="Ingresa el título" required>
+
+        <label for="introduccion">Introducción</label>
+        <textarea id="introduccion" name="introduccion" rows="4" placeholder="Escribe la introducción..." required></textarea>
+
+        <label for="desarrollo">Desarrollo</label>
+        <textarea id="desarrollo" name="desarrollo" rows="5" placeholder="Escribe el desarrollo..." required></textarea>
+
+        <label for="conclusiones">Conclusiones</label>
+        <textarea id="conclusiones" name="conclusiones" rows="4" placeholder="Escribe las conclusiones..." required></textarea>
+      </div>
+
+      <div class="columna-derecha">
+        <label for="recomendaciones">Recomendaciones</label>
+        <textarea id="recomendaciones" name="recomendaciones" rows="6" placeholder="Escribe las recomendaciones..." required></textarea>
+
+        <label for="soluciones">Soluciones</label>
+        <textarea id="soluciones" name="soluciones" rows="6" placeholder="Escribe las soluciones..." required></textarea>
+
+        <button type="submit" class="boton-crear">Crear Informe</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

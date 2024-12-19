@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Fertilidad</title>
+  <!-- Favicon -->
+  <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
+  <link rel="stylesheet" href="../CSS/agregarfertilidad.css">
+</head>
+<body>
+  <header class="header">
+    <!-- Ícono de la flecha -->
+    <a href="javascript:history.back()" class="back-icon">
+      <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+    </a>
+    <h1>Gestión Biológica de Suelos</h1>
+  </header>
+
+  <div class="login-container">
+    <h2>Agregar Fertilidad</h2>
+    <form action="" method="POST">
+      <label for="id_fertilidad">ID de Fertilidad</label>
+      <input 
+        type="text" 
+        id="id_fertilidad" 
+        name="id_fertilidad" 
+        placeholder="Ingresa el ID de fertilidad" 
+        pattern="\d+" 
+        title="El ID debe ser un número válido." 
+        required>
+
+
+      <label for="descripcion">Descripción</label>
+      <textarea 
+        id="descripcion" 
+        name="descripcion" 
+        placeholder="Describe la fertilidad..." 
+        rows="4" 
+        required></textarea>
+
+      <button type="submit">Agregar Fertilidad</button>
+    </form>
+  </div>
+</body>
+</html>
