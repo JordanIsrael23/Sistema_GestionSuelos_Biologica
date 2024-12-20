@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestion Biologica de Suelos</title>
 </head>
+
 <body>
-    holaaaaaaaa
+    <h1>Registro</h1>
+    <form action="/JavaScript/app.js/guardar" method="post">
+
+        <label>ID:</label>
+        <input type="text" name="id" required>
+        <label>Rol:</label>
+        <input type="text" name="rol" required>
+        <label>Nombres:</label>
+        <input type="text" name="nombre" required>
+        <label>Apellidos:</label>
+        <input type="text" name="apellido" required>
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        <label>Contraseña:</label>
+        <input type="text" name="password" required>
+        <label>Teléfono:</label>
+        <input type="text" name="telefono" required>
+
+        <div>
+            <button type="submit">Guardar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
 </body>
+
 </html>

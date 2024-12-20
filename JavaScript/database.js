@@ -13,7 +13,7 @@ y.connect((err)=>{
         console.error('Error no conexion',err);
         return ;
     } 
-    console.log('Cnexion realizada');
+    console.log('Conexion realizada');
 });
 
 module.exports = y;
