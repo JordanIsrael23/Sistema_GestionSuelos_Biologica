@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 const puerto = 3000;
 
@@ -8,7 +9,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 const conexion = require('./database');
 
 app.get('/',(req,res)=>{
-    res.sendFile(__dirname + '/HTML/formulario.html');
+    res.sendFile(path.join(__dirname,'../HTML/formulario.html'));
 });
 
 app.post('/guardar',(req,res)=>{
