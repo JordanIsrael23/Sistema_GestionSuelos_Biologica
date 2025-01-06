@@ -102,6 +102,20 @@ button:active {
   width: 24px;
   height: 24px;
 }
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.register-link a {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
 
 @keyframes fadeIn {
   from {
