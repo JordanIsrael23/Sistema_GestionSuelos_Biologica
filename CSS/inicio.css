@@ -241,6 +241,9 @@ body:has(.modo-checkbox:checked) .modo .luna {
 body:has(.modo-checkbox:checked) .modo .sol {
     opacity: 1;  /* Muestra el icono del sol */
 }
+body:has(.modo-checkbox:checked) h3 {
+    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
+}
 
 /* Estilo para el checkbox, para que se vea mejor (opcional) */
 .modo-checkbox {

@@ -50,6 +50,30 @@ p {
     text-align: justify; /* Justifica el texto */
 }
 
+h3 {
+    display: flex;
+    align-items: center;
+    margin: 5px 0; /* Reducir margen superior e inferior */
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #000000;
+    margin: 0 40px 5px 40px; /* Margen superior reducido y margen inferior ajustado */
+}
+
+h3::before {
+    content: "•"; /* Símbolo de viñeta */
+    margin-right: 10px; /* Espacio entre la viñeta y el texto */
+    font-size: 1.5em; /* Tamaño de la viñeta */
+    color: #333;
+}
+
+.Tipos {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+    margin: 0 40px 20px 40px; /* Margen superior reducido y margen inferior ajustado */
+}
+
 .buscar-login {
     display: flex; /* Organiza los elementos en fila */
     justify-content: space-between; /* Coloca los elementos a los extremos (izquierda y derecha) */
@@ -135,7 +159,6 @@ body {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* Botón de modo */
 .modo {
     cursor: pointer;
     display: inline-block;
@@ -145,7 +168,6 @@ body {
     display: block;
 }
 
-/* Botones y campos en modo claro */
 .busqueda input,
 .busqueda button,
 .login {
@@ -162,22 +184,16 @@ body {
     vertical-align: middle;
 }
 
-/* Modo oscuro cuando el checkbox está seleccionado */
 body:has(.modo-checkbox:checked) {
     background-color: black;
     color: white;
 }
 
-/* Aplicar modo oscuro al contenedor */
 body:has(.modo-checkbox:checked) .buscar-login {
     background-color: #333;
     border-color: #555;
 }
-body:has(.modo-checkbox:checked) h3 {
-    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
-}
 
-/* Aplicar modo oscuro a botones y campos */
 body:has(.modo-checkbox:checked) .busqueda input,
 body:has(.modo-checkbox:checked) .busqueda button,
 body:has(.modo-checkbox:checked) .login {
@@ -185,14 +201,16 @@ body:has(.modo-checkbox:checked) .login {
     color: white;
     border-color: #666;
 }
-/* Estilo para los iconos dentro del label */
+body:has(.modo-checkbox:checked) h3 {
+    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
+}
+
 .modo {
     position: relative;
     width: 30px;  /* Ajusta el tamaño del icono */
     height: 30px; /* Ajusta el tamaño del icono */
 }
 
-/* Icono de la luna (modo claro) */
 .modo .luna {
     position: absolute;
     width: 100%;
@@ -201,7 +219,6 @@ body:has(.modo-checkbox:checked) .login {
     transition: opacity 0.3s ease-in-out;  /* Transición suave */
 }
 
-/* Icono del sol (modo oscuro) */
 .modo .sol {
     position: absolute;
     width: 100%;
@@ -210,7 +227,6 @@ body:has(.modo-checkbox:checked) .login {
     transition: opacity 0.3s ease-in-out;  /* Transición suave */
 }
 
-/* Cuando el checkbox está marcado (modo oscuro) */
 body:has(.modo-checkbox:checked) .modo .luna {
     opacity: 0;  /* Oculta el icono de la luna */
 }
@@ -219,7 +235,6 @@ body:has(.modo-checkbox:checked) .modo .sol {
     opacity: 1;  /* Muestra el icono del sol */
 }
 
-/* Estilo para el checkbox, para que se vea mejor (opcional) */
 .modo-checkbox {
     display: none;  /* Oculta el checkbox, ya que solo usamos el label para cambiar el modo */
 }
