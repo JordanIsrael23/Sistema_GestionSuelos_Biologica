@@ -1,0 +1,228 @@
+nav {
+    background-color: #6A994E; /* Color de fondo */
+    padding: 10px; /* Espaciado interno */
+}
+
+/* Estilo para la lista */
+ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    margin: 0;
+    padding: 100;
+    display: flex; /* Alinea los elementos en una fila */
+}
+
+/* Estilo para los elementos de la lista */
+li {
+    margin-right: 200px; /* Espacio entre los elementos */
+}
+
+/* Estilo para los enlaces */
+a {
+    color: white; /* Color del texto */
+    text-decoration: none; /* Elimina el subrayado */
+    font-size: 18px; /* Tamaño de fuente */
+}
+
+.Tema {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    background-color: #6A994E; /* Color de fondo */
+    padding: 10px; /* Espacio alrededor del contenido */
+}
+
+.Texto {
+    display: flex;
+    flex-direction: column; /* Organiza el texto en columna */
+    align-items: center; /* Centra el texto */
+    flex-grow: 1; /* Hace que el texto ocupe el espacio disponible */
+}
+
+.Icono {
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+    margin: 20px; /* Ajusta el margen en todos los lados de la página */
+
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5; /* Mejora la legibilidad */
+    text-align: justify; /* Justifica el texto */
+}
+
+.buscar-login {
+    display: flex; /* Organiza los elementos en fila */
+    justify-content: space-between; /* Coloca los elementos a los extremos (izquierda y derecha) */
+    align-items: center; /* Centra los elementos verticalmente */
+    width: 100%; /* Asegura que el contenedor ocupe el ancho completo */
+}
+
+.buscar-login {
+    display: flex; /* Organiza los elementos en fila */
+    justify-content: center; /* Centra los elementos dentro del contenedor */
+    align-items: center; /* Centra los elementos verticalmente */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
+    gap: 20px; /* Espacio entre los elementos */
+}
+
+.modo {
+    margin-right: auto; /* Mueve el botón Modo hacia la izquierda */
+}
+
+.busqueda {
+    display: flex; /* Los elementos de búsqueda estarán en fila */
+    align-items: center; /* Centra los elementos verticalmente */
+    gap: 10px; /* Espacio entre los elementos de búsqueda */
+    justify-content: center; /* Centra la búsqueda horizontalmente */
+    flex: 1; /* Asegura que ocupe el espacio disponible */
+    max-width: 600px; /* Limita el ancho de la barra de búsqueda */
+}
+
+.login {
+    margin-left: auto; /* Mueve el botón LOGIN hacia la derecha */
+    padding: 5px 40px; /* Agrega relleno (más largo de izquierda a derecha) */
+    display: flex; /* Permite alinear el texto e imagen en el centro */
+    align-items: center; /* Centra los elementos verticalmente */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    border: none; /* Elimina el borde predeterminado */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a mano al pasar sobre el botón */
+}
+
+.login img {
+    margin-left: 10px; /* Espacio entre el texto y la imagen */
+    width: 20px; /* Tamaño de la imagen */
+    height: 20px; /* Tamaño de la imagen */
+}
+body {
+    margin: 20px; /* Ajusta el margen en todos los lados de la página */
+    font-family: Arial, sans-serif; /* Define una fuente para el texto */
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #6A994E; /* Color de fondo */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+footer div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+footer div:last-child {
+    margin-right: 0;
+}
+
+/* Estilo global predeterminado (modo claro) */
+body {
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Contenedor principal */
+.buscar-login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Botón de modo */
+.modo {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.modo img {
+    display: block;
+}
+
+/* Botones y campos en modo claro */
+.busqueda input,
+.busqueda button,
+.login {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.busqueda button img,
+.login img {
+    vertical-align: middle;
+}
+
+/* Modo oscuro cuando el checkbox está seleccionado */
+body:has(.modo-checkbox:checked) {
+    background-color: black;
+    color: white;
+}
+
+/* Aplicar modo oscuro al contenedor */
+body:has(.modo-checkbox:checked) .buscar-login {
+    background-color: #333;
+    border-color: #555;
+}
+
+/* Aplicar modo oscuro a botones y campos */
+body:has(.modo-checkbox:checked) .busqueda input,
+body:has(.modo-checkbox:checked) .busqueda button,
+body:has(.modo-checkbox:checked) .login {
+    background-color: #444;
+    color: white;
+    border-color: #666;
+}
+
+body:has(.modo-checkbox:checked) h3 {
+    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
+}
+
+/* Estilo para los iconos dentro del label */
+.modo {
+    position: relative;
+    width: 30px;  /* Ajusta el tamaño del icono */
+    height: 30px; /* Ajusta el tamaño del icono */
+}
+
+/* Icono de la luna (modo claro) */
+.modo .luna {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 1;  /* Muestra el icono de la luna en modo claro */
+    transition: opacity 0.3s ease-in-out;  /* Transición suave */
+}
+
+/* Icono del sol (modo oscuro) */
+.modo .sol {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;  /* El icono del sol está oculto en modo claro */
+    transition: opacity 0.3s ease-in-out;  /* Transición suave */
+}
+
+/* Cuando el checkbox está marcado (modo oscuro) */
+body:has(.modo-checkbox:checked) .modo .luna {
+    opacity: 0;  /* Oculta el icono de la luna */
+}
+
+body:has(.modo-checkbox:checked) .modo .sol {
+    opacity: 1;  /* Muestra el icono del sol */
+}
+
+/* Estilo para el checkbox, para que se vea mejor (opcional) */
+.modo-checkbox {
+    display: none;  /* Oculta el checkbox, ya que solo usamos el label para cambiar el modo */
+}
