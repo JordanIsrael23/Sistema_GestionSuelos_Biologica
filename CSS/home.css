@@ -1,5 +1,5 @@
 nav {
-    background-color: #6A994E; /* Color de fondo */
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 10px; /* Espaciado interno */
 }
 
@@ -27,7 +27,7 @@ a {
     display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
     align-items: center; /* Centra los elementos verticalmente */
-    background-color: #6A994E; /* Color de fondo */
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 10px; /* Espacio alrededor del contenido */
 }
 
@@ -231,7 +231,7 @@ body {
 footer {
     display: flex;
     justify-content: space-between;
-    background-color: #6A994E; /* Color de fondo */
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
     font-family: Arial, sans-serif;
 }

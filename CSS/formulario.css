@@ -1,0 +1,104 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+form {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Títulos */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color:rgba(0, 153, 51, 0.9);
+}
+
+/* Etiquetas */
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Campos de entrada */
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Botones */
+button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
+    color: #fff;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
+}
+
+button[type="reset"] {
+    background-color: #f44336;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+button[type="reset"]:hover {
+    background-color: #d32f2f;
+}
+
+/* Div contenedor de botones */
+div {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    form {
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    div {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
