@@ -1,8 +1,9 @@
-/* General */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f4f6;
-    color: #333;
+    font-family: 'Arial', sans-serif;
+    background-image: url('../IMG/login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,94 +12,114 @@ body {
     height: 100vh;
 }
 
-/* Contenedor principal */
+.header {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+}
+
+.header .back-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.header .back-icon img {
+    width: 24px;
+    height: 24px;
+}
+
 form {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco translúcido */
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+    margin-top: 100px; /* Espaciado para evitar solapamiento con el header */
     width: 100%;
     max-width: 400px;
 }
 
-/* Títulos */
-h1 {
-    text-align: center;
+form h2 {
     font-size: 24px;
     margin-bottom: 20px;
-    color:rgba(0, 153, 51, 0.9);
+    color: #009900; /* Verde seguro */
 }
 
-/* Etiquetas */
 label {
     display: block;
-    font-size: 14px;
+    text-align: left;
     margin-bottom: 8px;
-    color: #555;
+    font-weight: bold;
+    color: #333333; /* Gris seguro */
 }
 
-/* Campos de entrada */
-input[type="text"],
-input[type="email"] {
+input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
+    border: 1px solid #cccccc; /* Gris claro seguro */
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
 }
 
-/* Botones */
-button {
-    padding: 10px 20px;
-    font-size: 14px;
+input:focus {
+    border-color: #009900; /* Verde seguro */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Verde seguro */
+}
+
+/* Botones de guardar y cancelar */
+button[type="submit"], 
+button[type="reset"] {
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #009900; /* Verde seguro */
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-button[type="submit"] {
-    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
-    color: #fff;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover {
-    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
+button[type="submit"]:hover, 
+button[type="reset"]:hover {
+    background-color: #00cc00; /* Verde claro */
 }
 
 button[type="reset"] {
-    background-color: #f44336;
-    color: #fff;
-    transition: background-color 0.3s ease;
+    background-color: #cc0000; /* Rojo para cancelar */
 }
 
 button[type="reset"]:hover {
-    background-color: #d32f2f;
+    background-color: #ff1a1a; /* Rojo claro para cancelar */
 }
 
-/* Div contenedor de botones */
-div {
-    display: flex;
-    justify-content: flex-end;
-}
-
-/* Responsividad */
-@media (max-width: 480px) {
-    form {
-        padding: 15px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
     }
-
-    button {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    div {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
