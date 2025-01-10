@@ -113,6 +113,16 @@ button:active {
   font-weight: bold;
 }
 
+.forget-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.forget-link a {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
 .register-link a:hover {
   text-decoration: underline;
 }
