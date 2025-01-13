@@ -39,6 +39,19 @@
       <h3>Generar Informe</h3>
       <button onclick="window.location.href='crearinforme.html'">Generar Informe</button>
     </div>
+
+
+    <button class="cerrar-sesion" onclick="confirmarCerrarSesion()">Cerrar Sesión</button>
+
+<script>
+  function confirmarCerrarSesion() {
+    const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
+    if (confirmar) {
+      window.location.href = 'inicio.html'; // Redirige si el usuario confirma
+    }
+  }
+</script>
+
   </main>
 
 </body>
