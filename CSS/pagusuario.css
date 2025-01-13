@@ -67,3 +67,19 @@ header {
     background-color: #2C6B2F; 
 }
 
+.cerrar-sesion {
+    background-color: #D32F2F; /* Rojo seguro */
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Separación superior */
+}
+
+.cerrar-sesion:hover {
+    background-color: #C62828; /* Rojo más oscuro en hover */
+}
