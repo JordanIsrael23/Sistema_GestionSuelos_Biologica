@@ -8,12 +8,21 @@
     <title>Organismos</title>
 </head>
 <body>
-    
-    <dvi class="caja">
+    <div class="caja">
         <h1>Organismos</h1>
-        <form>
+        <form method="post">
             <label>Tipo</label>
+            <select>
+                <option value="" disabled selected>Tipo Organismo</option>
+                <option value="opcion1">Macroorganimo</option>
+                <option value="opcion2">Microorganimo</option>
+            </select>
+            <label>Nombre</label>
+            <input type="text" required>
+            <label>Cantidad</label>
+            <input type="number" required>
+            <button type="submit">Aceptar</button>
         </form>
-    </dvi>
+    </div>
 </body>
 </html>
