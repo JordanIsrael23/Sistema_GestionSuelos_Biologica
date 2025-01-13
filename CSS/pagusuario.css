@@ -1,0 +1,69 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+
+header {
+    background-color: #388E3C; /* Verde seguro y más suave */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 20px; /* Espaciado entre las cajas */
+}
+
+
+.option-box {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.option-box:hover {
+    transform: scale(1.05); /* Agranda el cuadro */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+}
+
+
+.option-box h3 {
+    font-size: 20px;
+    color: #388E3C;
+    margin-bottom: 15px;
+}
+
+
+.option-box button {
+    background-color: #388E3C; /* Verde más seguro */
+    color: white;
+    border: none;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+
+.option-box button:hover {
+    background-color: #2C6B2F; 
+}
+
