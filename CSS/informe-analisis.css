@@ -1,0 +1,69 @@
+/* Estilo para la caja principal */
+.contenedor {
+  max-width: 800px;
+  margin: 0 auto; /* Centrar la caja */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el encabezado */
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilo general para los títulos */
+.informe h2 {
+  margin-top: 20px;
+  color: #333;
+}
+
+/* Estilo para el resumen */
+.resumen p {
+  background-color: #e7f4e8;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Estilo para la tabla de datos */
+.tabla-datos table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabla-datos th,
+.tabla-datos td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla-datos th {
+  background-color: #f4f4f4;
+}
+
+/* Estilo para el pie de página */
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #777;
+}
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('../IMG/login.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

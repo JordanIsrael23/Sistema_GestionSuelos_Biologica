@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/perfil.css">
+    <title>Perfil de Usuario</title>
+</head>
+
+<body>
+    <header class="header">
+        <!-- Ícono de la flecha -->
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+    <form action="/guardar" method="post" class="form-container">
+        <div class="perfil-info">
+            <h2>Perfil de Usuario Final</h2><br>
+            <!-- Imagen previa que se muestra a la derecha del formulario -->
+            <div class="imagen-previa">
+                <h3>Fotografía:</h3>
+                <img id="imagenSubida" src="" alt="Imagen subida" width="200" style="display:none;">
+            </div><br>
+            <label for="nombreCompleto">Nombre Completo:</label>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" value="Juan Pérez" readonly>
+
+            <label for="correoElectronico">Correo Electrónico:</label>
+            <input type="email" id="correoElectronico" name="correoElectronico" value="juan.perez@correo.com" readonly>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" value="+34 912 345 678" readonly>
+
+            <label for="rol">Rol:</label>
+            <input type="text" id="rol" name="rol" value="Administrador" readonly>
+
+            <label for="foto">Foto de Perfil:</label>
+            <input type="file" id="foto" name="foto" onchange="mostrarArchivo()">
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="cerrarModal()">&times;</span>
+                    <h3>Subiendo archivo</h3>
+                    <p id="nombreArchivo">Ningún archivo seleccionado</p>
+                    <p id="archivoInfo"></p>
+                    <button type="button" onclick="subirFoto()">Subir</button>
+                </div>
+            </div>
+            <button class="boton-regresar" onclick="window.location.href='paginaprincipal.html'" type="button">Regresar al
+                Inicio</button>
+        </div>
+
+
+    </form>
+
+    <script>
+        function mostrarArchivo() {
+            var archivo = document.getElementById('foto').files[0];
+            if (archivo) {
+                // Muestra el nombre del archivo
+                var nombreArchivo = archivo.name;
+                document.getElementById('nombreArchivo').textContent = "Archivo seleccionado: " + nombreArchivo;
+
+                // Muestra el tamaño y tipo del archivo
+                var archivoInfo = "Tamaño: " + (archivo.size / 1024).toFixed(2) + " KB" + "<br>" +
+                    "Tipo: " + archivo.type;
+                document.getElementById('archivoInfo').innerHTML = archivoInfo;
+
+                // Muestra el modal
+                document.getElementById('modal').style.display = 'block';
+            }
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function subirFoto() {
+            var archivo = document.getElementById('foto').files[0];
+            if (archivo) {
+                // Crear un objeto URL para mostrar la imagen
+                var urlImagen = URL.createObjectURL(archivo);
+
+                // Mostrar la imagen previa en el formulario
+                var imagenPreview = document.getElementById('imagenSubida');
+
+                imagenPreview.src = urlImagen;  // Asignar la URL del archivo a la imagen
+                imagenPreview.style.display = 'block';  // Hacer visible la imagen
+            } else {
+                alert("No se ha seleccionado ningún archivo.");
+            }
+            cerrarModal();
+        }
+    </script>
+</body>
+
+</html>
