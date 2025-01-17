@@ -128,3 +128,39 @@ app.post('/guardar', async (req, res) => {
         res.redirect('/registro.html?success=false');
     }
 });
+
+/////////
+/////////
+/////////
+app.post('/recuperar', async (req, res) => {
+    const { cedula, email, telefono, nueva_contraseña } = req.body;
+
+    try {
+        // Verificar si los datos coinciden en la base de datos
+        const query = `
+            SELECT * FROM USUARIOS 
+            WHERE user_cedula = $1 AND user_email = $2 AND user_telefono = $3
+        `;
+        const resultado = await conexion.query(query, [cedula, email, telefono]);
+
+        if (resultado.rows.length > 0) {
+            // Datos válidos, proceder a actualizar la contraseña
+            const updateQuery = `
+                UPDATE USUARIOS 
+                SET user_password = $1, updated_at = NOW() 
+                WHERE user_cedula = $2
+            `;
+            await conexion.query(updateQuery, [nueva_contraseña, cedula]);
+
+            console.log('Contraseña actualizada exitosamente');
+            res.redirect('/recuperarexito.html'); // Redirigir a la página de éxito
+        } else {
+            // Datos incorrectos
+            console.log('Los datos proporcionados no coinciden con ningún usuario');
+            res.status(400).json({ error: 'Los datos proporcionados no son válidos' });
+        }
+    } catch (err) {
+        console.error('Error al recuperar la contraseña:', err);
+        res.status(500).json({ error: 'Hubo un error al procesar la solicitud' });
+    }
+});
