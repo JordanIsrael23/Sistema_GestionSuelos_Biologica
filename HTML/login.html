@@ -7,6 +7,17 @@
   <!-- Favicon -->
   <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
   <link rel="stylesheet" href="../CSS/login.css">
+  <style>
+    .error-message {
+      display: none;
+      color: white;
+      background-color: red;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -19,14 +30,17 @@
 
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <form action="" method="POST">
+    <!-- Mensaje flotante de error -->
+    <div id="error-message" class="error-message">Cédula o contraseña incorrectas</div>
+
+    <form id="login-form">
       <label for="user_id">ID de Usuario</label>
       <input type="text" id="user_id" name="user_id" placeholder="Ingresa tu ID" required>
 
       <label for="password">Contraseña</label>
       <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
 
-      <button type="button" onclick="window.location.href='pagusuario.html'">Iniciar Sesión</button>
+      <button type="submit">Iniciar Sesión</button>
 
       <div class="register-link">
         <a href="formulario.html">¿No tienes cuenta? Regístrate</a>
@@ -34,8 +48,37 @@
       <div class="forget-link">
         <a href="recuperarcontra.html">¿Olvidaste tu contraseña? Recuperar contraseña</a>
       </div>
-      
     </form>
   </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Evita el envío tradicional del formulario
+
+      const user_id = document.getElementById('user_id').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id, password }),
+        });
+
+        if (response.ok) {
+          // Redirige si el inicio de sesión es exitoso
+          window.location.href = '/pagusuario.html';
+        } else {
+          // Muestra el mensaje flotante si las credenciales son incorrectas
+          const errorMessage = document.getElementById('error-message');
+          errorMessage.style.display = 'block';
+          const errorData = await response.json();
+          errorMessage.textContent = errorData.error || 'Error al iniciar sesión';
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    });
+  </script>
 </body>
 </html>

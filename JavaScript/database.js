@@ -1,19 +1,24 @@
+const { Client } = require('pg'); // Importa la librería de PostgreSQL
 
-const x = require('mysql2');
-
-const y = x.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'prototipo'
+// Configuración de conexión
+const client = new Client({
+    host: 'bdd-unificada.postgres.database.azure.com',
+    user: 'SM_B',
+    password: 'SM_B',
+    database: 'postgres',
+    port: 5432,
+    ssl: true // Azure requiere SSL para conexiones seguras
 });
 
-y.connect((err)=>{
-    if(err){
-        console.error('Error no conexion',err);
-        return ;
-    } 
-    console.log('Conexion realizada');
+// Conecta la base de datos
+client.connect((err) => {
+    if (err) {
+        console.error('Error en la conexión:', err);
+        return;
+    }
+    console.log('Conexión persistente realizada con éxito');
 });
 
-module.exports = y;
+// Exporta el cliente para usarlo en otros módulos
+module.exports = client;
+
