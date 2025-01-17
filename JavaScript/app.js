@@ -83,71 +83,48 @@ app.post('/login', async (req, res) => {
 //////////////
 /////////
 ///////
-// Ruta para guardar usuarios
 app.post('/guardar', async (req, res) => {
+    console.log('Ruta /guardar llamada');
     const { rol, cedula, nombre, apellido, email, password, telefono } = req.body;
+
+    console.log('Datos recibidos para guardar:', { rol, cedula, nombre, apellido, email, telefono });
 
     // Mapear el rol al TIPUS_ID numérico
     let tipus_id;
     if (rol === 'Estudiante') {
-        tipus_id = 3; // TIPUS_ID para Estudiante
+        tipus_id = 3;
     } else if (rol === 'Docente') {
-        tipus_id = 4; // TIPUS_ID para Docente
+        tipus_id = 4;
     } else {
+        console.error('Rol no válido');
         return res.status(400).send('Rol no válido. Solo se aceptan "Estudiante" y "Docente".');
     }
 
     try {
-        // Consultar el último USER_ID registrado
+        console.log('Consultando el último USER_ID registrado...');
         const result = await conexion.query('SELECT MAX(USER_ID) AS max_id FROM USUARIOS');
-        const lastId = result.rows[0].max_id || 0; // Si no hay registros, iniciamos en 0
+        const lastId = result.rows[0].max_id || 0;
         const newUserId = lastId + 1;
+        console.log('Nuevo USER_ID calculado:', newUserId);
 
-        // Obtener la fecha actual
         const now = new Date().toISOString();
 
-        // Query para insertar el nuevo usuario
+        console.log('Ejecutando query de inserción...');
         const query = `
             INSERT INTO USUARIOS (
-                USER_ID, 
-                TIPUS_ID, 
-                USER_CEDULA, 
-                USER_NOMBRE, 
-                USER_APELLIDO, 
-                USER_EMAIL, 
-                USER_PASSWORD, 
-                USER_TELEFONO, 
-                USER_ESTADO, 
-                CREATED_AT, 
-                UPDATED_AT
-            ) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, $9, $9)
+                USER_ID, TIPUS_ID, USER_CEDULA, USER_NOMBRE, USER_APELLIDO,
+                USER_EMAIL, USER_PASSWORD, USER_TELEFONO, USER_ESTADO, CREATED_AT, UPDATED_AT
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, $9, $9)
         `;
 
-        // Ejecutar la consulta para insertar el usuario
         await conexion.query(query, [
-            newUserId, // USER_ID
-            tipus_id,  // TIPUS_ID (asegurado como entero)
-            cedula,    // USER_CEDULA
-            nombre,    // USER_NOMBRE
-            apellido,  // USER_APELLIDO
-            email,     // USER_EMAIL
-            password,  // USER_PASSWORD
-            telefono,  // USER_TELEFONO
-            now ,
-            now       // CREATED_AT y UPDATED_AT
+            newUserId, tipus_id, cedula, nombre, apellido, email, password, telefono, now
         ]);
 
         console.log('Usuario registrado con éxito');
-        res.redirect('/registro.html?success=true'); // Redirigir con éxito
+        res.redirect('/registro.html?success=true');
     } catch (err) {
         console.error('Error al registrar el usuario:', err);
-        res.redirect('/registro.html?success=false'); // Redirigir con error
+        res.redirect('/registro.html?success=false');
     }
 });
-
-
-
-
-
-
