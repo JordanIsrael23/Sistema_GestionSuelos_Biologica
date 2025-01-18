@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const puerto = 3000;
+const fs = require('fs');
 
 // Middleware para manejar datos POST
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +35,44 @@ app.use(
         cookie: { secure: false } // Usa true si tienes HTTPS
     })
 );
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, '..', 'IMG', 'imgusuarios'),
+    filename: (req, file, cb) => {
+        const userCedula = req.session.user?.user_cedula;
+
+        if (!userCedula) {
+            return cb(new Error('Usuario no logueado'));
+        }
+
+        const directorio = path.join(__dirname, '..', 'IMG', 'imgusuarios');
+
+        // Eliminar archivos existentes con el nombre de la cédula
+        fs.readdir(directorio, (err, archivos) => {
+            if (err) {
+                console.error('Error al leer el directorio:', err);
+                return cb(err);
+            }
+
+            archivos.forEach((archivo) => {
+                if (archivo.startsWith(userCedula)) {
+                    fs.unlinkSync(path.join(directorio, archivo));
+                    console.log(`Archivo existente eliminado: ${archivo}`);
+                }
+            });
+
+            cb(null, `${userCedula}${path.extname(file.originalname)}`); // Guardar archivo con el nombre de la cédula
+        });
+    },
+});
+
+const upload = multer({ storage });
+
+
+
+
 
 
 // Ruta principal
@@ -219,4 +258,92 @@ app.post('/actualizar', async (req, res) => {
         console.error('Error al actualizar los datos:', err);
         res.redirect('/mensaje-actualizacion.html?success=false');
     }
+});
+//////////////
+/////////////
+///////////
+/////////
+app.get('/perfil', (req, res) => {
+    if (!req.session.user) {
+        console.error('Usuario no logueado');
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    const roles = {
+        3: 'Estudiante',
+        4: 'Docente'
+    };
+
+    const cedula = req.session.user.user_cedula;
+
+    const user = {
+        nombre: req.session.user.user_nombre,
+        apellido: req.session.user.user_apellido,
+        email: req.session.user.user_email,
+        telefono: req.session.user.user_telefono,
+        rol: roles[req.session.user.tipus_id] || 'Desconocido',
+        foto: `/imagen/${cedula}` // Generar la URL de la imagen basada en la cédula
+    };
+
+    console.log('Datos del usuario enviados:', user);
+    res.json(user);
+});
+
+
+
+
+app.post('/subir-imagen', upload.single('foto'), async (req, res) => {
+    if (!req.session.user) {
+        console.error('Usuario no logueado');
+        return res.status(401).send('No autorizado. Inicia sesión nuevamente.');
+    }
+
+    const cedula = req.session.user.user_cedula;
+
+    try {
+        console.log(`Imagen subida correctamente para la cédula ${cedula}:`, req.file.filename);
+
+        // Actualizar la URL de la imagen en la base de datos
+        const query = `
+            UPDATE USUARIOS 
+            SET user_foto = $1 
+            WHERE user_cedula = $2
+        `;
+        const fotoURL = `/imagen/${cedula}`;
+        await conexion.query(query, [fotoURL, cedula]);
+
+        res.redirect('/perfil.html'); // Redirigir al perfil después de la subida
+    } catch (err) {
+        console.error('Error al CARGAR o actualizar la imagen:', err);
+        res.status(500).send('Recarga la pagina para ver los cambios .');
+    }
+});
+
+
+
+app.get('/imagen/:cedula', (req, res) => {
+    const cedula = req.params.cedula;
+    const directorio = path.join(__dirname, '..', 'IMG', 'imgusuarios');
+
+    // Buscar archivo con la cédula en el directorio (independientemente de la extensión)
+    fs.readdir(directorio, (err, archivos) => {
+        if (err) {
+            console.error('Error al leer el directorio:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+
+        const archivo = archivos.find((archivo) => archivo.startsWith(cedula));
+
+        if (archivo) {
+            res.sendFile(path.join(directorio, archivo), (err) => {
+                if (err) {
+                    console.error('Error al enviar la imagen:', err);
+                    res.status(500).send('Error al cargar la imagen');
+                }
+            });
+        } else {
+            console.error('Imagen no encontrada para la cédula:', cedula);
+            res.status(404).send('Imagen no encontrada');
+        }
+    });
 });
