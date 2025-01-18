@@ -22,6 +22,20 @@ app.use(express.urlencoded({ extended: true }));
 // Requerir la conexión remota a la base de datos
 const conexion = require('./database');
 
+
+// esta es la session no tocar
+const session = require('express-session');
+
+app.use(
+    session({
+        secret: 'clave-secreta', // Cambia esto por una clave segura
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false } // Usa true si tienes HTTPS
+    })
+);
+
+
 // Ruta principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'HTML', 'formulario.html'));
@@ -46,13 +60,10 @@ app.post('/login', async (req, res) => {
     console.log('Ruta /login llamada');
     const { user_id, password } = req.body;
 
-    // Validar que los datos no estén vacíos
     if (!user_id || !password) {
         console.error('Datos incompletos para login:', { user_id, password });
         return res.status(400).json({ error: 'El ID de usuario y la contraseña son requeridos' });
     }
-
-    console.log('Datos recibidos para login:', { user_id, password });
 
     const query = `
         SELECT * FROM USUARIOS 
@@ -63,10 +74,14 @@ app.post('/login', async (req, res) => {
         console.log('Ejecutando query de login...');
         const resultado = await conexion.query(query, [user_id, password]);
 
-        console.log('Resultado del query:', resultado.rows);
-
         if (resultado.rows.length > 0) {
             console.log('Inicio de sesión exitoso');
+
+            // Guardar datos del usuario en la sesión
+            req.session.user = resultado.rows[0];
+
+            console.log('Datos guardados en la sesión:', req.session.user);
+
             res.redirect('/pagusuario.html');
         } else {
             console.log('Cédula o contraseña incorrectos');
@@ -77,6 +92,7 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Hubo un error al procesar la solicitud.' });
     }
 });
+
 
 
 /////////////
@@ -162,5 +178,45 @@ app.post('/recuperar', async (req, res) => {
     } catch (err) {
         console.error('Error al recuperar la contraseña:', err);
         res.status(500).json({ error: 'Hubo un error al procesar la solicitud' });
+    }
+});
+/////////////
+/////////////
+////////////
+////////////
+app.post('/actualizar', async (req, res) => {
+    const { telefono, email, password } = req.body;
+
+    // Obtener el user_id desde la sesión
+    const user_id = req.session.user?.user_id;
+
+    if (!user_id) {
+        console.error('No hay usuario logueado en la sesión.');
+        return res.status(401).send('No autorizado. Inicia sesión nuevamente.');
+    }
+
+    try {
+        const query = `
+            UPDATE USUARIOS 
+            SET 
+                user_telefono = $1, 
+                user_email = $2, 
+                user_password = $3, 
+                updated_at = NOW()
+            WHERE user_id = $4
+        `;
+
+        const result = await conexion.query(query, [telefono, email, password, user_id]);
+
+        if (result.rowCount > 0) {
+            console.log(`Datos del usuario ${user_id} actualizados correctamente.`);
+            res.redirect('/actualizacionexito.html?success=true');
+        } else {
+            console.log(`No se encontró el usuario con ID ${user_id}.`);
+            res.redirect('/mensaje-actualizacion.html?success=false');
+        }
+    } catch (err) {
+        console.error('Error al actualizar los datos:', err);
+        res.redirect('/mensaje-actualizacion.html?success=false');
     }
 });
