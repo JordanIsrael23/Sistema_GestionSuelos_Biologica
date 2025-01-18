@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'HTML')));
 app.use('/css', express.static(path.join(__dirname, '..', 'CSS')));
 app.use('/img', express.static(path.join(__dirname, '..', 'IMG')));
-app.use('/js', express.static(path.join(__dirname, '..', 'JS')));
+app.use('/js', express.static(path.join(__dirname, '..', 'JavaScript')));
 app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
 
 
