@@ -4,6 +4,8 @@ const app = express();
 const puerto = 3000;
 const fs = require('fs');
 
+app.use(express.static(__dirname));
+
 // Middleware para manejar datos POST
 app.use(express.urlencoded({ extended: true }));
 
