@@ -123,21 +123,3 @@ button[type="reset"]:hover {
         transform: translateY(0);
     }
 }
-select {
-    display: block;
-    width: 106%; 
-    padding: 10px; 
-    margin-bottom: 10px; 
-    font-size: 16px;
-    font-weight: bold; 
-    color: #333333; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    background-color: #f9f9f9; 
-    box-sizing: border-box; 
-}
-
-select:focus {
-    outline: none; 
-    border-color: #666; 
-}

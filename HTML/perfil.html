@@ -16,7 +16,7 @@
         </a>
         <h1>Gestión Biológica de Suelos</h1>
     </header>
-    <form action="/perfil" method="post" class="form-container">
+    <form action="/guardar" method="post" class="form-container">
         <div class="perfil-info">
             <h2>Perfil de Usuario Final</h2><br>
             <!-- Imagen previa que se muestra a la derecha del formulario -->
@@ -25,16 +25,16 @@
                 <img id="imagenSubida" src="" alt="Imagen subida" width="200" style="display:none;">
             </div><br>
             <label for="nombreCompleto">Nombre Completo:</label>
-            <input type="text" id="nombreCompleto" name="nombreCompleto" value="" readonly>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" value="Juan Pérez" readonly>
 
             <label for="correoElectronico">Correo Electrónico:</label>
-            <input type="email" id="correoElectronico" name="correoElectronico" value="" readonly>
+            <input type="email" id="correoElectronico" name="correoElectronico" value="juan.perez@correo.com" readonly>
 
             <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono" name="telefono" value="" readonly>
+            <input type="tel" id="telefono" name="telefono" value="+34 912 345 678" readonly>
 
             <label for="rol">Rol:</label>
-            <input type="text" id="rol" name="rol" value="" readonly>
+            <input type="text" id="rol" name="rol" value="Administrador" readonly>
 
             <label for="foto">Foto de Perfil:</label>
             <input type="file" id="foto" name="foto" onchange="mostrarArchivo()">
@@ -48,85 +48,52 @@
                     <button type="button" onclick="subirFoto()">Subir</button>
                 </div>
             </div>
-            <button class="boton-regresar" onclick="window.location.href='pagusuario.html'" type="button">Regresar al
+            <button class="boton-regresar" onclick="window.location.href='paginaprincipal.html'" type="button">Regresar al
                 Inicio</button>
         </div>
+
+
     </form>
+
     <script>
-       document.addEventListener('DOMContentLoaded', async () => {
-           try {
-               // Solicitar datos del perfil al servidor
-               const response = await fetch('/perfil');
-               if (response.ok) {
-                   const data = await response.json();
+        function mostrarArchivo() {
+            var archivo = document.getElementById('foto').files[0];
+            if (archivo) {
+                // Muestra el nombre del archivo
+                var nombreArchivo = archivo.name;
+                document.getElementById('nombreArchivo').textContent = "Archivo seleccionado: " + nombreArchivo;
 
-                   // Asignar los datos al formulario
-                   document.getElementById('nombreCompleto').value = `${data.nombre || ''} ${data.apellido || ''}`;
-                   document.getElementById('correoElectronico').value = data.email || 'Correo no disponible';
-                   document.getElementById('telefono').value = data.telefono || 'Teléfono no disponible';
-                   document.getElementById('rol').value = data.rol || 'Rol desconocido';
+                // Muestra el tamaño y tipo del archivo
+                var archivoInfo = "Tamaño: " + (archivo.size / 1024).toFixed(2) + " KB" + "<br>" +
+                    "Tipo: " + archivo.type;
+                document.getElementById('archivoInfo').innerHTML = archivoInfo;
 
-                   // Mostrar la foto si está disponible
-                   if (data.foto) {
-                       const imagenPreview = document.getElementById('imagenSubida');
-                       imagenPreview.src = data.foto;
-                       imagenPreview.style.display = 'block';
-                   }
-               } else {
-                   console.error('Error al obtener datos del perfil:', response.statusText);
-                   alert('Error al cargar el perfil del usuario. Por favor, intenta más tarde.');
-               }
-           } catch (error) {
-               console.error('Error en la solicitud:', error);
-               alert('Error en la conexión con el servidor.');
-           }
-       });
+                // Muestra el modal
+                document.getElementById('modal').style.display = 'block';
+            }
+        }
 
-       function mostrarArchivo() {
-           const archivo = document.getElementById('foto').files[0];
-           if (archivo) {
-               document.getElementById('nombreArchivo').textContent = "Archivo seleccionado: " + archivo.name;
-               document.getElementById('archivoInfo').innerHTML = `
-                   Tamaño: ${(archivo.size / 1024).toFixed(2)} KB<br>
-                   Tipo: ${archivo.type}
-               `;
-               document.getElementById('modal').style.display = 'block';
-           }
-       }
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
 
-       function cerrarModal() {
-           document.getElementById('modal').style.display = 'none';
-       }
+        function subirFoto() {
+            var archivo = document.getElementById('foto').files[0];
+            if (archivo) {
+                // Crear un objeto URL para mostrar la imagen
+                var urlImagen = URL.createObjectURL(archivo);
 
-       function subirFoto() {
-           const archivo = document.getElementById('foto').files[0];
-           if (archivo) {
-               const formData = new FormData();
-               formData.append('foto', archivo);
+                // Mostrar la imagen previa en el formulario
+                var imagenPreview = document.getElementById('imagenSubida');
 
-               fetch('/subir-imagen', {
-                   method: 'POST',
-                   body: formData
-               })
-               .then(response => {
-                   if (response.ok) {
-                       alert('Imagen subida con éxito');
-                       window.location.reload();
-                   } else {
-                       alert('Error al subir la imagen. Intenta nuevamente.');
-                   }
-               })
-               .catch(error => {
-                   console.error('Error en la subida de la imagen:', error);
-                   alert('Error al conectar con el servidor.');
-               });
-           } else {
-               alert('Por favor, selecciona una imagen antes de subir.');
-           }
-           cerrarModal();
-       }
+                imagenPreview.src = urlImagen;  // Asignar la URL del archivo a la imagen
+                imagenPreview.style.display = 'block';  // Hacer visible la imagen
+            } else {
+                alert("No se ha seleccionado ningún archivo.");
+            }
+            cerrarModal();
+        }
     </script>
 </body>
-
 
 </html>

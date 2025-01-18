@@ -5,66 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/formulario.css">
-    <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
-<<<<<<< HEAD
     <title>Gestion Biologica de Suelos</title>
-=======
-    <title>Gestión Biológica de Suelos</title>
-    <style>
-        .message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #4caf50; /* Verde para éxito */
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            display: none; /* Ocultar por defecto */
-            z-index: 1000;
-        }
-
-        .message.error {
-            background-color: #f44336; /* Rojo para error */
-        }
-    </style>
->>>>>>> da1b98381ffaf9d73a2b9402739b5ab4fac67650
 </head>
 
 <body>
     <header class="header">
+        <!-- Ícono de la flecha -->
         <a href="javascript:history.back()" class="back-icon">
-            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+          <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
         </a>
         <h1>Gestión Biológica de Suelos</h1>
-    </header>
-    <form action="/guardar" method="post" id="registroForm">
-
+      </header>
+    <form action="/guardar" method="post">
         <h2>Registro</h2>
-
-        <!-- Campos del formulario -->
         <label>ID:</label>
-        <input type="text" name="cedula" required>
-
+        <input type="text" name="id" required>
         <label>Rol:</label>
-        <select name="rol" required>
-            <option value="" disabled selected>Seleccione un rol</option>
-            <option value="Estudiante">Estudiante</option>
-            <option value="Docente">Docente</option>
-        </select>
-
+        <input type="text" name="rol" required>
         <label>Nombres:</label>
         <input type="text" name="nombre" required>
-
         <label>Apellidos:</label>
         <input type="text" name="apellido" required>
-
         <label>Email:</label>
         <input type="email" name="email" required>
-
         <label>Contraseña:</label>
-        <input type="password" name="password" required>
-
+        <input type="text" name="password" required>
         <label>Teléfono:</label>
         <input type="text" name="telefono" required>
 
@@ -73,28 +38,11 @@
             <button type="reset">Cancelar</button>
         </div>
     </form>
-
-    <div id="message" class="message"></div>
-
     <script>
-        // Mostrar mensaje flotante según el parámetro en la URL
-        const params = new URLSearchParams(window.location.search);
-        const success = params.get('success');
-        const messageDiv = document.getElementById('message');
-
-        if (success === 'true') {
-            messageDiv.textContent = 'Usuario registrado con éxito';
-            messageDiv.style.display = 'block';
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000); // Ocultar después de 3 segundos
-        } else if (success === 'false') {
-            messageDiv.textContent = 'Error al registrar el usuario';
-            messageDiv.classList.add('error');
-            messageDiv.style.display = 'block';
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000); // Ocultar después de 3 segundos
+        // Función para limpiar el formulario
+        function cancelarRegistro() {
+            // Limpiar los campos del formulario
+            document.getElementById('registroForm').reset();
         }
     </script>
 </body>
