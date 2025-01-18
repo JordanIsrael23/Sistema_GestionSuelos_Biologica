@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../CSS/formulario.css">
     <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
     <title>Gestión Biológica de Suelos</title>
+    
     <style>
         .message {
             position: fixed;
@@ -34,13 +35,13 @@
         </a>
         <h1>Gestión Biológica de Suelos</h1>
     </header>
-    <form action="/guardar" method="post" id="registroForm">
+    <form action="/guardar" method="post" id="registroForm" novalidate>
 
         <h2>Registro</h2>
 
         <!-- Campos del formulario -->
         <label>ID:</label>
-        <input type="text" name="cedula" required>
+        <input type="text" name="cedula" id="cedula" maxlength="10" pattern="\d{10}" required>
 
         <label>Rol:</label>
         <select name="rol" required>
@@ -50,19 +51,19 @@
         </select>
 
         <label>Nombres:</label>
-        <input type="text" name="nombre" required>
+        <input type="text" name="nombre" id="nombre" required>
 
         <label>Apellidos:</label>
-        <input type="text" name="apellido" required>
+        <input type="text" name="apellido" id="apellido" required>
 
         <label>Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" id="email" required>
 
         <label>Contraseña:</label>
         <input type="password" name="password" required>
 
         <label>Teléfono:</label>
-        <input type="text" name="telefono" required>
+        <input type="text" name="telefono" id="telefono" maxlength="10" pattern="\d{10}" required>
 
         <div>
             <button type="submit">Guardar</button>
@@ -70,6 +71,7 @@
         </div>
     </form>
 
+    
     <div id="message" class="message"></div>
 
     <script>
@@ -93,6 +95,7 @@
             }, 3000); // Ocultar después de 3 segundos
         }
     </script>
+    <script src="../JavaScript/formulario.js"></script>
 </body>
 
 </html>
