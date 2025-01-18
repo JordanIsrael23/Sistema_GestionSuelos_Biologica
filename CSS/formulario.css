@@ -126,9 +126,9 @@ button[type="reset"]:hover {
 select {
     display: block;
     width: 106%; 
-    padding: 10px;
+    padding: 10px; 
     margin-bottom: 10px; 
-    font-size: 16px; 
+    font-size: 16px;
     font-weight: bold; 
     color: #333333; 
     border: 1px solid #ccc; 
