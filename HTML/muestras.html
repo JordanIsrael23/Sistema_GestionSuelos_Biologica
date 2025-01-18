@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
     <link rel="stylesheet" href="../CSS/muestra.css">
+    
     <title>Muestras</title>
 
 </head>
@@ -15,13 +16,12 @@
             <label>Ubicación</label>
             <input type="text"  required>
             <label>Fecha</label>
-            <input type="date" required>
-            <label>Cantidad:</label>
+            <input type="date" id="fecha" required>
+            <label>Cantidad de muestra (gr):</label>
             <input type="number" min="1" required>
-            <button onclick="window.location.href='organismo.html'">Agregar Organismo</button>
             <button type="submit">Aceptar</button>
         </form>
-        
+        <script src="../JavaScript/fecha.js"></script>
     </div>
     <div>
         <button class="boton" onclick="window.location.href='pagusuario.html'">Volver</button>
