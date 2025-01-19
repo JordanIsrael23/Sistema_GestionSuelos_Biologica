@@ -349,3 +349,145 @@ app.get('/imagen/:cedula', (req, res) => {
         }
     });
 });
+
+
+////////////////////
+//////////////////
+///////////////////
+
+app.get('/listamuestras', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    const userId = req.session.user.user_id; // Obtener el ID del usuario en sesión
+
+    const query = `
+        SELECT 
+            MU.MU_ID AS id, 
+            MU.MU_FECHA AS fecha, 
+            MU.MU_SECTOR AS sector
+        FROM SM_B_MUESTRAS MU
+        INNER JOIN SM_Q_PARCELAS PARC ON MU.PARC_ID = PARC.PARC_ID
+        WHERE PARC.USER_ID = $1
+        ORDER BY MU.MU_FECHA DESC
+    `;
+
+    try {
+        const resultado = await conexion.query(query, [userId]);
+        res.json(resultado.rows); // Devuelve las muestras al cliente
+    } catch (error) {
+        console.error('Error al obtener las muestras:', error);
+        res.status(500).json({ error: 'Error al obtener las muestras' });
+    }
+});
+/////////////////
+////////////////
+////////////////
+app.post('/crear-informe', async (req, res) => {
+    const { mu_id, titulo, introduccion, desarrollo, conclusiones, recomendaciones, soluciones } = req.body;
+
+    if (!mu_id) {
+        return res.status(400).send('El ID de la muestra es requerido.');
+    }
+
+    try {
+        const query = `
+            INSERT INTO SM_B_INFORMES 
+            (IN_ID, MU_ID, IN_TITULO, IN_INTRODUCCION, IN_DESARROLLO, IN_RESULTADOS, IN_CONCLUCION, IN_RECOMENDACION, IN_SOLUCIONES)
+            VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+
+        await conexion.query(query, [
+            mu_id, titulo, introduccion, desarrollo, '', conclusiones, recomendaciones, soluciones
+        ]);
+
+        res.redirect('/mensaje-exito.html');
+    } catch (err) {
+        console.error('Error al crear el informe:', err);
+        res.redirect('/mensaje-error.html');
+    }
+});
+////////////////
+///////////////
+/////////////
+app.get('/listainformes', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    const userId = req.session.user.user_id;
+
+    try {
+        const query = `
+            SELECT IN_ID AS id, IN_TITULO AS titulo, MU_FECHA AS fecha
+            FROM SM_B_INFORMES
+            INNER JOIN SM_B_MUESTRAS ON SM_B_INFORMES.MU_ID = SM_B_MUESTRAS.MU_ID
+            WHERE SM_B_MUESTRAS.PARC_ID IN (
+                SELECT PARC_ID
+                FROM SM_Q_PARCELAS
+                WHERE USER_ID = $1
+            )
+        `;
+
+        const result = await conexion.query(query, [userId]);
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener los informes:', error);
+        res.status(500).json({ error: 'Error al obtener los informes' });
+    }
+});
+///////////////////
+///////////////
+const PDFDocument = require('pdfkit');
+
+
+app.get('/descargarinforme/:id', async (req, res) => {
+    const informeId = req.params.id;
+
+    try {
+        const query = `
+            SELECT IN_ID, IN_TITULO, IN_INTRODUCCION, IN_DESARROLLO, 
+                   IN_RESULTADOS, IN_CONCLUCION, IN_RECOMENDACION, IN_SOLUCIONES
+            FROM SM_B_INFORMES
+            WHERE IN_ID = $1
+        `;
+        const result = await conexion.query(query, [informeId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('Informe no encontrado');
+        }
+
+        const informe = result.rows[0];
+
+        const doc = new PDFDocument();
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename=${informe.in_titulo.replace(/ /g, '_')}.pdf`
+        );
+
+        doc.pipe(res);
+
+        doc.fontSize(20).text(`Informe: ${informe.in_titulo}`, { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(14).text(`Introducción:\n${informe.in_introduccion}`);
+        doc.moveDown();
+        doc.text(`Desarrollo:\n${informe.in_desarrollo}`);
+        doc.moveDown();
+        doc.text(`Resultados:\n${informe.in_resultados}`);
+        doc.moveDown();
+        doc.text(`Conclusión:\n${informe.in_conclucion}`);
+        doc.moveDown();
+        doc.text(`Recomendaciones:\n${informe.in_recomendacion}`);
+        doc.moveDown();
+        doc.text(`Soluciones:\n${informe.in_soluciones}`);
+
+        doc.end();
+    } catch (err) {
+        console.error('Error al generar el PDF:', err);
+        res.status(500).send('Error al generar el PDF');
+    }
+});

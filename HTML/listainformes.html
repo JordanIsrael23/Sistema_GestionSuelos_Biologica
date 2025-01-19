@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Informes</title>
+    <link rel="stylesheet" href="../CSS/listainformes.css">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Lista de Informes</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Informe</th>
+                    <th>Título</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInformes">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Realizar solicitud para obtener los informes
+                const response = await fetch('/listainformes');
+                if (response.ok) {
+                    const informes = await response.json();
+
+                    const tabla = document.getElementById('tablaInformes');
+                    informes.forEach(informe => {
+                        const fila = document.createElement('tr');
+
+                        const idColumna = document.createElement('td');
+                        idColumna.textContent = informe.id;
+                        fila.appendChild(idColumna);
+
+                        const tituloColumna = document.createElement('td');
+                        tituloColumna.textContent = informe.titulo;
+                        fila.appendChild(tituloColumna);
+
+                        const fechaColumna = document.createElement('td');
+                        fechaColumna.textContent = new Date(informe.fecha).toLocaleDateString();
+                        fila.appendChild(fechaColumna);
+
+                        const accionColumna = document.createElement('td');
+                        const botonDescargar = document.createElement('button');
+                        botonDescargar.textContent = 'Descargar PDF';
+                        botonDescargar.addEventListener('click', () => {
+                            window.location.href = `/descargarinforme/${informe.id}`;
+                        });
+                        accionColumna.appendChild(botonDescargar);
+                        fila.appendChild(accionColumna);
+
+                        tabla.appendChild(fila);
+                    });
+                } else {
+                    alert('No se pudieron cargar los informes.(No ha registrado ningun informe)');
+                }
+            } catch (error) {
+                console.error('Error al cargar los informes:', error);
+                alert('Hubo un error al conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Muestras</title>
+    <link rel="stylesheet" href="../CSS/listamuestra.css">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Lista de Muestras</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Muestra</th>
+                    <th>Fecha</th>
+                    <th>Sector</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaMuestras">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/listamuestras');
+                if (response.ok) {
+                    const muestras = await response.json();
+
+                    const tabla = document.getElementById('tablaMuestras');
+                    muestras.forEach(muestra => {
+                        const fila = document.createElement('tr');
+
+                        const idColumna = document.createElement('td');
+                        idColumna.textContent = muestra.id;
+                        fila.appendChild(idColumna);
+
+                        const fechaColumna = document.createElement('td');
+                        fechaColumna.textContent = new Date(muestra.fecha).toLocaleDateString();
+                        fila.appendChild(fechaColumna);
+
+                        const sectorColumna = document.createElement('td');
+                        sectorColumna.textContent = muestra.sector;
+                        fila.appendChild(sectorColumna);
+
+                        const accionColumna = document.createElement('td');
+                        const boton = document.createElement('button');
+                        boton.textContent = 'Crear Informe';
+                        boton.addEventListener('click', () => {
+                            window.location.href = `/crearinforme.html?id=${muestra.id}`;
+                        });
+                        accionColumna.appendChild(boton);
+                        fila.appendChild(accionColumna);
+
+                        tabla.appendChild(fila);
+                    });
+                } else {
+                    alert('No se pudieron cargar las muestras (se requieren las muestras para crear los informes).');
+                }
+            } catch (error) {
+                console.error('Error al cargar las muestras:', error);
+                alert('Hubo un error al conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>

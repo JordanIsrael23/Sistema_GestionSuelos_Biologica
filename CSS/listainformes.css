@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e8f5e9; /* Verde claro */
+}
+
+.header {
+    background-color: #2e7d32; /* Verde oscuro seguro */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.back-icon {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+}
+
+.container {
+    margin: 20px auto;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #ffffff; /* Fondo blanco */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #4caf50; /* Verde medio seguro */
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    color: #2e7d32; /* Texto en verde oscuro seguro */
+}
+
+button {
+    background-color: #43a047; /* Verde seguro */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #388e3c; /* Verde más oscuro */
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px #4caf50; /* Sombra verde */
+}
+
+button:active {
+    background-color: #2e7d32; /* Verde aún más oscuro */
+}
