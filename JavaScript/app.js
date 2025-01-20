@@ -97,42 +97,44 @@ app.listen(puerto, () => {
 ///////////
 
 
-app.post('/login', async (req, res) => {
-    console.log('Ruta /login llamada');
-    const { user_id, password } = req.body;
+const bcrypt = require('bcrypt');
 
-    if (!user_id || !password) {
-        console.error('Datos incompletos para login:', { user_id, password });
-        return res.status(400).json({ error: 'El ID de usuario y la contraseña son requeridos' });
+app.post('/guardar', async (req, res) => {
+    const { rol, cedula, nombre, apellido, email, password, telefono } = req.body;
+
+    let tipus_id;
+    if (rol === 'Estudiante') {
+        tipus_id = 3;
+    } else if (rol === 'Docente') {
+        tipus_id = 4;
+    } else {
+        return res.status(400).send('Rol no válido. Solo se aceptan "Estudiante" y "Docente".');
     }
-
-    const query = `
-        SELECT * FROM USUARIOS 
-        WHERE user_cedula = $1 AND user_password = $2
-    `;
 
     try {
-        console.log('Ejecutando query de login...');
-        const resultado = await conexion.query(query, [user_id, password]);
+        const hashedPassword = await bcrypt.hash(password, 10); // Hashear contraseña
 
-        if (resultado.rows.length > 0) {
-            console.log('Inicio de sesión exitoso');
+        const result = await conexion.query('SELECT MAX(USER_ID) AS max_id FROM USUARIOS');
+        const lastId = result.rows[0].max_id || 0;
+        const newUserId = lastId + 1;
+        const now = new Date().toISOString();
 
-            // Guardar datos del usuario en la sesión
-            req.session.user = resultado.rows[0];
+        const query = `
+            INSERT INTO USUARIOS (
+                USER_ID, TIPUS_ID, USER_CEDULA, USER_NOMBRE, USER_APELLIDO,
+                USER_EMAIL, USER_PASSWORD, USER_TELEFONO, USER_ESTADO, CREATED_AT, UPDATED_AT
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, $9, $9)
+        `;
+        await conexion.query(query, [
+            newUserId, tipus_id, cedula, nombre, apellido, email, hashedPassword, telefono, now
+        ]);
 
-            console.log('Datos guardados en la sesión:', req.session.user);
-
-            res.redirect('/pagusuario.html');
-        } else {
-            console.log('Cédula o contraseña incorrectos');
-            res.status(401).json({ error: 'Cédula o contraseña incorrectos' });
-        }
+        res.redirect('/registro.html?success=true');
     } catch (err) {
-        console.error('Error al iniciar sesión:', err);
-        res.status(500).json({ error: 'Hubo un error al procesar la solicitud.' });
+        res.redirect('/registro.html?success=false');
     }
 });
+
 
 
 
@@ -140,60 +142,75 @@ app.post('/login', async (req, res) => {
 //////////////
 /////////
 ///////
-app.post('/guardar', async (req, res) => {
-    console.log('Ruta /guardar llamada');
-    const { rol, cedula, nombre, apellido, email, password, telefono } = req.body;
+app.post('/login', async (req, res) => {
+    const { user_id, password } = req.body;
 
-    console.log('Datos recibidos para guardar:', { rol, cedula, nombre, apellido, email, telefono });
-
-    // Mapear el rol al TIPUS_ID numérico
-    let tipus_id;
-    if (rol === 'Estudiante') {
-        tipus_id = 3;
-    } else if (rol === 'Docente') {
-        tipus_id = 4;
-    } else {
-        console.error('Rol no válido');
-        return res.status(400).send('Rol no válido. Solo se aceptan "Estudiante" y "Docente".');
+    if (!user_id || !password) {
+        return res.status(400).json({ error: 'El ID de usuario y la contraseña son requeridos' });
     }
 
+    const query = `SELECT * FROM USUARIOS WHERE user_cedula = $1`;
     try {
-        console.log('Consultando el último USER_ID registrado...');
-        const result = await conexion.query('SELECT MAX(USER_ID) AS max_id FROM USUARIOS');
-        const lastId = result.rows[0].max_id || 0;
-        const newUserId = lastId + 1;
-        console.log('Nuevo USER_ID calculado:', newUserId);
+        const resultado = await conexion.query(query, [user_id]);
 
-        const now = new Date().toISOString();
+        if (resultado.rows.length > 0) {
+            const user = resultado.rows[0];
+            const passwordMatch = await bcrypt.compare(password, user.user_password);
 
-        console.log('Ejecutando query de inserción...');
-        const query = `
-            INSERT INTO USUARIOS (
-                USER_ID, TIPUS_ID, USER_CEDULA, USER_NOMBRE, USER_APELLIDO,
-                USER_EMAIL, USER_PASSWORD, USER_TELEFONO, USER_ESTADO, CREATED_AT, UPDATED_AT
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, $9, $9)
-        `;
-
-        await conexion.query(query, [
-            newUserId, tipus_id, cedula, nombre, apellido, email, password, telefono, now
-        ]);
-
-        console.log('Usuario registrado con éxito');
-        res.redirect('/registro.html?success=true');
+            if (passwordMatch) {
+                req.session.user = user; // Guardar datos en sesión
+                res.redirect('/pagusuario.html');
+            } else {
+                res.status(401).json({ error: 'Cédula o contraseña incorrectos' });
+            }
+        } else {
+            res.status(401).json({ error: 'Cédula o contraseña incorrectos' });
+        }
     } catch (err) {
-        console.error('Error al registrar el usuario:', err);
-        res.redirect('/registro.html?success=false');
+        res.status(500).json({ error: 'Hubo un error al procesar la solicitud.' });
     }
 });
 
+
 /////////
 /////////
 /////////
+app.post('/actualizar', async (req, res) => {
+    const { telefono, email, password } = req.body;
+    const user_id = req.session.user?.user_id;
+
+    if (!user_id) {
+        return res.status(401).send('No autorizado. Inicia sesión nuevamente.');
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10); // Hashear contraseña
+
+        const query = `
+            UPDATE USUARIOS 
+            SET user_telefono = $1, user_email = $2, user_password = $3, updated_at = NOW()
+            WHERE user_id = $4
+        `;
+        const result = await conexion.query(query, [telefono, email, hashedPassword, user_id]);
+
+        if (result.rowCount > 0) {
+            res.redirect('/actualizacionexito.html?success=true');
+        } else {
+            res.redirect('/mensaje-actualizacion.html?success=false');
+        }
+    } catch (err) {
+        res.redirect('/mensaje-actualizacion.html?success=false');
+    }
+});
+
+/////////////
+/////////////
+////////////
+////////////
 app.post('/recuperar', async (req, res) => {
     const { cedula, email, telefono, nueva_contraseña } = req.body;
 
     try {
-        // Verificar si los datos coinciden en la base de datos
         const query = `
             SELECT * FROM USUARIOS 
             WHERE user_cedula = $1 AND user_email = $2 AND user_telefono = $3
@@ -201,66 +218,25 @@ app.post('/recuperar', async (req, res) => {
         const resultado = await conexion.query(query, [cedula, email, telefono]);
 
         if (resultado.rows.length > 0) {
-            // Datos válidos, proceder a actualizar la contraseña
+            const hashedPassword = await bcrypt.hash(nueva_contraseña, 10); // Hashear nueva contraseña
+
             const updateQuery = `
                 UPDATE USUARIOS 
                 SET user_password = $1, updated_at = NOW() 
                 WHERE user_cedula = $2
             `;
-            await conexion.query(updateQuery, [nueva_contraseña, cedula]);
+            await conexion.query(updateQuery, [hashedPassword, cedula]);
 
-            console.log('Contraseña actualizada exitosamente');
-            res.redirect('/recuperarexito.html'); // Redirigir a la página de éxito
+            res.redirect('/recuperarexito.html');
         } else {
-            // Datos incorrectos
-            console.log('Los datos proporcionados no coinciden con ningún usuario');
             res.status(400).json({ error: 'Los datos proporcionados no son válidos' });
         }
     } catch (err) {
-        console.error('Error al recuperar la contraseña:', err);
         res.status(500).json({ error: 'Hubo un error al procesar la solicitud' });
     }
 });
-/////////////
-/////////////
-////////////
-////////////
-app.post('/actualizar', async (req, res) => {
-    const { telefono, email, password } = req.body;
 
-    // Obtener el user_id desde la sesión
-    const user_id = req.session.user?.user_id;
 
-    if (!user_id) {
-        console.error('No hay usuario logueado en la sesión.');
-        return res.status(401).send('No autorizado. Inicia sesión nuevamente.');
-    }
-
-    try {
-        const query = `
-            UPDATE USUARIOS 
-            SET 
-                user_telefono = $1, 
-                user_email = $2, 
-                user_password = $3, 
-                updated_at = NOW()
-            WHERE user_id = $4
-        `;
-
-        const result = await conexion.query(query, [telefono, email, password, user_id]);
-
-        if (result.rowCount > 0) {
-            console.log(`Datos del usuario ${user_id} actualizados correctamente.`);
-            res.redirect('/actualizacionexito.html?success=true');
-        } else {
-            console.log(`No se encontró el usuario con ID ${user_id}.`);
-            res.redirect('/mensaje-actualizacion.html?success=false');
-        }
-    } catch (err) {
-        console.error('Error al actualizar los datos:', err);
-        res.redirect('/mensaje-actualizacion.html?success=false');
-    }
-});
 //////////////
 /////////////
 ///////////
