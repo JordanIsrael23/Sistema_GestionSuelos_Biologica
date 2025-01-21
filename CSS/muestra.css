@@ -45,9 +45,9 @@ body{
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    margin-bottom: 10px; 
-    position: relative;
-    left: 120px;
+    margin-bottom: 10px;
+    display: block; /* Asegura que el botón ocupe una línea completa */
+    margin: 10px auto; /* Centra el botón horizontalmente */
 }
 
 .caja button:first-of-type {
@@ -74,4 +74,47 @@ body{
     background-color: #28a745; 
     font-size: 16px;
     border: none;
+}
+
+#calidad-label, #calidad-materia {
+    display: block; /* Ambos ocupan líneas completas */
+    margin: 0 auto 10px auto; /* Espaciado y centrado horizontal */
+    text-align: center;
+}
+
+#calidad-materia {
+    width: 80%; /* Reduce el ancho para que sea más compacto */
+}
+/* Estilo base para el input dinámico */
+#calidad-materia {
+    width: 50%; /* Ajusta el ancho del input */
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    color: white; /* Letras blancas */
+    font-weight: bold;
+}
+
+/* Estilo para el label dinámico */
+#calidad-label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Estilo para calidad "Buena" */
+.calidad-buena {
+    background-color: #66cc66; /* Verde suave */
+}
+
+/* Estilo para calidad "Regular" */
+.calidad-regular {
+    background-color: #6699cc; /* Azul suave */
+}
+
+/* Estilo para calidad "Mala" */
+.calidad-mala {
+    background-color: #cc6666; /* Rojo suave */
 }
