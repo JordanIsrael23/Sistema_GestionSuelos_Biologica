@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,51 +9,69 @@
   <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
   <link rel="stylesheet" href="../CSS/pagusuario.css">
 </head>
+
 <body>
 
   <header>
     <h1>Panel de Usuario - Gestión Biológica de Suelos</h1>
   </header>
-
+  <section class="welcome-message">
+    ¡Bienvenido(a) al Sistema de Gestión de Suelos! Una plataforma diseñada para facilitar la gestión biológica de
+    suelos, permitiéndote registrar muestras, generar informes de manera sencilla y eficiente.
+    ¡Optimiza tus procesos con nosotros!
+  </section>
   <main class="main-container">
-    <div class="option-box">
-      <h3>Ver Perfil</h3>
-      <button onclick="window.location.href='perfil.html'">Ver Información del Perfil</button>
+    <div class="button-row fila-superior">
+      <div class="option-box">
+        <h3>Ver Perfil</h3>
+        <a href="perfil.html">
+          <img class="Icono" src="../iconos/iconos-pagusuario/verperfil.png" alt="Imagenlogo" width="50" height="50">
+          <button onclick="window.location.href='perfil.html'">Ver Información del Perfil</button>
+        </a>
+      </div>
+
+      <div class="option-box">
+        <h3>Actualizar Datos</h3>
+        <button onclick="window.location.href='actualizardatos.html'">Actualizar Información</button>
+      </div>
+
+      <div class="option-box">
+        <h3>Ver Informes</h3>
+        <button onclick="window.location.href='consultar.html'">Ver Informes</button>
+      </div>
     </div>
 
-    <div class="option-box">
-      <h3>Actualizar Datos</h3>
-      <button onclick="window.location.href='actualizardatos.html'">Actualizar Información</button>
+    <div class="button-row fila-inferior">
+      <div class="option-box">
+        <h3>Registrar Muestras</h3>
+        <button onclick="window.location.href='muestras.html'">Registrar Nueva Muestra</button>
+      </div>
+      <div class="option-box">
+        <h3>Generar Informe</h3>
+        <button onclick="window.location.href='listamuestras.html'">Generar Informe</button>
+      </div>
     </div>
-
-    <div class="option-box">
-      <h3>Ver Informes</h3>
-      <button onclick="window.location.href='listainformes.html'">Ver Informes</button>
-    </div>
-
-    <div class="option-box">
-      <h3>Registrar Muestras</h3>
-      <button onclick="window.location.href='muestras.html'">Registrar Nueva Muestra</button>
-    </div>
-
-    <div class="option-box generate-report">
-      <h3>Generar Informe</h3>
-      <button onclick="window.location.href='listamuestras.html'">Generar Informe</button>
-    </div>
-
 
     <button class="cerrar-sesion" onclick="confirmarCerrarSesion()">Cerrar Sesión</button>
-
-<script>
-  function confirmarCerrarSesion() {
-    const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
-    if (confirmar) {
-      window.location.href = 'inicio.html'; // Redirige si el usuario confirma
+  </main>
+  <script>
+    function confirmarCerrarSesion() {
+      const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
+      if (confirmar) {
+        window.location.href = 'inicio.html'; // Redirige si el usuario confirma
+      }
     }
-  }
-</script>
+  </script>
 
   </main>
-
+  <script>
+    function confirmarCerrarSesion() {
+      const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
+      if (confirmar) {
+        window.location.href = 'inicio.html'; // Redirige si el usuario confirma
+      }
+    }
+  </script>
 </body>
+
 </html>

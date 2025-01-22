@@ -3,11 +3,12 @@ body {
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
+    background-size: 100% 100%;
 }
 
-
 header {
-    background-color: #388E3C; /* Verde seguro y más suave */
+    background-color: #388E3C;
+    /* Verde seguro y más suave */
     color: white;
     padding: 20px;
     text-align: center;
@@ -18,11 +19,64 @@ header {
 
 .main-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 50px;
-    gap: 20px; /* Espaciado entre las cajas */
+    flex-direction: column;
+    /* Coloca los elementos en una columna */
+    align-items: center;
+    /* Centra horizontalmente los elementos */
+    justify-content: flex-start;
+    /* Alinea los elementos hacia la parte superior */
+    height: 100vh;
+    /* Ocupa toda la altura de la pantalla */
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 30px;
+    /* Espaciado entre las filas */
 }
+
+.button-row {
+    display: flex;
+    /* Coloca los botones en fila */
+    justify-content: center;
+    /* Centra horizontalmente los botones */
+    gap: 20px;
+    /* Espaciado entre los botones */
+}
+
+.welcome-message {
+    text-align: justify; /* Justifica el texto */
+    font-size: 18px;
+    line-height: 1.6; /* Ajusta el espaciado entre líneas */
+    padding: 20px; /* Espaciado interno para un diseño más espacioso */
+    background-color: #ffffff; /* Fondo blanco */
+    color: #388E3C; /* Texto verde */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para resaltar la caja */
+    max-width: 1300px; /* Ancho máximo de la caja */
+    margin: 20px auto; /* Centra horizontalmente la caja */
+    border: 1px solid #c8e6c9; /* Borde verde suave */
+    font-weight: 500; /* Peso de fuente para mejorar legibilidad */
+}
+
+.cerrar-sesion {
+    background-color: #D32F2F;
+    /* Rojo seguro */
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+    /* Ajusta la separación del botón respecto a los anteriores */
+}
+
+.cerrar-sesion:hover {
+    background-color: #C62828;
+    /* Rojo más oscuro al pasar el mouse */
+}
+
 
 
 .option-box {
@@ -37,8 +91,10 @@ header {
 
 
 .option-box:hover {
-    transform: scale(1.05); /* Agranda el cuadro */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+    transform: scale(1.05);
+    /* Agranda el cuadro */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    /* Aumenta la sombra */
 }
 
 
@@ -50,7 +106,8 @@ header {
 
 
 .option-box button {
-    background-color: #388E3C; /* Verde más seguro */
+    background-color: #388E3C;
+    /* Verde más seguro */
     color: white;
     border: none;
     padding: 15px;
@@ -64,22 +121,5 @@ header {
 
 
 .option-box button:hover {
-    background-color: #2C6B2F; 
-}
-
-.cerrar-sesion {
-    background-color: #D32F2F; /* Rojo seguro */
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    margin-top: 20px; /* Separación superior */
-}
-
-.cerrar-sesion:hover {
-    background-color: #C62828; /* Rojo más oscuro en hover */
+    background-color: #2C6B2F;
 }
