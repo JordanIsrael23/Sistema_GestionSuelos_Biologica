@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso de Parcelas</title>
+    <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
+    <link rel="stylesheet" href="../CSS/registrarparcela.css">
+   
+</head>
+<body>
+    <header class="header">
+        <!-- Ícono de la flecha -->
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+
+    <div class="form-container">
+        <h1>Registro de Parcelas</h1>
+        <form action="/submit" method="POST">
+            <div class="form-group">
+                <label for="parc_nombre">Ingrese el Nombre de la Parcela</label>
+                <input type="text" id="parc_nombre" name="parc_nombre" maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="parc_area">Ingrese el Área de la Parcela </label>
+                <input type="number" id="parc_area" name="parc_area" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="parc_coord_la">Coordenada de Latitud </label>
+                <input type="number" id="parc_coord_la" name="parc_coord_la" step="0.000001" required>
+            </div>
+
+            <div class="form-group">
+                <label for="parc_coord_lo">Coordenada de Longitud </label>
+                <input type="number" id="parc_coord_lo" name="parc_coord_lo" step="0.000001" required>
+            </div>
+
+            <div class="form-group">
+                <label for="parc_descripcion">Ingrese una breve Descripción de la Parcela             </label>
+                <textarea id="parc_descripcion" name="parc_descripcion" rows="4"></textarea>
+            </div>
+
+            <button type="submit">Guardar Parcela</button>
+        </form>
+    </div>
+</body>
+</html>

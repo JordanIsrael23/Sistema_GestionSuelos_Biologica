@@ -1,80 +1,57 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Asegura que el padding y el border no afecten el ancho/alto */
-}
-body {
+    box-sizing: border-box;
+  }
+
+  body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
-    background-size: 100% 100%;
-}
+  }
 
-header {
+  header {
     background-color: #388E3C;
-    /* Verde seguro y más suave */
     color: white;
     padding: 20px;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-}
+  }
 
-
-.main-container {
-    display: flex;
-    flex-direction: column;/* Coloca los elementos en una columna */
-    align-items: center;/* Centra horizontalmente los elementos */
-    justify-content: flex-start;/* Alinea los elementos hacia la parte superior */
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    padding: 20px;
-    box-sizing: border-box;
-    gap: 30px;/* Espaciado entre las filas */
-}
-
-.button-row {
-    display: flex;/* Coloca los botones en fila */
-    justify-content: center;/* Centra horizontalmente los botones */
-    gap: 20px;/* Espaciado entre los botones */
-}
-
-.welcome-message {
-    text-align: justify; /* Justifica el texto */
+  .welcome-message {
+    text-align: justify;
     font-size: 18px;
-    line-height: 1.6; /* Ajusta el espaciado entre líneas */
-    padding: 20px; /* Espaciado interno para un diseño más espacioso */
-    background-color: #ffffff; /* Fondo blanco */
-    color: #388E3C; /* Texto verde */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para resaltar la caja */
-    max-width: 1300px; /* Ancho máximo de la caja */
-    margin: 20px auto; /* Centra horizontalmente la caja */
-    border: 1px solid #c8e6c9; /* Borde verde suave */
-    font-weight: 500; /* Peso de fuente para mejorar legibilidad */
-}
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #ffffff;
+    color: #388E3C;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1300px;
+    margin: 20px auto;
+    border: 1px solid #c8e6c9;
+    font-weight: 500;
+  }
 
-.cerrar-sesion {
-    background-color: #D32F2F;
-    /* Rojo seguro */
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;/* Ajusta la separación del botón respecto a los anteriores */
-}
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    gap: 30px;
+  }
 
-.cerrar-sesion:hover {
-    background-color: #C62828;/* Rojo más oscuro al pasar el mouse */
-}
+  .button-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 
-
-
-.option-box {
+  .option-box {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -82,25 +59,21 @@ header {
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  }
 
+  .option-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
 
-.option-box:hover {
-    transform: scale(1.05);/* Agranda el cuadro */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);/* Aumenta la sombra */
-}
-
-
-.option-box h3 {
+  .option-box h3 {
     font-size: 20px;
     color: #388E3C;
     margin-bottom: 15px;
-}
+  }
 
-
-.option-box button {
+  .option-box button {
     background-color: #388E3C;
-    /* Verde más seguro */
     color: white;
     border: none;
     padding: 15px;
@@ -110,9 +83,66 @@ header {
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
-}
+  }
 
-
-.option-box button:hover {
+  .option-box button:hover {
     background-color: #2C6B2F;
-}
+  }
+
+  .cerrar-sesion {
+    background-color: #D32F2F;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+
+  .cerrar-sesion:hover {
+    background-color: #C62828;
+  }
+
+  @media (max-width: 768px) {
+    .welcome-message {
+      font-size: 16px;
+      padding: 15px;
+    }
+
+    .button-row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .option-box {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    header {
+      font-size: 20px;
+      padding: 15px;
+    }
+
+    .welcome-message {
+      font-size: 14px;
+    }
+
+    .option-box h3 {
+      font-size: 18px;
+    }
+
+    .option-box button {
+      font-size: 14px;
+    }
+
+    .cerrar-sesion {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  }
