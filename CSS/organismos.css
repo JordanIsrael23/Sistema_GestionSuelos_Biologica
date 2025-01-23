@@ -1,0 +1,60 @@
+body{
+    background-color: rgba(6, 6, 12, 0.938);
+    background-size: cover;
+    background-position: center;
+}
+
+.caja {
+    background-image: url('../IMG/Organismos/fondo.png');
+    position: relative;
+    top: 60px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin: auto;
+    font-family: Arial, sans-serif;
+    width: 580px;
+    height:600px;
+}
+
+.caja2{
+    position: relative;
+    top: 40px;
+    background-color: rgba(255, 255, 255, 0.8); 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    max-width: 400px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+.header {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+}
+
+.header .back-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.header .back-icon img {
+    width: 24px;
+    height: 24px;
+}

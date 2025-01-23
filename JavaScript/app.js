@@ -467,3 +467,5 @@ app.get('/descargarinforme/:id', async (req, res) => {
         res.status(500).send('Error al generar el PDF');
     }
 });
+
+
