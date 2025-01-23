@@ -476,3 +476,35 @@ app.get('/descargarinforme/:id', async (req, res) => {
 ////
 
 
+app.get('/listarparcelas', async (req, res) => {
+    // Verifica si el usuario ha iniciado sesión
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    const userId = req.session.user.user_id; // Obtener el ID del usuario en sesión
+
+    const query = `
+        SELECT 
+            PARC.PARC_ID AS id, 
+            PARC.PARC_NOMBRE AS nombre, 
+            PARC.PARC_COORD_LA AS latitud, 
+            PARC.PARC_COORD_LO AS longitud, 
+            PARC.PARC_AREA AS area
+        FROM SM_PARCELAS PARC
+        WHERE PARC.USER_ID = $1
+        ORDER BY PARC.PARC_NOMBRE ASC
+    `;
+
+    try {
+        // Ejecuta la consulta
+        const resultado = await conexion.query(query, [userId]);
+        
+        // Devuelve los datos al cliente
+        res.json(resultado.rows);
+    } catch (error) {
+        console.error('Error al obtener las parcelas:', error);
+        res.status(500).json({ error: 'Error al obtener las parcelas' });
+    }
+});
+
