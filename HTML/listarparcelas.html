@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Muestras</title>
+    <link rel="stylesheet" href="../CSS/listamuestra.css">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Lista de Parcelas</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Parcela</th>
+                    <th>Nombre</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Area</th>
+                    <th>Crear Muestra</th>
+                </tr>
+            </thead>
+            <tbody id="tablaparcelas">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+           
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/listarparcelas');
+                if (response.ok) {
+                    const parcelas = await response.json();
+
+                    const tabla = document.getElementById('tablaparcelas');
+                    parcelas.forEach(parcela => {
+                        const fila = document.createElement('tr');
+
+                        const idColumna = document.createElement('td');
+                        idColumna.textContent = parcela.id;
+                        fila.appendChild(idColumna);
+
+                        const nombreColumna = document.createElement('td');
+                        nombreColumna.textContent = parcela.nombre;
+                        fila.appendChild(nombreColumna);
+
+                        const latitudColumna = document.createElement('td');
+                        latitudColumna.textContent = parcela.latitud.toFixed(6);
+                        fila.appendChild(latitudColumna);
+
+                        const longitudColumna = document.createElement('td');
+                        longitudColumna.textContent = parcela.longitud.toFixed(6);
+                        fila.appendChild(longitudColumna);
+
+                        const areaColumna = document.createElement('td');
+                        areaColumna.textContent = parcela.area.toFixed(2) + ' m²';
+                        fila.appendChild(areaColumna);
+
+                        const accionColumna = document.createElement('td');
+                        const boton = document.createElement('button');
+                        boton.textContent = 'Crear Muestra';
+                        boton.addEventListener('click', () => {
+                            window.location.href = `/crearmuestra.html?parcelaId=${parcela.id}`;
+                        });
+                        accionColumna.appendChild(boton);
+                        fila.appendChild(accionColumna);
+
+                        tabla.appendChild(fila);
+                    });
+                } else {
+                    alert('No se pudieron cargar las parcelas.');
+                }
+            } catch (error) {
+                console.error('Error al cargar las parcelas:', error);
+                alert('Hubo un error al conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>
