@@ -73,7 +73,7 @@ select {
 
 
 select option {
-    color: black/* Texto blanco */
-    background-color: white; /* Fondo gris oscuro */
+    color: black;
+    background-color: wheat;
 }
   
