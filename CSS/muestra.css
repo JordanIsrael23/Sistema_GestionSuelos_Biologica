@@ -5,6 +5,8 @@ body{
 }
 
 .caja {
+    position: relative;
+    top: 40px;
     background-color: rgba(255, 255, 255, 0.8); 
     padding: 20px;
     border-radius: 10px;
@@ -12,6 +14,36 @@ body{
     max-width: 400px;
     margin: auto;
     font-family: Arial, sans-serif;
+}
+.header {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+}
+
+.header .back-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.header .back-icon img {
+    width: 24px;
+    height: 24px;
 }
 
 .caja h1 {
@@ -48,7 +80,15 @@ body{
     margin-bottom: 10px;
     display: block; /* Asegura que el botón ocupe una línea completa */
     margin: 10px auto; /* Centra el botón horizontalmente */
+    transition: background-color 0.3s;
+    color: white;
 }
+
+
+button:hover {
+    background-color: #1ce01c; /* Verde claro */
+}
+
 
 .caja button:first-of-type {
     background-color: #007BFF; 
@@ -56,25 +96,14 @@ body{
 }
 
 .caja button:last-of-type {
-    background-color: #28a745; 
+    background-color: #18e748; 
     color: white;
 }
 
 .caja button:hover {
     opacity: 0.9;
 }
-.boton{
-    width: 100px;
-    height: 30px;
-    border-radius: 8px;
-    position: relative;
-    top: -200px;
-    left: 40px;
-    color: white;
-    background-color: #28a745; 
-    font-size: 16px;
-    border: none;
-}
+
 
 #calidad-label, #calidad-materia {
     display: block; /* Ambos ocupan líneas completas */

@@ -12,13 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Determinar la calidad de la materia orgánica y el color asociado
         if (valor >= 75) {
-            calidad = "Buena";
+            calidad = "Alta fertilidad";
             claseColor = "calidad-buena";
         } else if (valor >= 50) {
-            calidad = "Regular";
+            calidad = "Media fertilidad";
             claseColor = "calidad-regular";
         } else if (valor > 0) {
-            calidad = "Mala";
+            calidad = "Baja Fertilidad";
             claseColor = "calidad-mala";
         } else {
             calidad = ""; // Si no hay valor válido

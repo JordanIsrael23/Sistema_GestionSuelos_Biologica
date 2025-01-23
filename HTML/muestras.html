@@ -10,12 +10,19 @@
 
 </head>
 <body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+    <br>
     <div class="caja">
-        <h1>Registro Muestras</h1>
+        <h1>Registro de Muestras</h1>
         <form method="post">
-            <label>Ubicación</label>
+            <label>Ubicación:</label>
             <input type="text"  required>
-            <label>Fecha</label>
+            <label>Fecha:</label>
             <input type="date" id="fecha" required>
             <label>Cantidad de muestra (gr):</label>
             <input type="number" min="1" required>
@@ -24,9 +31,6 @@
             <button type="submit" id="boton-aceptar">Aceptar</button>
         </form>
         <script src="../JavaScript/fecha.js"></script>
-    </div>
-    <div>
-        <button class="boton" onclick="window.location.href='pagusuario.html'">Volver</button>
     </div>
     <script src="../JavaScript/muestra.js"></script>
 
