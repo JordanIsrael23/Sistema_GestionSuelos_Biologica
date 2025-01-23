@@ -61,7 +61,7 @@ body{
 
 /* Estilo del select en fondo oscuro */
 select {
-    color: #fff; /* Texto blanco */
+    color: black; /* Texto blanco */
     background-color: white; /* Fondo gris oscuro */
     border: 1px solid #444; /* Borde gris oscuro */
     padding: 5px;
@@ -73,7 +73,7 @@ select {
 
 
 select option {
-    color: #fff; /* Texto blanco */
+    color: black/* Texto blanco */
     background-color: white; /* Fondo gris oscuro */
 }
   
