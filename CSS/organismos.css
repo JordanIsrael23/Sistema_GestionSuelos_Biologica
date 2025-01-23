@@ -58,3 +58,22 @@ body{
     width: 24px;
     height: 24px;
 }
+
+/* Estilo del select en fondo oscuro */
+select {
+    color: #fff; /* Texto blanco */
+    background-color: #333; /* Fondo gris oscuro */
+    border: 1px solid #444; /* Borde gris oscuro */
+    padding: 5px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+}
+
+
+
+select option {
+    color: #fff; /* Texto blanco */
+    background-color: #444; /* Fondo gris oscuro */
+}
+  
