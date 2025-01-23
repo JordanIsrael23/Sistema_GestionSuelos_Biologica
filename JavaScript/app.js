@@ -6,8 +6,7 @@ const fs = require('fs');
 
 app.use(express.static(__dirname));
 
-// Middleware para manejar datos POST
-app.use(express.urlencoded({ extended: true }));
+
 
 // Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, '..', 'HTML')));
@@ -15,8 +14,6 @@ app.use('/css', express.static(path.join(__dirname, '..', 'CSS')));
 app.use('/img', express.static(path.join(__dirname, '..', 'IMG')));
 app.use('/js', express.static(path.join(__dirname, '..', 'JavaScript')));
 app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
-
-
 
 
 app.use(express.json());
@@ -28,6 +25,11 @@ const conexion = require('./database');
 
 // esta es la session no tocar
 const session = require('express-session');
+
+
+const organismosruta = require('./organismos');
+app.use('/',organismosruta);
+
 
 app.use(
     session({
@@ -509,3 +511,52 @@ app.get('/listarparcelas', async (req, res) => {
 });
 
 
+////////
+///////
+///////
+
+app.post('/registrarparcela', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    // Obtén el ID del usuario en sesión
+    const userId = req.session.user.user_id;
+
+    // Obtén los datos del formulario
+    const { parc_nombre, parc_area, parc_coord_la, parc_coord_lo, parc_descripcion } = req.body;
+
+    try {
+        // Consulta para obtener el valor máximo de PARC_ID
+        const idQuery = 'SELECT COALESCE(MAX(PARC_ID), 0) AS max_id FROM SM_PARCELAS';
+        const idResult = await conexion.query(idQuery);
+        const maxId = idResult.rows[0].max_id;
+        const nextId = maxId + 1; // Calcula el siguiente ID
+
+        // Consulta para insertar la parcela
+        const insertQuery = `
+            INSERT INTO SM_PARCELAS (
+                PARC_ID, TIPOS_ID, USER_ID, CONS_ID, PARC_NOMBRE, PARC_AREA, PARC_COORD_LA, PARC_COORD_LO, PARC_DESCRIPCION
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        `;
+
+        // Ejecuta la consulta con los valores requeridos
+        await conexion.query(insertQuery, [
+            nextId,            // PARC_ID: Calculado manualmente
+            'T001',            // TIPOS_ID: Puedes ajustar el valor según tu lógica de negocio
+            userId,            // USER_ID: ID del usuario en sesión
+            1,                 // CONS_ID: Constante definida como 1
+            parc_nombre,       // PARC_NOMBRE: Nombre de la parcela
+            parseFloat(parc_area), // PARC_AREA: Área de la parcela
+            parseFloat(parc_coord_la), // PARC_COORD_LA: Coordenada de latitud
+            parseFloat(parc_coord_lo), // PARC_COORD_LO: Coordenada de longitud
+            parc_descripcion   // PARC_DESCRIPCION: Descripción de la parcela
+        ]);
+
+        // Redirige a una página de éxito y pasa el ID generado
+        res.redirect(`/parcelaexito.html?parc_id=${nextId}`);
+    } catch (error) {
+        console.error('Error al registrar la parcela:', error);
+        res.redirect('/mensaje-error.html');
+    }
+});
