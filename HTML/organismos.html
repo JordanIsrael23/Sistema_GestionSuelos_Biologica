@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/organismos.css">
+    <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
+    <title>Organismos</title>
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+    <div class="caja">
+        <h1>Seleccionar el Tipo de Orgnanismo</h1>
+        <form id="formulario" action="" method="post">
+            <label for="tipos">Selecciona un Tipo:</label>
+            <select id="tipos" name="tipos" required>
+                <option value="">--Selecciona una opcion--</option>
+            </select>
+            <button>Aceptar</button>
+        </form>
+    </div>
+    <script src="/js/organismoDatos.js"></script>
+</body>
+</html>

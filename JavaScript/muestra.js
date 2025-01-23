@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 form.reportValidity();
             }
         } else {
-            window.location.href = "pagusuario.html";
+            window.location.href = "organismos.html";
         }
     });
 });

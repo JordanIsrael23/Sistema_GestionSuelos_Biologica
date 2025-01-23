@@ -508,3 +508,4 @@ app.get('/listarparcelas', async (req, res) => {
     }
 });
 
+
