@@ -25,7 +25,7 @@ const conexion = require('./database');
 
 app.get('/tipoorganismo',async(req, res)=>{
     try{
-        const respuesta = await conexion.query('select * from SM_B_TIPOSORGANIMOS ');
+        const respuesta = await conexion.query('select * from SM_B_TIPOSORGANISMOS ');
         res.json(respuesta.rows);
     }catch(error){
         console.error('Error al consultar',erros);
