@@ -3,24 +3,15 @@ const path = require('path');
 const app = express();
 const puerto = 3000;
 
+
+// Requerir la conexión remota a la base de datos
+const conexion = require('./database');
+
+
 app.use(express.static(__dirname));
 // Middleware para manejar datos POST
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
-
-// Configuración de archivos estáticos
-app.use(express.static(path.join(__dirname, '..', 'HTML')));
-app.use('/css', express.static(path.join(__dirname, '..', 'CSS')));
-app.use('/img', express.static(path.join(__dirname, '..', 'IMG')));
-app.use('/js', express.static(path.join(__dirname, '..', 'JavaScript')));
-app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
-
-
-
-// Requerir la conexión remota a la base de datos
-const conexion = require('./database');
 
 
 app.get('/tipoorganismo',async(req, res)=>{
@@ -32,4 +23,18 @@ app.get('/tipoorganismo',async(req, res)=>{
         res.status(500).send('Error al buscar datos');
     }
 });
+
+
+// Configuración de archivos estáticos
+app.use(express.static(path.join(__dirname, '..', 'HTML')));
+app.use('/css', express.static(path.join(__dirname, '..', 'CSS')));
+app.use('/img', express.static(path.join(__dirname, '..', 'IMG')));
+app.use('/js', express.static(path.join(__dirname, '..', 'JavaScript')));
+app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
+
+
+
+
+
+
 
