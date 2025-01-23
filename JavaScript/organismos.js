@@ -3,11 +3,26 @@ const path = require('path');
 const app = express();
 const puerto = 3000;
 
+
+// Requerir la conexión remota a la base de datos
+const conexion = require('./database');
+
+
 app.use(express.static(__dirname));
 // Middleware para manejar datos POST
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+app.get('/tipoorganismo',async(req, res)=>{
+    try{
+        const respuesta = await conexion.query('select * from SM_B_TIPOSORGANISMOS');
+        res.json(respuesta.rows);
+    }catch(error){
+        console.error('Error al consultar',error);
+        res.status(500).send('Error al buscar datos');
+    }
+});
 
 
 // Configuración de archivos estáticos
@@ -19,17 +34,7 @@ app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
 
 
 
-// Requerir la conexión remota a la base de datos
-const conexion = require('./database');
 
 
-app.get('/tipoorganismo',async(req, res)=>{
-    try{
-        const respuesta = await conexion.query('select * from SM_B_TIPOSORGANIMOS ');
-        res.json(respuesta.rows);
-    }catch(error){
-        console.error('Error al consultar',erros);
-        res.status(500).send('Error al buscar datos');
-    }
-});
+
 
