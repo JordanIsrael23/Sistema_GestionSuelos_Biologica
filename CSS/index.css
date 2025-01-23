@@ -41,6 +41,7 @@ a {
     flex-direction: column; /* Organiza el texto en columna */
     align-items: center; /* Centra el texto */
     flex-grow: 1; /* Hace que el texto ocupe el espacio disponible */
+     color:#ffffff
 }
 
 .Icono {
@@ -200,7 +201,7 @@ body:has(.modo-checkbox:checked) .modo .sol {
 }
 
 body:has(.modo-checkbox:checked) h3 {
-    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
+    color: #ffffff; /* Cambia el color de las letras a blanco en modo oscuro */
 }
 
 .busqueda {
@@ -239,6 +240,7 @@ footer {
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
     font-family: Arial, sans-serif;
+    color:#ffffff
 }
 
 footer div {
@@ -249,8 +251,9 @@ footer div {
 
 footer div:last-child {
     margin-right: 0;
+   
 }
-.ref{
+/*.ref{
     color: #333;
 }
 
