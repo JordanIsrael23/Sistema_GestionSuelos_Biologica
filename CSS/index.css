@@ -250,4 +250,7 @@ footer div {
 footer div:last-child {
     margin-right: 0;
 }
+.ref{
+    color: #333;
+}
 

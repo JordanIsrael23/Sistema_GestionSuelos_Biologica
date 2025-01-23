@@ -229,3 +229,6 @@ body:has(.modo-checkbox:checked) .modo .sol {
 .modo-checkbox {
     display: none;  /* Oculta el checkbox, ya que solo usamos el label para cambiar el modo */
 }
+.ref{
+    color: #333;
+}

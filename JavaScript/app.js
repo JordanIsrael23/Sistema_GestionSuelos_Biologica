@@ -6,8 +6,7 @@ const fs = require('fs');
 
 app.use(express.static(__dirname));
 
-// Middleware para manejar datos POST
-app.use(express.urlencoded({ extended: true }));
+
 
 // Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, '..', 'HTML')));
@@ -15,8 +14,6 @@ app.use('/css', express.static(path.join(__dirname, '..', 'CSS')));
 app.use('/img', express.static(path.join(__dirname, '..', 'IMG')));
 app.use('/js', express.static(path.join(__dirname, '..', 'JavaScript')));
 app.use('/iconos', express.static(path.join(__dirname, '..', 'ICONOS')));
-
-
 
 
 app.use(express.json());
@@ -28,6 +25,11 @@ const conexion = require('./database');
 
 // esta es la session no tocar
 const session = require('express-session');
+
+
+const organismosruta = require('./organismos');
+app.use('/',organismosruta);
+
 
 app.use(
     session({
