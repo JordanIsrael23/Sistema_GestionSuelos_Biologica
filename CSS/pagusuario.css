@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Asegura que el padding y el border no afecten el ancho/alto */
+}
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
@@ -19,27 +24,19 @@ header {
 
 .main-container {
     display: flex;
-    flex-direction: column;
-    /* Coloca los elementos en una columna */
-    align-items: center;
-    /* Centra horizontalmente los elementos */
-    justify-content: flex-start;
-    /* Alinea los elementos hacia la parte superior */
-    height: 100vh;
-    /* Ocupa toda la altura de la pantalla */
+    flex-direction: column;/* Coloca los elementos en una columna */
+    align-items: center;/* Centra horizontalmente los elementos */
+    justify-content: flex-start;/* Alinea los elementos hacia la parte superior */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
     padding: 20px;
     box-sizing: border-box;
-    gap: 30px;
-    /* Espaciado entre las filas */
+    gap: 30px;/* Espaciado entre las filas */
 }
 
 .button-row {
-    display: flex;
-    /* Coloca los botones en fila */
-    justify-content: center;
-    /* Centra horizontalmente los botones */
-    gap: 20px;
-    /* Espaciado entre los botones */
+    display: flex;/* Coloca los botones en fila */
+    justify-content: center;/* Centra horizontalmente los botones */
+    gap: 20px;/* Espaciado entre los botones */
 }
 
 .welcome-message {
@@ -68,13 +65,11 @@ header {
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
-    margin-top: 40px;
-    /* Ajusta la separación del botón respecto a los anteriores */
+    margin-top: 10px;/* Ajusta la separación del botón respecto a los anteriores */
 }
 
 .cerrar-sesion:hover {
-    background-color: #C62828;
-    /* Rojo más oscuro al pasar el mouse */
+    background-color: #C62828;/* Rojo más oscuro al pasar el mouse */
 }
 
 
@@ -91,10 +86,8 @@ header {
 
 
 .option-box:hover {
-    transform: scale(1.05);
-    /* Agranda el cuadro */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    /* Aumenta la sombra */
+    transform: scale(1.05);/* Agranda el cuadro */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);/* Aumenta la sombra */
 }
 
 
