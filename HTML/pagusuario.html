@@ -11,21 +11,22 @@
 </head>
 
 <body>
-
   <header>
     <h1>Gestión Biológica de Suelos</h1>
   </header>
+
   <section class="welcome-message">
     ¡Bienvenido(a) al Sistema de Gestión de Suelos! Una plataforma diseñada para facilitar la gestión biológica de
     suelos, permitiéndote registrar muestras, generar informes de manera sencilla y eficiente.
     ¡Optimiza tus procesos con nosotros!
   </section>
+
   <main class="main-container">
-    <div class="button-row fila-superior">
+    <div class="button-row">
       <div class="option-box">
         <h3>Ver Perfil</h3>
         <a href="perfil.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/verperfil.png" alt="Imagenlogo" width="50" height="50">
+          <img class="Icono" src="../iconos/iconos-pagusuario/verperfil.png" alt="Ver Perfil" width="50" height="50">
           <button onclick="window.location.href='perfil.html'">Ver Información del Perfil</button>
         </a>
       </div>
@@ -33,41 +34,41 @@
       <div class="option-box">
         <h3>Actualizar Datos</h3>
         <a href="actualizardatos.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/actualizarPerfil.png" alt="Imagenlogo" width="50" height="50">
-        <button onclick="window.location.href='actualizardatos.html'">Actualizar Información</button>
+          <img class="Icono" src="../iconos/iconos-pagusuario/actualizarPerfil.png" alt="Actualizar Datos" width="50" height="50">
+          <button onclick="window.location.href='actualizardatos.html'">Actualizar Información</button>
         </a>
       </div>
 
       <div class="option-box">
         <h3>Registrar Parcela</h3>
         <a href="registrarparcelas.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/iconoregistrarparcelas.png" alt="Imagenlogo" width="50" height="50">
-        <button onclick="window.location.href='registrarparcelas.html'">Actualizar Información</button>
+          <img class="Icono" src="../iconos/iconos-pagusuario/iconoregistrarparcelas.png" alt="Registrar Parcela" width="50" height="50">
+          <button onclick="window.location.href='registrarparcelas.html'">Registrar Parcela</button>
         </a>
       </div>
-
 
       <div class="option-box">
         <h3>Ver Informes</h3>
         <a href="listainformes.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/Informes.png" alt="Imagenlogo" width="50" height="50">
+          <img class="Icono" src="../iconos/iconos-pagusuario/Informes.png" alt="Ver Informes" width="50" height="50">
           <button onclick="window.location.href='listainformes.html'">Ver Informes</button>
         </a>
       </div>
     </div>
 
-    <div class="button-row fila-inferior">
+    <div class="button-row">
       <div class="option-box">
         <h3>Registrar Muestras</h3>
         <a href="muestras.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/registromuestras.png" alt="Imagenlogo" width="50" height="50">
-        <button onclick="window.location.href='muestras.html'">Registrar Nueva Muestra</button>
+          <img class="Icono" src="../iconos/iconos-pagusuario/registromuestras.png" alt="Registrar Muestras" width="50" height="50">
+          <button onclick="window.location.href='muestras.html'">Registrar Nueva Muestra</button>
         </a>
       </div>
+
       <div class="option-box">
         <h3>Crear Informes</h3>
         <a href="listamuestras.html">
-          <img class="Icono" src="../iconos/iconos-pagusuario/Generar-Informes.jpeg" alt="Imagenlogo" width="50" height="50">
+          <img class="Icono" src="../iconos/iconos-pagusuario/Generar-Informes.jpeg" alt="Crear Informes" width="50" height="50">
           <button onclick="window.location.href='listamuestras.html'">Crear Informe</button>
         </a>
       </div>
@@ -75,21 +76,12 @@
 
     <button class="cerrar-sesion" onclick="confirmarCerrarSesion()">Cerrar Sesión</button>
   </main>
-  <script>
-    function confirmarCerrarSesion() {
-      const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
-      if (confirmar) {
-        window.location.href = 'inicio.html'; // Redirige si el usuario confirma
-      }
-    }
-  </script>
 
-  </main>
   <script>
     function confirmarCerrarSesion() {
       const confirmar = confirm("¿Estás seguro de que deseas cerrar sesión?");
       if (confirmar) {
-        window.location.href = 'inicio.html'; // Redirige si el usuario confirma
+        window.location.href = 'inicio.html';
       }
     }
   </script>
