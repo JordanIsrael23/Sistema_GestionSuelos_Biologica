@@ -132,7 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Muestra guardada correctamente.");
-                window.location.href = "/organismos.html";
+                // Redirigir a organismos.html con el MU_ID en la URL
+                window.location.href = `/organismos.html?muestraId=${muestra.muId}`;
             } else {
                 alert("Error al guardar la muestra.");
             }
@@ -141,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Hubo un problema al conectar con el servidor.");
         }
     };
+
 
     let globalFertilidadId = null; // Variable global para almacenar el ID de fertilidad
 
