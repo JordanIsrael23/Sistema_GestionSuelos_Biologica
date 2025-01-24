@@ -27,11 +27,8 @@ const conexion = require('./database');
 const session = require('express-session');
 
 ///// Jordan Rutas
-const organismosruta = require('./organismos');
+const organismosruta = require('./organismosRutas');
 app.use('/',organismosruta);
-
-const lista = require('./listaorganismos');
-app.use('/',lista);
 
 const orden = require('./organismo2');
 app.use('/',orden);
