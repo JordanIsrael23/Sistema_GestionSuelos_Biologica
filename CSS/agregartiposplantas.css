@@ -1,0 +1,160 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../IMG/login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .header {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+  }
+
+  .back-icon {
+    position: absolute;
+    top: 10px; /* Espaciado desde la parte superior */
+    left: 10px; /* Espaciado desde la parte izquierda */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  
+  .back-icon img {
+    width: 30px; /* Tamaño del ícono */
+    height: 30px;
+    cursor: pointer;
+  }
+  
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-in-out;
+    width: 400px;
+  }
+
+  .container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #009900;
+    text-align: center;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333333;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #009900;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background-color: #00cc00;
+    transform: scale(1.05);
+  }
+
+  .existing-plants {
+    margin-top: 20px;
+  }
+
+  .existing-plants h3 {
+    font-size: 18px;
+    color: #009900;
+    margin-bottom: 10px;
+  }
+
+  .existing-plants ul {
+    list-style: none;
+    padding: 0;
+    color: #333333;
+  }
+
+  .existing-plants ul li {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .message {
+    margin-top: 15px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .success {
+    color: white;
+    background-color: green;
+  }
+
+  .error {
+    color: white;
+    background-color: red;
+  }
+
+  .delete-button {
+    background-color: red; /* Rojo */
+    color: white;
+    border: none;
+    padding: 3px 8px; /* Tamaño más pequeño */
+    border-radius: 4px;
+    font-size: 12px; /* Fuente más pequeña */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .delete-button:hover {
+    background-color: darkred; /* Rojo más oscuro al pasar el ratón */
+    transform: scale(1.1);
+  }
+  
+  .delete-button:active {
+    transform: scale(0.9);
+  }
+  
+  

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Tipos de Plantas</title>
+  <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+  <link rel="stylesheet" href="../CSS/agregartiposplantas.css">
+
+</head>
+<body>
+  <header class="header">
+    <a href="javascript:history.back()" class="back-icon">
+        <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+      </a>
+    <h1>Gestión de Tipos de Plantas</h1>
+  </header>
+
+  <div class="container">
+    <h2>Agregar Tipo de Planta</h2>
+    <form id="plant-form">
+      <label for="detalles">Nombre del tipo de planta</label>
+      <textarea id="detalles" name="detalles" placeholder="Escribe aquí el tipo de planta..." rows="3" required></textarea>
+      <button type="submit">Agregar</button>
+    </form>
+  
+    <!-- Mensaje de éxito o error -->
+    <div id="message" class="message hidden"></div>
+  
+    <!-- Lista de tipos de plantas existentes -->
+    <div class="existing-plants">
+      <h3>Tipos de Plantas Registrados</h3>
+      <ul id="plant-list">
+        <!-- Aquí se cargará dinámicamente la lista -->
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Cargar la lista de tipos de plantas
+    async function cargarTiposPlantas() {
+      const plantList = document.getElementById('plant-list');
+      plantList.innerHTML = 'Cargando...';
+  
+      try {
+        const response = await fetch('/cargartiposplantas');
+        if (response.ok) {
+          const plantas = await response.json();
+          plantList.innerHTML = '';
+  
+          if (plantas.length > 0) {
+            plantas.forEach((planta) => {
+              const listItem = document.createElement('li');
+              listItem.innerHTML = `
+                ${planta.tpl_detalles} 
+                <button class="delete-button" data-id="${planta.tpl_id}">Borrar</button>
+              `;
+              plantList.appendChild(listItem);
+            });
+  
+            // Agregar eventos a los botones de eliminar
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach((button) => {
+            button.addEventListener('click', async (e) => {
+                const plantId = e.target.dataset.id;
+                const plantDetail = e.target.dataset.detail; // Obtener el detalle desde el atributo de datos
+
+                // Mostrar un mensaje de confirmación con el detalle
+                const isConfirmed = confirm(`¿Está seguro de que desea eliminar el tipo de planta?`);
+
+                if (isConfirmed) {
+                await borrarTipoPlanta(plantId); // Llama a la función para eliminar
+                cargarTiposPlantas(); // Recarga la lista
+                } else {
+                console.log('Eliminación cancelada por el usuario.');
+                }
+            });
+            });
+
+
+          } else {
+            plantList.innerHTML = '<li>No hay tipos de plantas registrados.</li>';
+          }
+        } else {
+          plantList.innerHTML = '<li>Error al cargar los tipos de plantas.</li>';
+        }
+      } catch (error) {
+        console.error('Error al cargar los tipos de plantas:', error);
+        plantList.innerHTML = '<li>Error de conexión con el servidor.</li>';
+      }
+    }
+  
+    // Enviar el formulario
+    document.getElementById('plant-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const detalles = document.getElementById('detalles').value;
+      const messageDiv = document.getElementById('message');
+  
+      try {
+        const response = await fetch('/tiposplantas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ detalles }),
+        });
+  
+        if (response.ok) {
+          messageDiv.textContent = 'Tipo de planta agregado exitosamente';
+          messageDiv.className = 'message success';
+          document.getElementById('plant-form').reset(); // Limpiar el formulario
+          cargarTiposPlantas(); // Recargar la lista
+        } else {
+          const errorData = await response.json();
+          messageDiv.textContent = errorData.message || 'Error al agregar el tipo de planta';
+          messageDiv.className = 'message error';
+        }
+      } catch (error) {
+        console.error('Error al enviar el formulario:', error);
+        messageDiv.textContent = 'Error de conexión con el servidor';
+        messageDiv.className = 'message error';
+      }
+  
+      messageDiv.style.display = 'block';
+    });
+  
+    // Borrar un tipo de planta
+    async function borrarTipoPlanta(id) {
+      try {
+        const response = await fetch(`/tiposplantas/${id}`, {
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          alert('Tipo de planta eliminado exitosamente');
+        } else {
+          alert('Error al eliminar el tipo de planta');
+        }
+      } catch (error) {
+        console.error('Error al eliminar el tipo de planta:', error);
+        alert('Error de conexión con el servidor');
+      }
+    }
+  
+    // Cargar la lista al cargar la página
+    document.addEventListener('DOMContentLoaded', cargarTiposPlantas);
+  </script>
+  
+</body>
+</html>
