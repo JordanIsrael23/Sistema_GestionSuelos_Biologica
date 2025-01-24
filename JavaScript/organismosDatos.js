@@ -94,13 +94,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     
             if (respuesta.ok) {
                 const data = await respuesta.json();
-    
-                // Mostrar mensaje de éxito
-                alert("El organismo se ha ingresado.");
-    
-                // Restablecer los campos del formulario
-                tiposSelect.value = ""; // Restablecer el select de tipos
-                organismosSelect.innerHTML = '<option value="">Organismos</option>'; // Restablecer el select de organismos
+                alert(`Detalle de muestra guardado correctamente con ID: ${data.dmId}`);
+                // Redirigir o realizar alguna acción adicional
             } else {
                 alert("Error al guardar el detalle de muestra.");
             }
@@ -109,7 +104,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Hubo un problema al conectar con el servidor.");
         }
     });
-    
     
     
 });
