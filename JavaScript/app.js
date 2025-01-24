@@ -397,29 +397,42 @@ app.get('/listamuestras', async (req, res) => {
 ////////////////
 ////////////////
 app.post('/crear-informe', async (req, res) => {
-    const { mu_id, titulo, introduccion, desarrollo, conclusiones, recomendaciones, soluciones } = req.body;
+    const { mu_id, titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones } = req.body;
 
+    // Validar que el ID de la muestra esté presente
     if (!mu_id) {
         return res.status(400).send('El ID de la muestra es requerido.');
     }
 
     try {
+        // Consulta para obtener el último ID
+        const result = await conexion.query('SELECT MAX(IN_ID) AS max_id FROM SM_B_INFORMES');
+        const lastId = result.rows[0].max_id || 'IN000'; // Si no hay registros, usa IN000 como base
+
+        // Extraer la parte numérica, incrementar y generar el nuevo ID
+        const numericPart = parseInt(lastId.slice(2)) + 1; // Extraer el número después de "IN"
+        const newId = `IN${String(numericPart).padStart(3, '0')}`; // Formato: IN001, IN002, etc.
+
+        // Consulta para insertar el nuevo informe
         const query = `
             INSERT INTO SM_B_INFORMES 
             (IN_ID, MU_ID, IN_TITULO, IN_INTRODUCCION, IN_DESARROLLO, IN_RESULTADOS, IN_CONCLUCION, IN_RECOMENDACION, IN_SOLUCIONES)
-            VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         `;
 
         await conexion.query(query, [
-            mu_id, titulo, introduccion, desarrollo, '', conclusiones, recomendaciones, soluciones
+            newId, mu_id, titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones
         ]);
 
-        res.redirect('/mensaje-exito.html');
+        // Redirigir a la página de éxito
+        res.redirect('/informeexito.html');
     } catch (err) {
         console.error('Error al crear el informe:', err);
         res.redirect('/mensaje-error.html');
     }
 });
+
+
 ////////////////
 ///////////////
 /////////////
@@ -432,24 +445,34 @@ app.get('/listainformes', async (req, res) => {
 
     try {
         const query = `
-            SELECT IN_ID AS id, IN_TITULO AS titulo, MU_FECHA AS fecha
-            FROM SM_B_INFORMES
-            INNER JOIN SM_B_MUESTRAS ON SM_B_INFORMES.MU_ID = SM_B_MUESTRAS.MU_ID
-            WHERE SM_B_MUESTRAS.PARC_ID IN (
+            SELECT 
+                INF.IN_ID AS id, 
+                INF.IN_TITULO AS titulo, 
+                MU.MU_FECHA AS fecha
+            FROM SM_B_INFORMES INF
+            INNER JOIN SM_B_MUESTRAS MU ON INF.MU_ID = MU.MU_ID
+            WHERE MU.PARC_ID IN (
                 SELECT PARC_ID
-                FROM SM_Q_PARCELAS
+                FROM SM_PARCELAS
                 WHERE USER_ID = $1
             )
+            ORDER BY MU.MU_FECHA DESC;
         `;
 
         const result = await conexion.query(query, [userId]);
 
-        res.json(result.rows);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron informes.' });
+        }
+
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error('Error al obtener los informes:', error);
-        res.status(500).json({ error: 'Error al obtener los informes' });
+        res.status(500).json({ error: 'Error al obtener los informes.' });
     }
 });
+
+
 ///////////////////
 ///////////////
 const PDFDocument = require('pdfkit');
