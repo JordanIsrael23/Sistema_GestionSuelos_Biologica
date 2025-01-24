@@ -4,32 +4,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let primerClick = true;
 
-    // Función para agregar el label y el input dinámico
-    const agregarInputCalidad = () => {
+    // Función para obtener parámetros de la URL
+    const obtenerParametroURL = (parametro) => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(parametro);
+    };
+
+    // Obtener el ID de la parcela desde la URL
+    const parcelaId = obtenerParametroURL("parcelaId");
+
+    // Función para obtener el próximo ID de muestra
+    const obtenerProximoIdMuestra = async () => {
+        try {
+            const response = await fetch("/api/proximoIdMuestra");
+            if (response.ok) {
+                const data = await response.json();
+                return data.nuevoId;
+            } else {
+                throw new Error("No se pudo obtener el próximo ID de muestra.");
+            }
+        } catch (error) {
+            console.error("Error al obtener el próximo ID:", error);
+            return null;
+        }
+    };
+
+    // Función para determinar la calidad, descripción y obtener el ID de fertilidad
+    const determinarCalidadYFertilidad = async () => {
         const valor = parseFloat(materiaOrganicaInput.value);
         let calidad = "";
+        let descripcion = "";
         let claseColor = "";
+        let fertilidadId = null;
 
-        // Determinar la calidad de la materia orgánica y el color asociado
+        // Determinar calidad y descripción
         if (valor >= 75) {
             calidad = "Alta fertilidad";
+            descripcion = "Alta=o";
             claseColor = "calidad-buena";
         } else if (valor >= 50) {
             calidad = "Media fertilidad";
+            descripcion = "Medio";
             claseColor = "calidad-regular";
         } else if (valor > 0) {
             calidad = "Baja Fertilidad";
+            descripcion = "Bajo";
             claseColor = "calidad-mala";
-        } else {
-            calidad = ""; // Si no hay valor válido
         }
 
-        // Verificar si ya existe el label y el input
+        // Consulta al backend para obtener el `FER_ID` basado en la descripción
+        try {
+            const response = await fetch(`/api/obtenerFertilidad?descripcion=${encodeURIComponent(descripcion)}`);
+            if (response.ok) {
+                const data = await response.json();
+                fertilidadId = data.id; // Suponiendo que el backend devuelve el `FER_ID`
+            } else {
+                throw new Error("No se encontró el tipo de fertilidad.");
+            }
+        } catch (error) {
+            console.error("Error al obtener fertilidad:", error);
+        }
+
+        return { calidad, descripcion, claseColor, fertilidadId };
+    };
+
+    // Función para agregar dinámicamente los inputs de calidad, descripción y fertilidad ID
+    const agregarInputsDinamicos = ({ calidad, descripcion, claseColor, fertilidadId }) => {
+        // Calidad de materia orgánica
         let calidadLabel = document.getElementById("calidad-label");
         let calidadInput = document.getElementById("calidad-materia");
 
         if (!calidadLabel) {
-            // Crear el label dinámico si no existe
             calidadLabel = document.createElement("label");
             calidadLabel.id = "calidad-label";
             calidadLabel.textContent = "Calidad de materia orgánica:";
@@ -39,40 +84,137 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!calidadInput) {
-            // Crear el input dinámico si no existe
             calidadInput = document.createElement("input");
             calidadInput.id = "calidad-materia";
             calidadInput.type = "text";
             calidadInput.readOnly = true;
             calidadInput.style.marginBottom = "10px";
-            calidadInput.className = claseColor; // Asigna la clase CSS según la calidad
+            calidadInput.className = claseColor;
             botonAceptar.parentElement.insertBefore(calidadInput, botonAceptar);
         }
 
-        // Actualizar el valor del input y su clase de color
         calidadInput.value = calidad;
-        calidadInput.className = claseColor;
+
+        // Descripción de fertilidad
+        let descripcionLabel = document.getElementById("descripcion-label");
+        let descripcionInput = document.getElementById("descripcion-fertilidad");
+
+        if (!descripcionLabel) {
+            descripcionLabel = document.createElement("label");
+            descripcionLabel.id = "descripcion-label";
+            descripcionLabel.textContent = "Descripción de fertilidad:";
+            descripcionLabel.style.marginTop = "10px";
+            descripcionLabel.style.display = "block";
+            botonAceptar.parentElement.insertBefore(descripcionLabel, botonAceptar);
+        }
+
+        if (!descripcionInput) {
+            descripcionInput = document.createElement("input");
+            descripcionInput.id = "descripcion-fertilidad";
+            descripcionInput.type = "text";
+            descripcionInput.readOnly = true;
+            descripcionInput.style.marginBottom = "10px";
+            botonAceptar.parentElement.insertBefore(descripcionInput, botonAceptar);
+        }
+
+        descripcionInput.value = descripcion;
+
+        // ID de fertilidad
+        let fertilidadLabel = document.getElementById("fertilidad-label");
+        let fertilidadInput = document.getElementById("fertilidad-id");
+
+        if (!fertilidadLabel) {
+            fertilidadLabel = document.createElement("label");
+            fertilidadLabel.id = "fertilidad-label";
+            fertilidadLabel.textContent = "ID de fertilidad:";
+            fertilidadLabel.style.marginTop = "10px";
+            fertilidadLabel.style.display = "block";
+            botonAceptar.parentElement.insertBefore(fertilidadLabel, botonAceptar);
+        }
+
+        if (!fertilidadInput) {
+            fertilidadInput = document.createElement("input");
+            fertilidadInput.id = "fertilidad-id";
+            fertilidadInput.type = "text";
+            fertilidadInput.readOnly = true;
+            fertilidadInput.style.marginBottom = "10px";
+            botonAceptar.parentElement.insertBefore(fertilidadInput, botonAceptar);
+        }
+
+        fertilidadInput.value = fertilidadId;
+    };
+
+    // Función para registrar la muestra en la base de datos
+    const registrarMuestra = async (muestra) => {
+        try {
+            const response = await fetch("/api/guardarMuestra", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(muestra),
+            });
+
+            if (response.ok) {
+                alert("Muestra guardada correctamente.");
+                window.location.href = "/listaMuestras.html";
+            } else {
+                alert("Error al guardar la muestra.");
+            }
+        } catch (error) {
+            console.error("Error al guardar la muestra:", error);
+            alert("Hubo un problema al conectar con el servidor.");
+        }
     };
 
     // Evento click del botón
-    botonAceptar.addEventListener("click", (event) => {
+    botonAceptar.addEventListener("click", async (event) => {
         event.preventDefault();
 
         if (primerClick) {
             const form = botonAceptar.closest("form");
             if (form.checkValidity()) {
-                agregarInputCalidad();
+                const { calidad, descripcion, claseColor, fertilidadId } = await determinarCalidadYFertilidad();
 
-                // Cambiar el color y texto del botón
+                if (!fertilidadId) {
+                    alert("No se pudo determinar el tipo de fertilidad.");
+                    return;
+                }
+
+                agregarInputsDinamicos({ calidad, descripcion, claseColor, fertilidadId });
+
                 botonAceptar.style.backgroundColor = "green";
-                botonAceptar.textContent = "Agregar muestra";
+                botonAceptar.textContent = "Guardar muestra";
 
                 primerClick = false;
             } else {
                 form.reportValidity();
             }
         } else {
-            window.location.href = "organismos.html";
+            const ubicacion = document.querySelector("input[type='text']").value;
+            const fecha = document.getElementById("fecha").value;
+            const cantidadMuestra = materiaOrganicaInput.value;
+            const calidad = document.getElementById("calidad-materia").value;
+            const fertilidadId = document.getElementById("fertilidad-id").value;
+
+            const muId = await obtenerProximoIdMuestra();
+
+            if (!muId) {
+                alert("No se pudo generar el ID de la muestra.");
+                return;
+            }
+
+            const nuevaMuestra = {
+                muId,
+                parcelaId,
+                ubicacion,
+                fecha,
+                cantidadMuestra,
+                calidad,
+                fertilidadId,
+            };
+
+            await registrarMuestra(nuevaMuestra);
         }
     });
 });
