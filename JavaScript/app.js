@@ -36,7 +36,8 @@ app.use('/',orden);
 const rutas = require("./muestra2");
 app.use("/api", rutas);
 
-
+const rutasmuestras = require("./muestrasRutas");
+app.use("/",rutasmuestras)
 
 app.use(
     session({
