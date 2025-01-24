@@ -36,6 +36,10 @@ app.use('/',lista);
 const orden = require('./organismo2');
 app.use('/',orden);
 
+const rutas = require("./muestrasRoutes");
+app.use("/api", muestrasRoutes);
+
+
 
 app.use(
     session({
