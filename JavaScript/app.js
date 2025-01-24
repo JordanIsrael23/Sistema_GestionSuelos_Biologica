@@ -675,4 +675,10 @@ app.get('/listainformesadmin', async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los informes' });
     }
 });
-  
+
+
+///Nathaly Rutas
+const plruta = require('./plantas');
+app.get('/',plruta);
+const lista = require('./listaplantas');
+app.get('/',lista);

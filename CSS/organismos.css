@@ -1,4 +1,4 @@
-body{
+body {
     background-color: rgba(6, 6, 12, 0.938);
     background-size: cover;
     background-position: center;
@@ -10,25 +10,38 @@ body{
     top: 60px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: auto;
     font-family: Arial, sans-serif;
-    width: 580px;
-    height:600px;
+    width: 80%;  /* Ajuste de ancho para mejor responsividad */
+    max-width: 1200px; /* Limita el ancho máximo */
+    display: flex;  /* Usamos Flexbox para alinear las cajas horizontalmente */
+    justify-content: center; /* Centra las cajas horizontalmente */
+    gap: 20px; /* Espacio entre las cajas */
+    align-items: center; /* Alinea las cajas verticalmente en el centro */
 }
 
-.caja2{
-    position: relative;
-    top: 40px;
-    background-color: rgba(255, 255, 255, 0.8); 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    max-width: 400px;
-    margin: auto;
-    font-family: Arial, sans-serif;
+.caja2 {
+    background-color: #ffffff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 8px;
+    padding: 20px 40px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 300px; /* Ajustar el ancho de caja3 */
     text-align: center;
+    flex-shrink: 0; /* Evita que caja3 se reduzca de tamaño */
 }
+.caja3 {
+    background-color: #ffffff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 8px;
+    padding: 30px 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 290px; /* Ajustar el ancho de caja3 */
+    text-align: center;
+    flex-shrink: 0; /* Evita que caja3 se reduzca de tamaño */
+}
+
 .header {
     background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
     color: white;
@@ -71,10 +84,7 @@ select {
     border-radius: 5px;
 }
 
-
-
 select option {
     color: black;
     background-color: wheat;
 }
-  
