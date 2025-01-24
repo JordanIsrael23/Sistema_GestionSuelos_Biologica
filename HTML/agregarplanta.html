@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/agregarplanta.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
     <title>Agregar Planta</title>
 </head>
 
@@ -33,10 +34,17 @@
             <button onclick="guardar()" class="btn-guardar">Guardar</button>
             <button type="reset">Cancelar</button>
         </div>
+        <div class="btnagregar- tipos planta">
+            <button onclick="agregar()" class="btn-agregar">Agregar Tipo de Planta</button>
+
+        </div>
     </form>
     <script>
          function guardar() {
-            window.location.href = "../html/guardarplantas.html";
+            window.location.href = "../HTML/guardarplantas.html";
+        }
+        function agregar (){
+            window.location.href="../HTML/agregartiposplantas.html"
         }
     </script>
 </body>

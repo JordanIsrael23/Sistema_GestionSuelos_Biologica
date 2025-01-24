@@ -31,16 +31,6 @@ body {
     text-align: center;
     flex-shrink: 0; /* Evita que caja3 se reduzca de tamaño */
 }
-.caja3 {
-    background-color: #ffffff; /* Fondo blanco */
-    border: 1px solid #ddd; /* Borde gris claro */
-    border-radius: 8px;
-    padding: 30px 50px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    width: 290px; /* Ajustar el ancho de caja3 */
-    text-align: center;
-    flex-shrink: 0; /* Evita que caja3 se reduzca de tamaño */
-}
 
 .header {
     background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
