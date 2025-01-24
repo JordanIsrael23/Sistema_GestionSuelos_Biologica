@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const seleccion = document.getElementById('organismos'); // Asegúrate de que el ID del select sea correcto
+    const seleccion = document.getElementById('organismo'); // Asegúrate de que el ID del select sea correcto
 
     try {
         // Realiza la solicitud al backend
-        const respuesta = await fetch('/organismos');
+        const respuesta = await fetch('/listaorganismos');
         if (!respuesta.ok) throw new Error('Error al obtener datos del servidor');
 
         const datos = await respuesta.json(); // Convierte la respuesta en JSON
