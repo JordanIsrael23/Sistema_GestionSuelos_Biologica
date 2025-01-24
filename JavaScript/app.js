@@ -686,5 +686,6 @@ app.get('/listainformesadmin', async (req, res) => {
 ///Nathaly Rutas
 const plruta = require('./plantas');
 app.get('/',plruta);
-const lista = require('./listaplantas');
-app.get('/',lista);
+
+const lista2 = require('./listaplantas');
+app.get('/',lista2);
