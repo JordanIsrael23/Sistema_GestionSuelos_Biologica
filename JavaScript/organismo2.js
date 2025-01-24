@@ -27,14 +27,17 @@ router.get("/ordenes", async (req, res) => {
 // Obtener el próximo ID de organismo
 router.get("/proximoIdOrganismo", async (req, res) => {
     try {
-        const result = await conexion.query("SELECT MAX(CAST(SUBSTRING(OR_ID, 2) AS INTEGER)) AS max_id FROM SM_B_ORGANISMOS");
+        const result = await conexion.query(
+            "SELECT MAX(CAST(SUBSTRING(OR_ID, 3) AS INTEGER)) AS max_id FROM SM_B_ORGANISMOS"
+        );
 
         let nuevoId;
         if (result.rows[0].max_id !== null) {
             const maxId = result.rows[0].max_id; // Número más alto encontrado
-            nuevoId = `O${maxId + 1}`; // Incrementa para generar el próximo ID
+            const nextId = maxId + 1;
+            nuevoId = `OR${String(nextId).padStart(3, "0")}`; // Formato: OR001, OR002, etc.
         } else {
-            nuevoId = "O1"; // Si no hay registros, empieza desde O1
+            nuevoId = "OR001"; // Si no hay registros, empieza desde OR001
         }
 
         res.json({ nuevoId });
@@ -43,6 +46,7 @@ router.get("/proximoIdOrganismo", async (req, res) => {
         res.status(500).json({ error: "Error del servidor al generar el próximo ID de organismo." });
     }
 });
+
 
 // Guardar organismo
 router.post("/guardarOrganismo", async (req, res) => {

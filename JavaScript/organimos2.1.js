@@ -36,36 +36,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al cargar órdenes:", error);
     }
 
-    // Guardar organismo
     botonAceptar.addEventListener("click", async (event) => {
         event.preventDefault(); // Evitar envío por defecto
-
+    
         const toId = tiposSelect.value;
         const torId = ordenesSelect.value;
         const orNombre = nombreInput.value;
-
+    
         if (!toId || !torId || !orNombre.trim()) {
             alert("Por favor, completa todos los campos antes de continuar.");
             return;
         }
-
+    
         try {
             // Obtener el próximo ID de organismo
             const idRespuesta = await fetch("/proximoIdOrganismo");
             if (!idRespuesta.ok) throw new Error("Error al obtener el próximo ID de organismo");
-
+    
             const { nuevoId: orId } = await idRespuesta.json();
-
+    
             // Datos a enviar
             const nuevoOrganismo = { orId, toId, torId, orNombre };
-
+    
             // Guardar en la base de datos
             const respuesta = await fetch("/guardarOrganismo", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(nuevoOrganismo),
             });
-
+    
             if (respuesta.ok) {
                 alert("Organismo guardado correctamente.");
                 // Limpiar el formulario
@@ -77,6 +76,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (error) {
             console.error("Error al guardar el organismo:", error);
+            alert("Error al guardar el organismo: " + error.message);
         }
     });
+    
 });
