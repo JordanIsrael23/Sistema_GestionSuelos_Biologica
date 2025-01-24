@@ -38,15 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
         if (valor >= 75) {
             calidad = "Alta fertilidad";
-            descripcion = "Alta Fertilidad";
+            descripcion = "Alto";
             claseColor = "calidad-buena";
         } else if (valor >= 50) {
             calidad = "Media fertilidad";
-            descripcion = "Media Fertilidad";
+            descripcion = "Medio";
             claseColor = "calidad-regular";
         } else if (valor > 0) {
             calidad = "Baja Fertilidad";
-            descripcion = "Baja Fertilidad";
+            descripcion = "Bajo";
             claseColor = "calidad-mala";
         }
     
