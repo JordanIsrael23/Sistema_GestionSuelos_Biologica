@@ -27,6 +27,7 @@ body{
     max-width: 400px;
     margin: auto;
     font-family: Arial, sans-serif;
+    text-align: center;
 }
 .header {
     background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */

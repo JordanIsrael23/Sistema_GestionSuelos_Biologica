@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
     <title>Organismos</title>
 </head>
+
 <body>
     <header class="header">
         <a href="javascript:history.back()" class="back-icon">
@@ -15,14 +17,25 @@
         <h1>Gestión Biológica de Suelos</h1>
     </header>
     <div class="caja">
-        <h1>Seleccionar el Tipo de Orgnanismo</h1>
-        <form id="formulario" action="" method="post">
-            <select id="tipos" name="tipos" required>
-                <option value="">--Selecciona una opcion--</option>
-            </select>
-            <button>Aceptar</button>
-        </form>
+        <div class="caja2">
+
+            <form id="formulario" action="" method="post">
+                <h1>Seleccionar el Tipo de Orgnanismo</h1>
+                <select id="tipos" name="tipos" required>
+                    <option>Tipos</option>
+                </select>
+                <h1>Seleccionar el Organismo</h1>
+                <select id="organismos" name="organismos" required>
+                    <option value="">Organismos</option>
+                </select>
+                <button>Agregar Organismo</button>
+                <br>
+                <button>Aceptar</button>
+            </form>
+        </div>
     </div>
     <script src="/js/organismoDatos.js"></script>
+    <script src="/js/agregarorganismos.js"></script>
 </body>
+
 </html>
