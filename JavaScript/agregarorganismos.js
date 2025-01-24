@@ -1,21 +1,27 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    const tiposelect = document.getElementById('tipos');
     const seleccion = document.getElementById('organismo'); // Asegúrate de que el ID del select sea correcto
 
-    try {
-        // Realiza la solicitud al backend
-        const respuesta = await fetch('/listaorganismos');
-        if (!respuesta.ok) throw new Error('Error al obtener datos del servidor');
+    tiposSelect.addEventListener('change', async () => {
+        const to_id = tiposSelect.value; // ID seleccionado en el primer select
+        organismosSelect.innerHTML = '<option value="">Selecciona un organismo</option>'; // Limpia el segundo select
 
-        const datos = await respuesta.json(); // Convierte la respuesta en JSON
+        if (!to_id) return; // Si no hay selección, no hacer nada
 
-        // Itera sobre los datos y agrega opciones al <select>
-        datos.forEach(item => {
-            const opcion = document.createElement('option');
-            opcion.value = item.or_id; // Usa el ID como valor de la opción
-            opcion.textContent = item.or_nombre; // Usa el nombre como texto visible
-            seleccion.appendChild(opcion);
-        });
-    } catch (error) {
-        console.error('Error al cargar las opciones:', error);
-    }
+        try {
+            const respuesta = await fetch(`/listaorganismos/${to_id}`);
+            if (!respuesta.ok) throw new Error('Error al obtener organismos');
+
+            const organismos = await respuesta.json();
+
+            organismos.forEach(org => {
+                const opcion = document.createElement('option');
+                opcion.value = org.or_id; // ID del organismo
+                opcion.textContent = org.or_nombre; // Nombre del organismo
+                organismosSelect.appendChild(opcion);
+            });
+        } catch (error) {
+            console.error('Error al cargar los organismos:', error);
+        }
+    });
 });
