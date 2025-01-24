@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/agregarplanta.css">
+    <title>Agregar Planta</title>
+</head>
+
+<body>
+    <header class="header">
+        <!-- Ícono de la flecha -->
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+
+    <form action="/guardar-planta" method="post" enctype="multipart/form-data">
+        <h2>Agregar Nueva Planta</h2>
+
+        <label for="plant-name">Nombre de la Planta:</label>
+        <input type="text" id="plant-name" name="plant-name" required>
+
+        <label for="plant-type">Tipo de Planta:</label>
+        <input type="text" id="plant-type" name="plant-type" required>
+
+        <label for="plant-description">Descripción:</label>
+        <textarea id="plant-description" name="plant-description" rows="4" required></textarea>
+
+        <div class="buttons">
+            <button onclick="guardar()" class="btn-guardar">Guardar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
+    <script>
+         function guardar() {
+            window.location.href = "../html/guardarplantas.html";
+        }
+    </script>
+</body>
+
+</html>

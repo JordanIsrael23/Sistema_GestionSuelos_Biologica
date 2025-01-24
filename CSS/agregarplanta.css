@@ -1,0 +1,166 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../IMG/login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.header {
+    background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+}
+
+.header .back-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.header .back-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco translúcido */
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+    margin-top: 120px; /* Espaciado para evitar solapamiento con el header */
+    width: 100%;
+    max-width: 450px;
+}
+
+form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #009900; /* Verde seguro */
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333333; /* Gris seguro */
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc; /* Gris claro seguro */
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+textarea {
+    resize: none; /* Evita el redimensionamiento del área de texto */
+}
+
+input:focus, textarea:focus {
+    border-color: #009900; /* Verde seguro */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Verde seguro */
+}
+
+/* Estilo específico para el campo de carga de archivos */
+input[type="file"] {
+    padding: 5px;
+    border: none;
+    background-color: #f7f7f7; /* Fondo gris claro */
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    background-color: #eaeaea; /* Gris más claro */
+}
+
+/* Botones de guardar y cancelar */
+button[type="submit"], 
+button[type="reset"] {
+    width: 120px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #009900; /* Verde seguro */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Estilo para el botón "Guardar" */
+.btn-guardar {
+    width: 150px;
+    padding: 12px;
+    background-color: #009900; /* Verde seguro */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-guardar:hover {
+    background-color: #00cc00; /* Verde claro */
+    transform: scale(1.05); /* Efecto de escala */
+}
+
+.btn-guardar:active {
+    background-color: #008000; /* Verde oscuro al hacer clic */
+    transform: scale(0.98); /* Efecto de compresión al hacer clic */
+}
+
+.btn-guardar:focus {
+    outline: none; /* Eliminar contorno al hacer foco */
+    box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Efecto de sombra verde */
+}
+
+button[type="reset"] {
+    background-color: #cc0000; /* Rojo para cancelar */
+}
+
+button[type="reset"]:hover {
+    background-color: #ff1a1a; /* Rojo claro para cancelar */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

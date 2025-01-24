@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error al Guardar Planta</title>
+    <link rel="stylesheet" href="../CSS/erroragregarplanta.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+</head>
+
+<body>
+    <div class="container error">
+        <div class="icon">✘</div>
+        <h1>¡Error al Guardar la Planta!</h1>
+        <p>No se ha podido guardar la planta. Por favor, intente nuevamente.</p>
+        <button onclick="irALista()">Volver Agregar Plantas</button>
+    </div>
+
+    <script>
+        function irALista() {
+            window.location.href = "../html/agregarplanta.html"; // Redirigir a la lista de plantas
+        }
+    </script>
+</body>
+
+</html>

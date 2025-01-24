@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Plantas</title>
+    <link rel="stylesheet" href="../CSS/listarplantas.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Lista de Plantas</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Planta</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPlantas">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Petición para obtener las plantas
+                const response = await fetch('/listarplantas');
+                if (response.ok) {
+                    const plantas = await response.json();
+
+                    const tabla = document.getElementById('tablaPlantas');
+                    plantas.forEach(planta => {
+                        const fila = document.createElement('tr');
+
+                        const idColumna = document.createElement('td');
+                        idColumna.textContent = planta.id;
+                        fila.appendChild(idColumna);
+
+                        const nombreColumna = document.createElement('td');
+                        nombreColumna.textContent = planta.nombre;
+                        fila.appendChild(nombreColumna);
+
+                        const tipoColumna = document.createElement('td');
+                        tipoColumna.textContent = planta.tipo;
+                        fila.appendChild(tipoColumna);
+
+                        const descripcionColumna = document.createElement('td');
+                        descripcionColumna.textContent = planta.descripcion;
+                        fila.appendChild(descripcionColumna);
+
+                        const accionColumna = document.createElement('td');
+                        const boton = document.createElement('button');
+                        boton.textContent = 'Ver Detalles';
+                        boton.addEventListener('click', () => {
+                            window.location.href = `/detallesplanta.html?id=${planta.id}`;
+                        });
+                        accionColumna.appendChild(boton);
+                        fila.appendChild(accionColumna);
+
+                        tabla.appendChild(fila);
+                    });
+                } else {
+                    alert('No se pudieron cargar las plantas.');
+                }
+            } catch (error) {
+                console.error('Error al cargar las plantas:', error);
+                alert('Hubo un error al conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>
+
