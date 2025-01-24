@@ -4,7 +4,7 @@ const conexion = require('./database');
 
 
 
-router.get('/listaorganismos',async(req, res)=>{
+router.get('/organismos',async(req, res)=>{
     try{
         const respuesta = await conexion.query('select * from SM_B_ORGANISMOS');
         res.json(respuesta.rows);
