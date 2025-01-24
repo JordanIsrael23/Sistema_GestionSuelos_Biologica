@@ -576,6 +576,7 @@ app.post('/registrarparcela', async (req, res) => {
 
         // Redirige a una página de éxito y pasa el ID generado
         res.redirect(`/parcelaexito.html?parc_id=${nextId}`);
+
     } catch (error) {
         console.error('Error al registrar la parcela:', error);
         res.redirect('/mensaje-error.html');
@@ -693,3 +694,43 @@ app.get('/',plruta);
 
 const lista2 = require('./listaplantas');
 app.get('/',lista2);
+
+
+//////////////
+////////////
+
+app.post('/agregar-funcionalidad', async (req, res) => {
+    const { parc_id, fun_nombre, fun_descripcion } = req.body;
+
+    console.log('Datos recibidos:', { parc_id, fun_nombre, fun_descripcion });
+
+    if (!parc_id || !fun_nombre || !fun_descripcion) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+
+    try {
+        // Consulta corregida para garantizar que los tipos sean compatibles
+        const idQuery = `
+            SELECT COALESCE(MAX(FUN_ID), 'FUN00000')::VARCHAR AS max_id
+            FROM SM_B_FUNCIONALIDADES
+        `;
+        const idResult = await conexion.query(idQuery);
+        console.log('Resultado del último ID:', idResult.rows);
+
+        // Generar el siguiente ID basado en el último encontrado
+        const lastId = idResult.rows[0].max_id;
+        const numericPart = parseInt(lastId.slice(3)) + 1; // Extraer parte numérica y sumar 1
+        const nextFunId = `FUN${numericPart.toString().padStart(5, '0')}`; // Formatear con ceros iniciales
+
+        // Insertar la funcionalidad en la base de datos
+        const insertQuery = `
+            INSERT INTO SM_B_FUNCIONALIDADES (FUN_ID, PARC_ID, FUN_NOMBRE, FUN_DESCRIPCION)
+            VALUES ($1, $2, $3, $4)
+        `;
+        await conexion.query(insertQuery, [nextFunId, parc_id, fun_nombre, fun_descripcion]);
+
+        res.redirect(`/funcionalidadesexito.html?`);
+    } catch (error) {
+        res.redirect(`/funcionalidadesexito.html?`);
+    }
+});

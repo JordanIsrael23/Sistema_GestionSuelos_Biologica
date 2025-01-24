@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Funcionalidad</title>
+    <link rel="stylesheet" href="../CSS/registrarparcela.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Crear Funcionalidad</h1>
+    </div>
+
+    <div class="form-container">
+        <form action="/agregar-funcionalidad" method="POST">
+            <!-- Campo oculto para el ID de la parcela -->
+            <input type="hidden" id="PARC_ID" name="parc_id">
+
+            <!-- Nombre de la Funcionalidad -->
+            <label for="FUN_NOMBRE">Nombre de la Funcionalidad:</label>
+            <input type="text" id="FUN_NOMBRE" name="fun_nombre" maxlength="30" required>
+
+            <!-- Descripción de la Funcionalidad -->
+            <label for="FUN_DESCRIPCION">Descripción de la Funcionalidad:</label>
+            <textarea id="FUN_DESCRIPCION" name="fun_descripcion" rows="4" required></textarea>
+
+            <!-- Botón para enviar -->
+            <button type="submit">Crear Funcionalidad</button>
+        </form>
+    </div>
+
+    <script>
+        // Obtener el ID de la parcela de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const parcId = urlParams.get('parc_id');
+
+        // Rellenar el campo oculto con el ID de la parcela
+        if (parcId) {
+            document.getElementById("PARC_ID").value = parcId; // Rellena el campo oculto
+        } else {
+            // Muestra una alerta si no se encuentra el ID de la parcela
+            alert("No se encontró el ID de la parcela. Por favor, regrese e intente nuevamente.");
+        }
+    </script>
+</body>
+</html>
