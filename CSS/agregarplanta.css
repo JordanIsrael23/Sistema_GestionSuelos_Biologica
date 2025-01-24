@@ -164,3 +164,17 @@ button[type="reset"]:hover {
         transform: translateY(0);
     }
 }
+.btn-agregar{
+    width: 150px;
+    padding: 12px;
+    background-color: #009900; /* Verde seguro */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    display: inline-block;
+
+}
