@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 const db = require("./database"); 
 
-// Endpoint para obtener el próximo ID de muestra
 router.get("/proximoIdMuestra", async (req, res) => {
     try {
-        const result = await db.query("SELECT MU_ID FROM SM_B_MUESTRAS ORDER BY MU_ID DESC LIMIT 1");
+        const result = await db.query("SELECT MAX(CAST(SUBSTRING(MU_ID, 2) AS INTEGER)) AS max_id FROM SM_B_MUESTRAS");
 
         let nuevoId;
-        if (result.rows.length > 0) {
-            const ultimoId = parseInt(result.rows[0].mu_id.substring(1)); // Extraemos el número ignorando la "M"
-            nuevoId = `M${ultimoId + 1}`;
+        if (result.rows[0].max_id !== null) {
+            const maxId = result.rows[0].max_id; // Número más alto encontrado
+            nuevoId = `M${maxId + 1}`; // Incrementa para generar el próximo ID
         } else {
-            nuevoId = "M1"; // Si no hay registros, empezamos desde M1
+            nuevoId = "M1"; // Si no hay registros, empieza desde M1
         }
 
         res.json({ nuevoId });
@@ -21,6 +20,8 @@ router.get("/proximoIdMuestra", async (req, res) => {
         res.status(500).json({ error: "Error del servidor al generar el próximo ID de muestra." });
     }
 });
+
+
 
 // Endpoint para obtener el ID de fertilidad por descripción
 router.get("/obtenerFertilidad", async (req, res) => {
