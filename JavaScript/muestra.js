@@ -29,30 +29,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Función para determinar la calidad, descripción y obtener el ID de fertilidad
     const determinarCalidadYFertilidad = async () => {
         const valor = parseFloat(materiaOrganicaInput.value);
         let calidad = "";
         let descripcion = "";
         let claseColor = "";
         let fertilidadId = null;
-
-        // Determinar calidad y descripción
+    
         if (valor >= 75) {
             calidad = "Alta fertilidad";
-            descripcion = "Alta=o";
+            descripcion = "Alta Fertilidad";
             claseColor = "calidad-buena";
         } else if (valor >= 50) {
             calidad = "Media fertilidad";
-            descripcion = "Medio";
+            descripcion = "Media Fertilidad";
             claseColor = "calidad-regular";
         } else if (valor > 0) {
             calidad = "Baja Fertilidad";
-            descripcion = "Bajo";
+            descripcion = "Baja Fertilidad";
             claseColor = "calidad-mala";
         }
-
-        // Consulta al backend para obtener el `FER_ID` basado en la descripción
+    
         try {
             const response = await fetch(`/api/obtenerFertilidad?descripcion=${encodeURIComponent(descripcion)}`);
             if (response.ok) {
@@ -64,9 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error al obtener fertilidad:", error);
         }
-
+    
+        console.log("Fertilidad calculada:", { calidad, descripcion, fertilidadId }); // Validar en la consola
         return { calidad, descripcion, claseColor, fertilidadId };
     };
+    
 
     // Función para agregar dinámicamente los inputs de calidad y descripción (sin ID visible)
     const agregarInputsDinamicos = ({ calidad, descripcion, claseColor }) => {
@@ -152,17 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { calidad, descripcion, claseColor, fertilidadId } = await determinarCalidadYFertilidad();
     
                 if (!fertilidadId) {
-                    alert("No se pudo determinar el tipo de fertilidad.");
+                    console.error("Error: Fertilidad ID no encontrado.");
+                    alert("No se pudo determinar el tipo de fertilidad. Por favor, revise los datos.");
                     return;
                 }
     
                 agregarInputsDinamicos({ calidad, descripcion, claseColor });
-    
                 botonAceptar.style.backgroundColor = "green";
                 botonAceptar.textContent = "Guardar muestra";
     
                 primerClick = false;
             } else {
+                console.log("Formulario no válido.");
                 form.reportValidity();
             }
         } else {
@@ -170,15 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const fecha = document.getElementById("fecha").value;
             const cantidadMuestra = materiaOrganicaInput.value;
             const calidad = document.getElementById("calidad-materia").value;
-    
             const muId = await obtenerProximoIdMuestra();
     
             if (!muId) {
+                console.error("Error: No se pudo generar el ID de la muestra.");
                 alert("No se pudo generar el ID de la muestra.");
                 return;
             }
     
-            // Crear el objeto de muestra sin mostrar fertilidadId en el formulario
             const nuevaMuestra = {
                 muId,
                 parcelaId,
@@ -186,11 +185,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 fecha,
                 cantidadMuestra,
                 calidad,
-                fertilidadId, // Este ID se envía al servidor pero no se muestra en el HTML
+                fertilidadId, // Este ID debe estar definido
             };
+    
+            console.log("Datos enviados:", nuevaMuestra);
     
             await registrarMuestra(nuevaMuestra);
         }
     });
+    
     
 });
