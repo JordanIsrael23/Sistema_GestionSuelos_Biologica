@@ -36,7 +36,7 @@ app.use('/',lista);
 const orden = require('./organismo2');
 app.use('/',orden);
 
-const rutas = require("./muestras2");
+const rutas = require("./muestra2");
 app.use("/api", rutas);
 
 
