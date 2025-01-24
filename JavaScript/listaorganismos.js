@@ -4,10 +4,9 @@ const conexion = require('./database');
 
 
 
-router.get('/organismos/:to_id',async(req, res)=>{
+router.get('/listaorganismos',async(req, res)=>{
     try{
-        const {to_id} = req.params;
-        const respuesta = await conexion.query('select * from SM_B_ORGANISMOS where to_id = $1',[to_id]);
+        const respuesta = await conexion.query('select * from SM_B_ORGANISMOS');
         res.json(respuesta.rows);
     }catch(error){
         console.error('Error al consultar',error);
