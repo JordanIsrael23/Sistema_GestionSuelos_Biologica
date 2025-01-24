@@ -32,27 +32,38 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Realizar solicitud para obtener los informes
+                // Solicitar los informes del usuario
                 const response = await fetch('/listainformes');
+                
+                // Verificar si la respuesta fue exitosa
                 if (response.ok) {
                     const informes = await response.json();
-
+    
+                    // Obtener la tabla del DOM
                     const tabla = document.getElementById('tablaInformes');
+    
+                    if (informes.length === 0) {
+                        // Si no hay informes, mostrar un mensaje
+                        tabla.innerHTML = '<tr><td colspan="4">No se encontraron informes.</td></tr>';
+                        return;
+                    }
+    
+                    // Crear filas dinámicamente para cada informe
                     informes.forEach(informe => {
                         const fila = document.createElement('tr');
-
+    
                         const idColumna = document.createElement('td');
                         idColumna.textContent = informe.id;
                         fila.appendChild(idColumna);
-
+    
                         const tituloColumna = document.createElement('td');
                         tituloColumna.textContent = informe.titulo;
                         fila.appendChild(tituloColumna);
-
+    
                         const fechaColumna = document.createElement('td');
                         fechaColumna.textContent = new Date(informe.fecha).toLocaleDateString();
                         fila.appendChild(fechaColumna);
-
+    
                         const accionColumna = document.createElement('td');
                         const botonDescargar = document.createElement('button');
                         botonDescargar.textContent = 'Descargar PDF';
@@ -61,11 +72,11 @@
                         });
                         accionColumna.appendChild(botonDescargar);
                         fila.appendChild(accionColumna);
-
+    
                         tabla.appendChild(fila);
                     });
                 } else {
-                    alert('No se pudieron cargar los informes.(No ha registrado ningun informe)');
+                    alert('No se pudieron cargar los informes. Es posible que no tenga informes registrados.');
                 }
             } catch (error) {
                 console.error('Error al cargar los informes:', error);
@@ -73,5 +84,6 @@
             }
         });
     </script>
+    
 </body>
 </html>
