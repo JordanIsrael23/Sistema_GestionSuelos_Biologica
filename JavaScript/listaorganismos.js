@@ -6,7 +6,7 @@ const conexion = require('./database');
 
 router.get('/listaorganismos',async(req, res)=>{
     try{
-        const respuesta = await conexion.query('select * from SM_B_RGANISMOS');
+        const respuesta = await conexion.query('select * from SM_B_ORGANISMOS');
         res.json(respuesta.rows);
     }catch(error){
         console.error('Error al consultar',error);
