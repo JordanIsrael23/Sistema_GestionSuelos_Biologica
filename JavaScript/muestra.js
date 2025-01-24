@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let descripcion = "";
         let claseColor = "";
         let fertilidadId = null;
-    
+
         if (valor >= 75) {
             calidad = "Alta fertilidad";
             descripcion = "Alto";
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion = "Bajo";
             claseColor = "calidad-mala";
         }
-    
+
         try {
             const response = await fetch(`/api/obtenerFertilidad?descripcion=${encodeURIComponent(descripcion)}`);
             if (response.ok) {
@@ -61,11 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error al obtener fertilidad:", error);
         }
-    
+
         console.log("Fertilidad calculada:", { calidad, descripcion, fertilidadId }); // Validar en la consola
         return { calidad, descripcion, claseColor, fertilidadId };
     };
-    
+
 
     // Función para agregar dinámicamente los inputs de calidad y descripción (sin ID visible)
     const agregarInputsDinamicos = ({ calidad, descripcion, claseColor }) => {
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Muestra guardada correctamente.");
-                window.location.href = "/listaMuestras.html";
+                window.location.href = "/organismos.html";
             } else {
                 alert("Error al guardar la muestra.");
             }
@@ -142,24 +142,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    let globalFertilidadId = null; // Variable global para almacenar el ID de fertilidad
+
     botonAceptar.addEventListener("click", async (event) => {
         event.preventDefault();
-    
+
         if (primerClick) {
             const form = botonAceptar.closest("form");
             if (form.checkValidity()) {
                 const { calidad, descripcion, claseColor, fertilidadId } = await determinarCalidadYFertilidad();
-    
+
                 if (!fertilidadId) {
                     console.error("Error: Fertilidad ID no encontrado.");
                     alert("No se pudo determinar el tipo de fertilidad. Por favor, revise los datos.");
                     return;
                 }
-    
+
+                globalFertilidadId = fertilidadId; // Guardamos el ID de fertilidad globalmente
                 agregarInputsDinamicos({ calidad, descripcion, claseColor });
+
                 botonAceptar.style.backgroundColor = "green";
                 botonAceptar.textContent = "Guardar muestra";
-    
+
                 primerClick = false;
             } else {
                 console.log("Formulario no válido.");
@@ -171,13 +175,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const cantidadMuestra = materiaOrganicaInput.value;
             const calidad = document.getElementById("calidad-materia").value;
             const muId = await obtenerProximoIdMuestra();
-    
+
             if (!muId) {
                 console.error("Error: No se pudo generar el ID de la muestra.");
                 alert("No se pudo generar el ID de la muestra.");
                 return;
             }
-    
+
+            if (!globalFertilidadId) {
+                console.error("Error: Fertilidad ID no está disponible.");
+                alert("Fertilidad ID no encontrado. Por favor, intente nuevamente.");
+                return;
+            }
+
             const nuevaMuestra = {
                 muId,
                 parcelaId,
@@ -185,14 +195,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 fecha,
                 cantidadMuestra,
                 calidad,
-                fertilidadId, // Este ID debe estar definido
+                fertilidadId: globalFertilidadId, // Usamos la variable global
             };
-    
-            console.log("Datos enviados:", nuevaMuestra);
-    
+
+            console.log("Datos enviados al servidor:", nuevaMuestra);
+
             await registrarMuestra(nuevaMuestra);
         }
     });
-    
-    
+
+
 });
