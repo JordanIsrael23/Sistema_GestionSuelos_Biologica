@@ -30,47 +30,47 @@
         </table>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('/listamuestras');
-                if (response.ok) {
-                    const muestras = await response.json();
+     document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/listamuestras');
 
-                    const tabla = document.getElementById('tablaMuestras');
-                    muestras.forEach(muestra => {
-                        const fila = document.createElement('tr');
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Error del servidor:', error);
+            alert('Error: ' + (error.error || 'No se pudieron cargar las muestras.'));
+            return;
+        }
 
-                        const idColumna = document.createElement('td');
-                        idColumna.textContent = muestra.id;
-                        fila.appendChild(idColumna);
+        const muestras = await response.json();
 
-                        const fechaColumna = document.createElement('td');
-                        fechaColumna.textContent = new Date(muestra.fecha).toLocaleDateString();
-                        fila.appendChild(fechaColumna);
+        if (muestras.length === 0) {
+            alert('No hay muestras disponibles.');
+            return;
+        }
 
-                        const sectorColumna = document.createElement('td');
-                        sectorColumna.textContent = muestra.sector;
-                        fila.appendChild(sectorColumna);
-
-                        const accionColumna = document.createElement('td');
-                        const boton = document.createElement('button');
-                        boton.textContent = 'Crear Informe';
-                        boton.addEventListener('click', () => {
-                            window.location.href = `/crearinforme.html?id=${muestra.id}`;
-                        });
-                        accionColumna.appendChild(boton);
-                        fila.appendChild(accionColumna);
-
-                        tabla.appendChild(fila);
-                    });
-                } else {
-                    alert('No se pudieron cargar las muestras (se requieren las muestras para crear los informes).');
-                }
-            } catch (error) {
-                console.error('Error al cargar las muestras:', error);
-                alert('Hubo un error al conectar con el servidor.');
-            }
+        // Mostrar las muestras en la tabla
+        const tabla = document.getElementById('tablaMuestras');
+        muestras.forEach((muestra) => {
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td>${muestra.id}</td>
+                <td>${new Date(muestra.fecha).toLocaleDateString()}</td>
+                <td>${muestra.sector}</td>
+                <td><button onclick="crearInforme('${muestra.id}')">Crear Informe</button></td>
+            `;
+            tabla.appendChild(fila);
         });
+    } catch (error) {
+        console.error('Error al cargar las muestras:', error);
+        alert('Hubo un error al cargar las muestras.');
+    }
+});
+
+function crearInforme(id) {
+    window.location.href = `/crearinforme.html?id=${id}`;
+}
+
+
     </script>
 </body>
 </html>

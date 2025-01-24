@@ -356,10 +356,11 @@ app.get('/imagen/:cedula', (req, res) => {
 
 app.get('/listamuestras', async (req, res) => {
     if (!req.session.user) {
+        console.error('No se ha iniciado sesión.');
         return res.status(401).json({ error: 'No has iniciado sesión' });
     }
 
-    const userId = req.session.user.user_id; // Obtener el ID del usuario en sesión
+    const userId = req.session.user.user_id;
 
     const query = `
         SELECT 
@@ -367,19 +368,31 @@ app.get('/listamuestras', async (req, res) => {
             MU.MU_FECHA AS fecha, 
             MU.MU_SECTOR AS sector
         FROM SM_B_MUESTRAS MU
-        INNER JOIN SM_Q_PARCELAS PARC ON MU.PARC_ID = PARC.PARC_ID
+        INNER JOIN SM_PARCELAS PARC ON MU.PARC_ID = PARC.PARC_ID
         WHERE PARC.USER_ID = $1
         ORDER BY MU.MU_FECHA DESC
     `;
 
     try {
+        console.log('Consultando muestras para el usuario:', userId);
+
         const resultado = await conexion.query(query, [userId]);
-        res.json(resultado.rows); // Devuelve las muestras al cliente
+        console.log('Resultados obtenidos:', resultado.rows);
+
+        if (resultado.rows.length === 0) {
+            console.warn('No hay muestras disponibles para el usuario.');
+            return res.status(404).json({ error: 'No hay muestras disponibles.' });
+        }
+
+        res.status(200).json(resultado.rows);
     } catch (error) {
         console.error('Error al obtener las muestras:', error);
-        res.status(500).json({ error: 'Error al obtener las muestras' });
+        res.status(500).json({ error: 'Error al obtener las muestras.' });
     }
 });
+
+
+
 /////////////////
 ////////////////
 ////////////////
