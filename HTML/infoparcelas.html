@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Parcelas</title>
+    <link rel="stylesheet" href="../CSS/infoparcelas.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar">
+        </a>
+        <h1>Lista de Parcelas</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Parcela</th>
+                    <th>Nombre</th>
+                    <th>Área (m²)</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaParcelas">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/listarparcelasadmin');
+                if (response.ok) {
+                    const parcelas = await response.json();
+                    const tabla = document.getElementById('tablaParcelas');
+    
+                    if (parcelas.length === 0) {
+                        tabla.innerHTML = '<tr><td colspan="7" style="text-align: center;">No se encontraron parcelas.</td></tr>';
+                        return;
+                    }
+    
+                    parcelas.forEach(parcela => {
+                        const fila = document.createElement('tr');
+    
+                        const idColumna = document.createElement('td');
+                        idColumna.textContent = parcela.id;
+                        fila.appendChild(idColumna);
+    
+                        const nombreColumna = document.createElement('td');
+                        nombreColumna.textContent = parcela.nombre;
+                        fila.appendChild(nombreColumna);
+    
+                        const areaColumna = document.createElement('td');
+                        areaColumna.textContent = `${parcela.area.toFixed(2)} m²`;
+                        fila.appendChild(areaColumna);
+    
+                        const latitudColumna = document.createElement('td');
+                        latitudColumna.textContent = parcela.latitud;
+                        fila.appendChild(latitudColumna);
+    
+                        const longitudColumna = document.createElement('td');
+                        longitudColumna.textContent = parcela.longitud;
+                        fila.appendChild(longitudColumna);
+    
+                        const descripcionColumna = document.createElement('td');
+                        descripcionColumna.textContent = parcela.descripcion || 'Sin descripción';
+                        fila.appendChild(descripcionColumna);
+    
+                        const accionColumna = document.createElement('td');
+                        const botonDescargar = document.createElement('button');
+                        botonDescargar.textContent = 'Descargar PDF';
+                        botonDescargar.addEventListener('click', () => {
+                            window.location.href = `/descargarpdfparcela/${parcela.id}`;
+                        });
+                        accionColumna.appendChild(botonDescargar);
+                        fila.appendChild(accionColumna);
+    
+                        tabla.appendChild(fila);
+                    });
+                } else {
+                    alert('No se pudieron cargar las parcelas.');
+                }
+            } catch (error) {
+                console.error('Error al cargar las parcelas:', error);
+                alert('Hubo un error al conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>
