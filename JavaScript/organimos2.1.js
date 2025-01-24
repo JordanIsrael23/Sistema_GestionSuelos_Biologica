@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Itera sobre los datos y agrega opciones al <select>
         tipos.forEach(item => {
             const opcion = document.createElement('option');
-            opcion.value = item.to_id; // Usa el ID como valor de la opción
-            opcion.textContent = item.to_nombre; // Usa el nombre como texto visible
+            opcion.value = item.tor_id; // Usa el ID como valor de la opción
+            opcion.textContent = item.tor_nombres; // Usa el nombre como texto visible
             seleccion.appendChild(opcion);
         });
     } catch (error) {
