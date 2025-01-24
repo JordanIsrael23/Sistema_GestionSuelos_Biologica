@@ -30,8 +30,10 @@ const session = require('express-session');
 const organismosruta = require('./organismos');
 app.use('/',organismosruta);
 
-const lista = require('/listaorganismos');
+const lista = require('./listaorganismos');
 app.use('/',lista);
+
+
 
 app.use(
     session({
