@@ -26,9 +26,15 @@ const conexion = require('./database');
 // esta es la session no tocar
 const session = require('express-session');
 
-
+///// Jordan Rutas
 const organismosruta = require('./organismos');
 app.use('/',organismosruta);
+
+const lista = require('./listaorganismos');
+app.use('/',lista);
+
+const orden = require('./organismo2');
+app.use('/',orden);
 
 
 app.use(
