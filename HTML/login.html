@@ -55,20 +55,26 @@
   <script>
     document.getElementById('login-form').addEventListener('submit', async (event) => {
       event.preventDefault(); // Evita el envío tradicional del formulario
-
+  
       const user_id = document.getElementById('user_id').value;
       const password = document.getElementById('password').value;
-
+  
       try {
         const response = await fetch('/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id, password }),
         });
-
+  
         if (response.ok) {
-          // Redirige si el inicio de sesión es exitoso
-          window.location.href = '/pagusuario.html';
+          const data = await response.json(); // Lee la respuesta del servidor
+          if (data.tipus_id === 4) {
+            // Redirige a la página de administrador si es docente
+            window.location.href = '/pagadmin.html';
+          } else {
+            // Redirige a la página de usuario si es estudiante
+            window.location.href = '/pagusuario.html';
+          }
         } else {
           // Muestra el mensaje flotante si las credenciales son incorrectas
           const errorMessage = document.getElementById('error-message');
@@ -81,5 +87,6 @@
       }
     });
   </script>
+  
 </body>
 </html>

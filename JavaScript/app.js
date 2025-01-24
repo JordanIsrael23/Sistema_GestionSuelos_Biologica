@@ -157,21 +157,32 @@ app.post('/login', async (req, res) => {
 
         if (resultado.rows.length > 0) {
             const user = resultado.rows[0];
+            console.log('Usuario obtenido de la base de datos:', user);
+
             const passwordMatch = await bcrypt.compare(password, user.user_password);
 
             if (passwordMatch) {
-                req.session.user = user; // Guardar datos en sesión
-                res.redirect('/pagusuario.html');
+                console.log('TIPUS_ID del usuario:', user.tipus_id);
+
+                req.session.user = user;
+
+                // Envía la información del usuario al cliente
+                res.json({ tipus_id: user.tipus_id });
             } else {
+                console.log('Contraseña incorrecta.');
                 res.status(401).json({ error: 'Cédula o contraseña incorrectos' });
             }
         } else {
+            console.log('Usuario no encontrado.');
             res.status(401).json({ error: 'Cédula o contraseña incorrectos' });
         }
     } catch (err) {
+        console.error('Error en el proceso de login:', err);
         res.status(500).json({ error: 'Hubo un error al procesar la solicitud.' });
     }
 });
+
+
 
 
 /////////
