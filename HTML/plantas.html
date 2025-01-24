@@ -20,20 +20,21 @@
         <div class="caja2">
 
             <form id="formulario" action="" method="post">
-                <h1>Seleccionar el Tipo de Plantas</h1>
-                <select id="tipos" name="tipos" required>
-                    <option>Tipos</option>
-                </select>
                 <h1>Seleccionar </h1>
                 <select id="plantas" name="plantas" required>
                     <option value="">Plantas</option>
                 </select>
-                <button>Agregar Planta</button>
+                <button onclick="agregar()" class="btn-agregarplanta">Agregar Planta</button>
                 <br><br>
                 <button>Aceptar</button>
             </form>
         </div>
     </div>
+    <script>
+       function agregar (){
+           window.location.href="../HTML/agregarplanta.html"
+       }
+   </script>
     <script src="/js/plantasdatos.js"></script>
     <script src="/js/agregarplantas.js"></script>
 </body>

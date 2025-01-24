@@ -11,8 +11,7 @@
 
 <body>
     <header class="header">
-        <!-- Ícono de la flecha -->
-        <a href="javascript:history.back()" class="back-icon">
+        <a href="../HTML/plantas.html" class="back-icon">
             <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
         </a>
         <h1>Gestión Biológica de Suelos</h1>
@@ -24,27 +23,31 @@
         <label for="plant-name">Nombre de la Planta:</label>
         <input type="text" id="plant-name" name="plant-name" required>
 
-        <label for="plant-type">Tipo de Planta:</label>
-        <input type="text" id="plant-type" name="plant-type" required>
+        <select id="plantas" name="plantas" required>
+            <option value="">Tipo de la planta</option>
+        </select>
 
         <label for="plant-description">Descripción:</label>
         <textarea id="plant-description" name="plant-description" rows="4" required></textarea>
 
         <div class="buttons">
             <button onclick="guardar()" class="btn-guardar">Guardar</button>
-            <button type="reset">Cancelar</button>
-        </div>
+            <button onclick="cancelar()" class="btn-cancelar">Cancelar</button>
+        </div><br><br>
         <div class="btnagregar- tipos planta">
             <button onclick="agregar()" class="btn-agregar">Agregar Tipo de Planta</button>
 
         </div>
     </form>
     <script>
-         function guardar() {
+        function guardar() {
             window.location.href = "../HTML/guardarplantas.html";
         }
-        function agregar (){
-            window.location.href="../HTML/agregartiposplantas.html"
+        function agregar() {
+            window.location.href = "../HTML/agregartiposplantas.html"
+        }
+        function cancelar(){
+            window.location.href="../HTML/plantas.html"
         }
     </script>
 </body>
