@@ -145,15 +145,6 @@ button[type="reset"] {
     outline: none; /* Eliminar contorno al hacer foco */
     box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Efecto de sombra verde */
 }
-
-button[type="reset"] {
-    background-color: #cc0000; /* Rojo para cancelar */
-}
-
-button[type="reset"]:hover {
-    background-color: #ff1a1a; /* Rojo claro para cancelar */
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -168,6 +159,28 @@ button[type="reset"]:hover {
     width: 150px;
     padding: 12px;
     background-color: #009900; /* Verde seguro */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    display: inline-block;
+
+}
+select {
+    width: 105%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc; /* Gris claro seguro */
+    border-radius: 6px;
+    font-size: 16px;
+}
+.btn-cancelar{
+    width: 150px;
+    padding: 12px;
+    background-color: red;
     color: white;
     border: none;
     border-radius: 6px;
