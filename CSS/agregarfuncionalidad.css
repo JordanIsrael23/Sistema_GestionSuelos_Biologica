@@ -1,0 +1,80 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9; /* Verde claro para el fondo */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Form container */
+form {
+    background-color: #ffffff; /* Blanco para el formulario */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Form title */
+h1 {
+    text-align: center;
+    color: #388e3c; /* Verde oscuro */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Label styles */
+label {
+    font-weight: bold;
+    color: #2e7d32; /* Verde intermedio */
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input and textarea styles */
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #a5d6a7; /* Verde suave */
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #f1f8e9; /* Fondo verde muy claro */
+}
+
+textarea {
+    resize: none;
+}
+
+/* Read-only fields */
+input[readonly] {
+    background-color: #e0e0e0; /* Gris claro */
+    color: #757575; /* Texto gris oscuro */
+    cursor: not-allowed;
+}
+
+/* Button styles */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #43a047; /* Verde seguro */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2e7d32; /* Verde más oscuro al pasar el cursor */
+}
