@@ -571,3 +571,94 @@ app.post('/registrarparcela', async (req, res) => {
         res.redirect('/mensaje-error.html');
     }
 });
+
+
+////////
+//////////
+///////
+
+app.post('/tiposplantas', async (req, res) => {
+    const { detalles } = req.body;
+  
+    // Validación
+    if (!detalles) {
+      return res.status(400).json({ message: 'El campo "Detalles" es obligatorio' });
+    }
+  
+    try {
+      // Validar si el tipo de planta ya existe
+      const queryCheck = 'SELECT COUNT(*) AS count FROM SM_B_TIPOPLANTAS WHERE TPL_DETALLES = $1';
+      const resultCheck = await conexion.query(queryCheck, [detalles]);
+  
+      if (parseInt(resultCheck.rows[0].count) > 0) {
+        return res.status(409).json({ message: 'Este tipo de planta ya está registrado' });
+      }
+  
+      // Consulta para obtener el último ID registrado
+      const queryLastId = 'SELECT TPL_ID FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID DESC LIMIT 1';
+      const result = await conexion.query(queryLastId);
+  
+      // Generar el siguiente ID
+      let nextId;
+      if (result.rows.length > 0) {
+        // Extrae el número del último ID (asume un formato como 'TPL001')
+        const lastId = result.rows[0].tpl_id;
+        const numericPart = parseInt(lastId.slice(3)); // Extrae la parte numérica
+        nextId = `TPL${String(numericPart + 1).padStart(3, '0')}`; // Incrementa y genera el nuevo ID
+      } else {
+        nextId = 'TPL001'; // Primer ID si no hay registros
+      }
+  
+      // Inserta el nuevo tipo de planta
+      const queryInsert = 'INSERT INTO SM_B_TIPOPLANTAS (TPL_ID, TPL_DETALLES) VALUES ($1, $2)';
+      await conexion.query(queryInsert, [nextId, detalles]);
+  
+      // Respuesta al cliente
+      res.status(201).json({
+        message: 'Tipo de planta agregado exitosamente',
+        planta: { TPL_ID: nextId, TPL_DETALLES: detalles },
+      });
+    } catch (error) {
+      console.error('Error al agregar el tipo de planta:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  });
+//////
+///////
+//////
+
+app.get('/cargartiposplantas', async (req, res) => {
+    try {
+      const query = 'SELECT TPL_ID, TPL_DETALLES FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID ASC';
+      const result = await conexion.query(query);
+      console.log('Datos obtenidos de la base de datos:', result.rows);
+  
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error al obtener los tipos de plantas:', error);
+      res.status(500).json({ message: 'Error al obtener los tipos de plantas' });
+    }
+  });
+//////
+/////
+app.delete('/tiposplantas/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log('ID recibido para eliminar:', id); // Verifica el ID recibido
+  
+    try {
+      const query = 'DELETE FROM SM_B_TIPOPLANTAS WHERE TPL_ID = $1';
+      const result = await conexion.query(query, [id]);
+      console.log('Resultado de la consulta:', result.rowCount); // Muestra el número de filas afectadas
+  
+      if (result.rowCount > 0) {
+        res.status(200).json({ message: 'Tipo de planta eliminado exitosamente' });
+      } else {
+        res.status(404).json({ message: 'Tipo de planta no encontrado' });
+      }
+    } catch (error) {
+      console.error('Error al eliminar el tipo de planta:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  });
+  
+  
