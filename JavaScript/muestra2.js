@@ -43,4 +43,24 @@ router.get("/obtenerFertilidad", async (req, res) => {
     }
 });
 
+// Endpoint para guardar la muestra
+router.post("/guardarMuestra", async (req, res) => {
+    const { muId, parcelaId, ubicacion, fecha, cantidadMuestra, calidad, fertilidadId } = req.body;
+
+    try {
+        await db.query(
+            `INSERT INTO SM_B_MUESTRAS 
+            (MU_ID, FER_ID, PARC_ID, MU_CANTIDADMATERIAORGANICA, MU_CALIDADMATERIAORGANICA, MU_FECHA, MU_CANTIDAD, MU_SECTOR) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+            [muId, fertilidadId, parcelaId, cantidadMuestra, calidad, fecha, cantidadMuestra, ubicacion]
+        );
+
+        res.status(201).json({ success: "Muestra guardada correctamente" });
+    } catch (error) {
+        console.error("Error al guardar la muestra:", error);
+        res.status(500).json({ error: "Error al guardar la muestra en la base de datos." });
+    }
+});
+
+
 module.exports = router;
