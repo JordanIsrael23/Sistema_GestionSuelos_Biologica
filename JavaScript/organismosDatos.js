@@ -60,45 +60,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+
+
     // Lógica para guardar el organismo seleccionado asociado a la muestra
-    const botonAceptar = document.querySelector("button[type='submit']"); // Botón para aceptar
+    const botonAceptar = document.querySelector("#botonAceptar"); 
+
     botonAceptar.addEventListener("click", async (event) => {
         event.preventDefault(); // Evitar el envío por defecto del formulario
-
+    
         const organismoSeleccionado = organismosSelect.value;
-
+    
         if (!organismoSeleccionado) {
             alert("Por favor selecciona un organismo antes de continuar.");
             return;
         }
-
-        // Crear el detalle de muestra con el organismo seleccionado
+    
+        // Crear el detalle de muestra con datos necesarios
         const detalleMuestra = {
-            dmId: "DM1", // Genera el ID del detalle según la lógica que uses
             orId: organismoSeleccionado,
             muId: muestraId, // Asociar con la muestra
-            cantidadOrganismos: 0, // Esto puede ser dinámico si tienes un campo para la cantidad
         };
-
+    
         console.log("Detalle de muestra a guardar:", detalleMuestra);
-
+    
         try {
-            const respuesta = await fetch("/guardarDetalleMuestra", {
+            const respuesta = await fetch("/api/guardarDetalleMuestra", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(detalleMuestra),
             });
-
+    
             if (respuesta.ok) {
-                alert("Detalle de muestra guardado correctamente.");
-                // Aquí podrías redirigir a otra página si es necesario
+                const data = await respuesta.json();
+    
+                // Mostrar mensaje de éxito
+                alert("El organismo se ha ingresado.");
+    
+                // Restablecer los campos del formulario
+                tiposSelect.value = ""; // Restablecer el select de tipos
+                organismosSelect.innerHTML = '<option value="">Organismos</option>'; // Restablecer el select de organismos
             } else {
                 alert("Error al guardar el detalle de muestra.");
             }
         } catch (error) {
             console.error("Error al guardar el detalle de muestra:", error);
+            alert("Hubo un problema al conectar con el servidor.");
         }
     });
+    
+    
+    
 });
