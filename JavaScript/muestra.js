@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Muestra guardada correctamente.");
-                window.location.href = "/listaMuestras.html";
+                window.location.href = "/organismos.html";
             } else {
                 alert("Error al guardar la muestra.");
             }
