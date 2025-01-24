@@ -33,6 +33,8 @@ app.use('/',organismosruta);
 const lista = require('./listaorganismos');
 app.use('/',lista);
 
+const orden = require('./organismo2');
+app.use('/',orden);
 
 
 app.use(
