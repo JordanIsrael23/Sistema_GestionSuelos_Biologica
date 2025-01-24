@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const tiposSelect = document.getElementById('tipos'); // Primer select
-    const organismosSelect = document.getElementById('organismos');
-    
+    const organismosSelect = document.getElementById('organismo');
+
     tiposSelect.addEventListener('change', async () => {
         const to_id = tiposSelect.value; // ID seleccionado en el primer select
         organismosSelect.innerHTML = '<option value="">Selecciona un organismo</option>'; // Limpia el segundo select
