@@ -660,5 +660,19 @@ app.delete('/tiposplantas/:id', async (req, res) => {
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   });
-  
+////////////
+///////////
+/////////
+
+// Ruta para obtener todos los informes
+app.get('/listainformesadmin', async (req, res) => {
+    try {
+        const query = 'SELECT IN_ID AS id, IN_TITULO AS titulo, MU_ID AS mu_id FROM SM_B_INFORMES';
+        const result = await conexion.query(query);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener los informes:', error);
+        res.status(500).json({ message: 'Error al obtener los informes' });
+    }
+});
   
