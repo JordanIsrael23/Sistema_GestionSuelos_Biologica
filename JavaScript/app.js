@@ -711,12 +711,26 @@ app.delete('/tiposplantas/:id', async (req, res) => {
 // Ruta para obtener todos los informes
 app.get('/listainformesadmin', async (req, res) => {
     try {
-        const query = 'SELECT IN_ID AS id, IN_TITULO AS titulo, MU_ID AS mu_id FROM SM_B_INFORMES';
+        const query = `
+            SELECT 
+                INF.IN_ID AS id, 
+                INF.IN_TITULO AS titulo, 
+                MU.MU_FECHA AS fecha
+            FROM SM_B_INFORMES INF
+            INNER JOIN SM_B_MUESTRAS MU ON INF.MU_ID = MU.MU_ID
+            ORDER BY MU.MU_FECHA DESC;
+        `;
+
         const result = await conexion.query(query);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron informes.' });
+        }
+
         res.status(200).json(result.rows);
     } catch (error) {
         console.error('Error al obtener los informes:', error);
-        res.status(500).json({ message: 'Error al obtener los informes' });
+        res.status(500).json({ error: 'Error al obtener los informes.' });
     }
 });
 
@@ -765,5 +779,150 @@ app.post('/agregar-funcionalidad', async (req, res) => {
         res.redirect(`/funcionalidadesexito.html?`);
     } catch (error) {
         res.redirect(`/funcionalidadesexito.html?`);
+    }
+});
+
+////////////
+////////////
+////////////
+app.get('/listarparcelasadmin', async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                PARC_ID AS id, 
+                PARC_NOMBRE AS nombre, 
+                PARC_AREA AS area, 
+                PARC_COORD_LA AS latitud, 
+                PARC_COORD_LO AS longitud, 
+                PARC_DESCRIPCION AS descripcion
+            FROM SM_PARCELAS
+            ORDER BY PARC_NOMBRE ASC;
+        `;
+
+        const result = await conexion.query(query);
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener las parcelas:', error);
+        res.status(500).json({ error: 'Error al obtener las parcelas' });
+    }
+});
+
+
+app.get('/descargarpdfparcela/:id', async (req, res) => {
+    const parcelaId = req.params.id;
+
+    try {
+        // Consultar información de la parcela
+        const parcelaQuery = `
+            SELECT 
+                PARC_ID AS id, 
+                PARC_NOMBRE AS nombre, 
+                PARC_AREA AS area, 
+                PARC_COORD_LA AS latitud, 
+                PARC_COORD_LO AS longitud, 
+                PARC_DESCRIPCION AS descripcion
+            FROM SM_PARCELAS
+            WHERE PARC_ID = $1;
+        `;
+        const parcelaResult = await conexion.query(parcelaQuery, [parcelaId]);
+
+        if (parcelaResult.rows.length === 0) {
+            return res.status(404).send('Parcela no encontrada.');
+        }
+
+        const parcela = parcelaResult.rows[0];
+
+        // Consultar muestras, organismos, plantas y tipos relacionados
+        const muestrasQuery = `
+            SELECT MU_ID AS id, MU_FECHA AS fecha, MU_SECTOR AS sector 
+            FROM SM_B_MUESTRAS
+            WHERE PARC_ID = $1;
+        `;
+        const muestrasResult = await conexion.query(muestrasQuery, [parcelaId]);
+
+        const organismosQuery = `
+            SELECT OR_NOMBRE AS nombre, TO_NOMBRE AS tipo 
+            FROM SM_B_ORGANISMOS 
+            INNER JOIN SM_B_TIPOSORGANISMOS ON SM_B_ORGANISMOS.TO_ID = SM_B_TIPOSORGANISMOS.TO_ID
+            WHERE OR_ID IN (
+                SELECT OR_ID 
+                FROM SM_B_DETALLESMUESTRAS 
+                WHERE MU_ID IN (
+                    SELECT MU_ID FROM SM_B_MUESTRAS WHERE PARC_ID = $1
+                )
+            );
+        `;
+        const organismosResult = await conexion.query(organismosQuery, [parcelaId]);
+
+        const plantasQuery = `
+            SELECT PL_NOMBRE AS nombre, TPL_DETALLES AS tipo
+            FROM SM_B_PLANTAS 
+            INNER JOIN SM_B_TIPOPLANTAS ON SM_B_PLANTAS.TPL_ID = SM_B_TIPOPLANTAS.TPL_ID
+            WHERE DM_ID IN (
+                SELECT DM_ID 
+                FROM SM_B_DETALLESMUESTRAS 
+                WHERE MU_ID IN (
+                    SELECT MU_ID FROM SM_B_MUESTRAS WHERE PARC_ID = $1
+                )
+            );
+        `;
+        const plantasResult = await conexion.query(plantasQuery, [parcelaId]);
+
+        // Crear el documento PDF
+        const doc = new PDFDocument({ margin: 40 });
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=parcela_${parcela.id}.pdf`);
+        doc.pipe(res);
+
+        // Título del informe
+        doc.fontSize(20).font('Helvetica-Bold').text(`Información de la Parcela: ${parcela.nombre}`, { align: 'center' });
+        doc.moveDown(1.5);
+
+        // Información general de la parcela
+        doc.fontSize(14).font('Helvetica-Bold').text('Información General:', { underline: true });
+        doc.fontSize(12).font('Helvetica').text(`ID Parcela: ${parcela.id}`);
+        doc.text(`Área: ${parcela.area} m²`);
+        doc.text(`Latitud: ${parcela.latitud}`);
+        doc.text(`Longitud: ${parcela.longitud}`);
+        doc.text(`Descripción: ${parcela.descripcion || 'Sin descripción'}`);
+        doc.moveDown(1.5);
+
+        // Información de muestras
+        doc.fontSize(14).font('Helvetica-Bold').text('Muestras:', { underline: true });
+        if (muestrasResult.rows.length > 0) {
+            muestrasResult.rows.forEach((muestra, index) => {
+                doc.fontSize(12).font('Helvetica').text(`${index + 1}. ID: ${muestra.id}, Fecha: ${new Date(muestra.fecha).toLocaleDateString()}, Sector: ${muestra.sector}`);
+            });
+        } else {
+            doc.fontSize(12).font('Helvetica').text('No hay muestras registradas.');
+        }
+        doc.moveDown(1.5);
+
+        // Información de organismos
+        doc.fontSize(14).font('Helvetica-Bold').text('Organismos:', { underline: true });
+        if (organismosResult.rows.length > 0) {
+            organismosResult.rows.forEach((organismo, index) => {
+                doc.fontSize(12).font('Helvetica').text(`${index + 1}. Nombre: ${organismo.nombre}, Tipo: ${organismo.tipo}`);
+            });
+        } else {
+            doc.fontSize(12).font('Helvetica').text('No hay organismos registrados.');
+        }
+        doc.moveDown(1.5);
+
+        // Información de plantas
+        doc.fontSize(14).font('Helvetica-Bold').text('Plantas:', { underline: true });
+        if (plantasResult.rows.length > 0) {
+            plantasResult.rows.forEach((planta, index) => {
+                doc.fontSize(12).font('Helvetica').text(`${index + 1}. Nombre: ${planta.nombre}, Tipo: ${planta.tipo}`);
+            });
+        } else {
+            doc.fontSize(12).font('Helvetica').text('No hay plantas registradas.');
+        }
+
+        doc.end();
+    } catch (error) {
+        console.error('Error al generar el PDF:', error);
+        res.status(500).send('Error al generar el PDF.');
     }
 });
