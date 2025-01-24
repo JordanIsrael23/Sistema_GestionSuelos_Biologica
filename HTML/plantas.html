@@ -24,15 +24,23 @@
                 <select id="plantas" name="plantas" required>
                     <option value="">Plantas</option>
                 </select>
-                <button onclick="agregar()" class="btn-agregarplanta">Agregar Planta</button>
-                <br><br>
-                <button>Aceptar</button>
+                <div class="buttons">
+                    <button onclick="agregar()" class="btn-agregar">Agregar</button>
+                    <button onclick="aceptar()" class="btn-aceptar">Aceptar</button>
+                    <button onclick="cancelar()" class="btn-cancelar">Cancelar</button>
+                </div><br><br>
             </form>
         </div>
     </div>
     <script>
        function agregar (){
            window.location.href="../HTML/agregarplanta.html"
+       }
+       function aceptar (){
+           window.location.href="../HTML/guardarplantas.html"
+       }
+       function cancelar(){
+        window.location.href="../HTML/organismos.html"
        }
    </script>
     <script src="/js/plantasdatos.js"></script>
