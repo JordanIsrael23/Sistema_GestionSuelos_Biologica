@@ -11,43 +11,129 @@
 
 <body>
     <header class="header">
-        <a href="../HTML/plantas.html" class="back-icon">
+        <a href="javascript:history.back()" class="back-icon">
             <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
         </a>
         <h1>Gestión Biológica de Suelos</h1>
     </header>
 
-    <form action="/guardar-planta" method="post" enctype="multipart/form-data">
+    <form id="formulario-planta" method="post">
         <h2>Agregar Nueva Planta</h2>
 
         <label for="plant-name">Nombre de la Planta:</label>
         <input type="text" id="plant-name" name="plant-name" required>
 
+        <label for="plantas">Tipo de la planta:</label>
         <select id="plantas" name="plantas" required>
-            <option value="">Tipo de la planta</option>
+            <option value="">Seleccione un tipo</option>
         </select>
 
-        <label for="plant-description">Descripción:</label>
-        <textarea id="plant-description" name="plant-description" rows="4" required></textarea>
-
         <div class="buttons">
-            <button onclick="guardar()" class="btn-guardar">Guardar</button>
-            <button onclick="cancelar()" class="btn-cancelar">Cancelar</button>
+            <button type="button" class="btn-guardar">Guardar</button>
+            <button type="button" onclick="cancelar()" class="btn-cancelar">Cancelar</button>
         </div><br><br>
-        <div class="btnagregar- tipos planta">
-            <button onclick="agregar()" class="btn-agregar">Agregar Tipo de Planta</button>
 
+        <div class="btnagregar-tipos-planta">
+            <button type="button" onclick="agregarTipo()" class="btn-agregar">Agregar Tipo de Planta</button>
         </div>
     </form>
+
     <script>
-        function guardar() {
-            window.location.href = "../HTML/guardarplantas.html";
+        // Capturar el dmId desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const dmId = urlParams.get("dmId"); // Asegúrate de usar el mismo nombre que aparece en la URL
+
+        if (!dmId) {
+            alert("No se encontró el ID de detalle muestra en la URL.");
+            console.error("Parámetros de la URL:", window.location.search);
+            throw new Error("No se encontró el ID de detalle muestra.");
         }
-        function agregar() {
-            window.location.href = "../HTML/agregartiposplantas.html"
+
+        // Cargar tipos de plantas dinámicamente
+        document.addEventListener("DOMContentLoaded", async () => {
+            const selectPlantas = document.getElementById("plantas");
+
+            try {
+                console.log("Intentando cargar tipos de plantas...");
+                const response = await fetch("/cargartiposplantas");
+                if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+
+                const tiposPlantas = await response.json();
+                console.log("Datos recibidos del servidor:", tiposPlantas);
+
+                selectPlantas.innerHTML = '<option value="">Seleccione un tipo</option>';
+
+                if (tiposPlantas.length === 0) {
+                    console.warn("No se encontraron tipos de plantas.");
+                    const option = document.createElement("option");
+                    option.value = "";
+                    option.textContent = "No hay tipos de plantas disponibles";
+                    selectPlantas.appendChild(option);
+                    return;
+                }
+
+                tiposPlantas.forEach(tipo => {
+                    console.log(`Agregando opción: ID=${tipo.tpl_id}, Detalle=${tipo.tpl_detalles}`);
+                    const option = document.createElement("option");
+                    option.value = tipo.tpl_id;
+                    option.textContent = tipo.tpl_detalles;
+                    selectPlantas.appendChild(option);
+                });
+
+                console.log("Opciones finales en el select:", selectPlantas.innerHTML);
+            } catch (error) {
+                console.error("Error al cargar los tipos de plantas:", error);
+                selectPlantas.innerHTML = '<option value="">Error al cargar los tipos de plantas</option>';
+            }
+        });
+
+        // Manejar el evento del botón "Guardar"
+        document.querySelector(".btn-guardar").addEventListener("click", async (e) => {
+            e.preventDefault(); // Evitar el envío del formulario por defecto
+
+            const plantName = document.getElementById("plant-name").value;
+            const plantType = document.getElementById("plantas").value;
+
+            if (!plantName || !plantType) {
+                alert("Por favor completa todos los campos.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/guardar-planta", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: plantName,
+                        type: plantType,
+                        dmId: dmId // Incluir el ID de detalle muestra
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Planta guardada exitosamente con ID: ${result.id}`);
+                } else {
+                    const error = await response.json();
+                    console.error("Error al guardar la planta:", error);
+                    alert("Error al guardar la planta.");
+                }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                alert("Hubo un problema al conectar con el servidor.");
+            }
+        });
+
+        // Función para redirigir al formulario de agregar tipo de planta
+        function agregarTipo() {
+            window.location.href = "../agregartiposplantas.html";
         }
-        function cancelar(){
-            window.location.href="../HTML/plantas.html"
+
+        // Función para cancelar y regresar a la lista de plantas
+        function cancelar() {
+            window.location.href = "../plantas.html";
         }
     </script>
 </body>

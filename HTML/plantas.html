@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/plantas.css">
-    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+    <link rel="icon" href="../ICONOS/icons8-left-2-50.png" type="image/png">
     <title>Plantas</title>
 </head>
 
@@ -18,33 +18,94 @@
     </header>
     <div class="caja">
         <div class="caja2">
-
-            <form id="formulario" action="" method="post">
-                <h1>Seleccionar </h1>
-                <select id="plantas" name="plantas" required>
-                    <option value="">Plantas</option>
-                </select>
-                <div class="buttons">
-                    <button onclick="agregar()" class="btn-agregar">Agregar</button>
-                    <button onclick="aceptar()" class="btn-aceptar">Aceptar</button>
-                    <button onclick="cancelar()" class="btn-cancelar">Cancelar</button>
-                </div><br><br>
-            </form>
+            <h1>Plantas de la Muestra</h1>
+            <table id="tabla-plantas">
+                <thead>
+                    <tr>
+                        <th>ID Planta</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se generarán dinámicamente -->
+                </tbody>
+            </table>
+            <div class="buttons">
+                <button type="button" onclick="agregar()" class="btn-agregar">Agregar Planta</button>
+            </div>
         </div>
     </div>
+
     <script>
-       function agregar (){
-           window.location.href="../HTML/agregarplanta.html"
-       }
-       function aceptar (){
-           window.location.href="../HTML/guardarplantas.html"
-       }
-       function cancelar(){
-        window.location.href="../HTML/organismos.html"
-       }
-   </script>
-    <script src="/js/plantasdatos.js"></script>
-    <script src="/js/agregarplantas.js"></script>
+        // Función para cargar las plantas
+        async function cargarPlantas() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dmId = urlParams.get("dmId"); // Obtener el ID de detalle muestra
+
+            if (!dmId) {
+                alert("No se encontró el ID de detalle muestra en la URL.");
+                console.error("Parámetros de la URL:", window.location.search);
+                return;
+            }
+
+            const tablaPlantas = document.querySelector("#tabla-plantas tbody");
+
+            // Limpiar la tabla antes de cargar nuevas plantas
+            tablaPlantas.innerHTML = "";
+
+            try {
+                // Realizar la solicitud al backend para obtener las plantas de la muestra
+                const response = await fetch(`/plantas-por-muestra/${dmId}`);
+                if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+
+                const plantas = await response.json();
+                console.log("Plantas asociadas:", plantas);
+
+                if (plantas.length === 0) {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = '<td colspan="3" style="text-align: center;">No hay plantas asociadas a esta muestra.</td>';
+                    tablaPlantas.appendChild(fila);
+                    return;
+                }
+
+                // Poblar la tabla con las plantas obtenidas
+                plantas.forEach(planta => {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td>${planta.pl_id}</td>
+                        <td>${planta.pl_nombre}</td>
+                        <td>${planta.tpl_detalles}</td>
+                    `;
+                    tablaPlantas.appendChild(fila);
+                });
+            } catch (error) {
+                console.error("Error al cargar las plantas:", error);
+                const fila = document.createElement("tr");
+                fila.innerHTML = '<td colspan="3" style="text-align: center;">Error al cargar las plantas.</td>';
+                tablaPlantas.appendChild(fila);
+            }
+        }
+
+        // Evento `DOMContentLoaded` para cargar las plantas al abrir la página
+        document.addEventListener("DOMContentLoaded", cargarPlantas);
+
+        // Evento `pageshow` para refrescar la tabla al regresar a la página desde el historial
+        window.addEventListener("pageshow", cargarPlantas);
+
+        // Función para redirigir a agregar una nueva planta
+        function agregar() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dmId = urlParams.get("dmId");
+
+            if (!dmId) {
+                alert("No se encontró el ID de detalle muestra en la URL.");
+                return;
+            }
+
+            window.location.href = `../agregarplanta.html?dmId=${dmId}`;
+        }
+    </script>
 </body>
 
 </html>

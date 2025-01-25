@@ -929,3 +929,88 @@ app.get('/descargarpdfparcela/:id', async (req, res) => {
         res.status(500).send('Error al generar el PDF.');
     }
 });
+
+//////
+////////
+//////////
+// Ruta para cargar tipos de plantas desde la base de datos
+app.get('/cargartiposplantas', async (req, res) => {
+    try {
+        const query = 'SELECT TPL_ID, TPL_DETALLES FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID ASC';
+        const result = await conexion.query(query);
+
+        console.log('Datos obtenidos de la base de datos:', result.rows); // Log para verificar
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener los tipos de plantas:', error);
+        res.status(500).json({ message: 'Error al obtener los tipos de plantas' });
+    }
+});
+/////////
+////////
+//////
+
+app.post('/guardar-planta', async (req, res) => {
+    const { name, type, dmId } = req.body;
+
+    // Validar que los campos requeridos no estén vacíos
+    if (!name || !type || !dmId) {
+        return res.status(400).json({ error: 'El nombre, el tipo de planta y el ID de detalle muestra son obligatorios.' });
+    }
+
+    try {
+        // Consulta para obtener el último ID de la planta
+        const result = await conexion.query('SELECT MAX(PL_ID) AS max_id FROM SM_B_PLANTAS');
+        const lastId = result.rows[0].max_id || 'PL000'; // Si no hay registros, usa PL000 como base
+
+        const numericPart = parseInt(lastId.slice(2)) + 1; // Incrementar la parte numérica del ID
+        const newId = `PL${String(numericPart).padStart(3, '0')}`; // Generar el nuevo ID
+
+        // Consulta para insertar la nueva planta
+        const query = `
+            INSERT INTO SM_B_PLANTAS (PL_ID, PL_NOMBRE, TPL_ID, DM_ID) 
+            VALUES ($1, $2, $3, $4)
+        `;
+        await conexion.query(query, [newId, name, type, dmId]);
+
+        res.status(201).json({ success: 'Planta guardada exitosamente', id: newId });
+    } catch (error) {
+        console.error('Error al guardar la planta:', error);
+        res.status(500).json({ error: 'Hubo un error al guardar la planta en la base de datos.' });
+    }
+});
+
+
+
+///////////
+//////
+
+app.get('/plantas-por-muestra/:dmId', async (req, res) => {
+    const { dmId } = req.params;
+
+    if (!dmId) {
+        return res.status(400).json({ error: 'El ID de detalle muestra es obligatorio.' });
+    }
+
+    try {
+        const query = `
+            SELECT PL.PL_ID, PL.PL_NOMBRE, TPL.TPL_DETALLES
+            FROM SM_B_PLANTAS PL
+            INNER JOIN SM_B_TIPOPLANTAS TPL ON PL.TPL_ID = TPL.TPL_ID
+            WHERE PL.DM_ID = $1
+        `;
+        const result = await conexion.query(query, [dmId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron plantas asociadas a este detalle de muestra.' });
+        }
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener las plantas:', error);
+        res.status(500).json({ error: 'Hubo un error al obtener las plantas.' });
+    }
+});
+
+

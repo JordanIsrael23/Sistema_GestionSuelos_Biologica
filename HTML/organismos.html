@@ -18,9 +18,8 @@
     </header>
     <div class="caja">
         <div class="caja2">
-
             <form id="formulario" action="" method="post">
-                <h1>Seleccionar el Tipo de Orgnanismo</h1>
+                <h1>Seleccionar el Tipo de Organismo</h1>
                 <select id="tipos" name="tipos" required>
                     <option>Tipos</option>
                 </select>
@@ -33,9 +32,51 @@
                 <button id="botonAceptar">Aceptar</button>
             </form>
             <button onclick="window.location.href='agregarOrganismo.html'">Agregar Organismo</button>
+            <button id="agregarPlantas">Agregar Plantas</button>
         </div>
     </div>
     <script src="/js/organismosDatos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const botonAgregarPlantas = document.getElementById("agregarPlantas");
+
+            botonAgregarPlantas.addEventListener("click", async () => {
+                const organismoSeleccionado = document.getElementById("organismo").value;
+
+                if (!organismoSeleccionado) {
+                    alert("Por favor selecciona un organismo antes de continuar.");
+                    return;
+                }
+
+                try {
+                    const respuesta = await fetch("/api/guardarDetalleMuestra", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            orId: organismoSeleccionado,
+                            muId: new URLSearchParams(window.location.search).get("muestraId"),
+                        }),
+                    });
+
+                    if (respuesta.ok) {
+    const data = await respuesta.json();
+    console.log("ID del detalle de muestra recibido:", data.dmId); // Agrega este log
+    window.location.href = `plantas.html?dmId=${data.dmId}`;
+} else {
+    const errorText = await respuesta.text();
+    console.error("Error del servidor:", errorText); // Registra el error recibido
+    alert("Error al capturar el ID del detalle de muestra.");
+}
+
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Error al conectar con el servidor.");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
