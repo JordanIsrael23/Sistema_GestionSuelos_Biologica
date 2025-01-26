@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Muestras</title>
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
     <link rel="stylesheet" href="../CSS/listamuestra.css">
 </head>
 <body>
@@ -37,7 +38,11 @@
                 const response = await fetch('/listarparcelas');
                 if (response.ok) {
                     const parcelas = await response.json();
-
+                    if (parcelas.length === 0) {
+                    // Si no hay parcelas registradas, muestra el mensaje de alerta
+                    alert('Debes registrar una parcela para crear una muestra.');
+                    return;
+                }
                     const tabla = document.getElementById('tablaparcelas');
                     parcelas.forEach(parcela => {
                         const fila = document.createElement('tr');
@@ -74,10 +79,10 @@
                         tabla.appendChild(fila);
                     });
                 } else {
-                    alert('No se pudieron cargar las parcelas.');
+                    alert('Debes Registar una Parcela para Crear una Muesta.');
                 }
             } catch (error) {
-                console.error('Error al cargar las parcelas:', error);
+                console.error('Debes Registar una Parcela para Crear una Muesta.', error);
                 alert('Hubo un error al conectar con el servidor.');
             }
         });

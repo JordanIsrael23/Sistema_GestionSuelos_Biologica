@@ -141,3 +141,29 @@ button:hover {
         margin: 5px 0;
     }
 }
+
+/* Botón Volver a Inicio */
+#botonsalir {
+    background-color: #DC3545; /* Rojo seguro y accesible */
+    color: white; /* Texto blanco para alto contraste */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#botonsalir:hover {
+    background-color: #C82333; /* Rojo más oscuro en hover */
+    transform: scale(1.05); /* Efecto de agrandamiento suave */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+#botonsalir:active {
+    background-color: #A71D2A; /* Rojo aún más oscuro en clic */
+    transform: scale(1); /* Elimina el efecto de agrandamiento */
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
+}

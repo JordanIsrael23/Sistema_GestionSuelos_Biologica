@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/plantas.css">
-    <link rel="icon" href="../ICONOS/icons8-left-2-50.png" type="image/png">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
     <title>Plantas</title>
 </head>
 
@@ -33,6 +33,20 @@
             </table>
             <div class="buttons">
                 <button type="button" onclick="agregar()" class="btn-agregar">Agregar Planta</button>
+                <button id="botonsalir" onclick="confirmarSalida()">Volver a Inicio</button>
+
+                <script>
+                    function confirmarSalida() {
+                        // Muestra una alerta de confirmación
+                        const confirmacion = confirm("¿Estás seguro de que deseas volver a la página de inicio? Si sales se considerara registrada la muestra");
+                        if (confirmacion) {
+                            // Si el usuario confirma, redirige a la página de inicio
+                            window.location.href = 'pagusuario.html';
+                        }
+                        // Si cancela, no pasa nada
+                    }
+                </script>
+
             </div>
         </div>
     </div>
@@ -80,15 +94,15 @@
                     tablaPlantas.appendChild(fila);
                 });
             } catch (error) {
-                console.error("Error al cargar las plantas:", error);
+              //  console.error("Ingrese Plantas para Visualizarlas aqui:", error);
                 const fila = document.createElement("tr");
-                fila.innerHTML = '<td colspan="3" style="text-align: center;">Error al cargar las plantas.</td>';
+                fila.innerHTML = '<td colspan="3" style="text-align: center;">Ingrese Plantas para Visualizarlas aqui.</td>';
                 tablaPlantas.appendChild(fila);
             }
         }
 
         // Evento `DOMContentLoaded` para cargar las plantas al abrir la página
-        document.addEventListener("DOMContentLoaded", cargarPlantas);
+       // document.addEventListener("DOMContentLoaded", cargarPlantas);
 
         // Evento `pageshow` para refrescar la tabla al regresar a la página desde el historial
         window.addEventListener("pageshow", cargarPlantas);

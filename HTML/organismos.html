@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/organismos.css">
-    <link rel="icon" href="../IMG/Gestión Biológica de Suelos.png" type="image/png">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
     <title>Organismos</title>
 </head>
 
@@ -33,6 +33,20 @@
             </form>
             <button onclick="window.location.href='agregarOrganismo.html'">Agregar Organismo</button>
             <button id="agregarPlantas">Agregar Plantas</button>
+            <button id="botonsalir" onclick="confirmarSalida()">Volver a Inicio</button>
+
+                <script>
+                    function confirmarSalida() {
+                        // Muestra una alerta de confirmación
+                        const confirmacion = confirm("¿Estás seguro de que deseas volver a la página de inicio? Si sales se considerara registrada la muestra");
+                        if (confirmacion) {
+                            // Si el usuario confirma, redirige a la página de inicio
+                            window.location.href = 'pagusuario.html';
+                        }
+                        // Si cancela, no pasa nada
+                    }
+                </script>
+
         </div>
     </div>
     <script src="/js/organismosDatos.js"></script>
