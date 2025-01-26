@@ -54,7 +54,7 @@
             const fila = document.createElement('tr');
             fila.innerHTML = `
                 <td>${muestra.id}</td>
-                <td>${new Date(muestra.fecha).toLocaleDateString()}</td>
+                <td>${new Date(muestra.fecha).toISOString().split('T')[0]}</td>
                 <td>${muestra.sector}</td>
                 <td><button onclick="crearInforme('${muestra.id}')">Crear Informe</button></td>
             `;
@@ -65,6 +65,7 @@
         alert('Hubo un error al cargar las muestras.');
     }
 });
+
 
 function crearInforme(id) {
     window.location.href = `/crearinforme.html?id=${id}`;

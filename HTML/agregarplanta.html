@@ -30,7 +30,19 @@
 
         <div class="buttons">
             <button type="button" class="btn-guardar">Guardar</button>
-            <button type="button" onclick="cancelar()" class="btn-cancelar">Volver a Inicio</button>
+            <button type="button" onclick="confirmarSalida()" class="btn-cancelar">Volver a Inicio</button>
+
+            <script>
+                function confirmarSalida() {
+                    // Muestra una alerta de confirmación
+                    const confirmacion = confirm("¿Estás seguro de que deseas volver a la página de inicio? Si sales se considerara registrada la muestra");
+                    if (confirmacion) {
+                        // Si el usuario confirma, redirige a la página de inicio
+                        window.location.href = 'pagusuario.html';
+                    }
+                    // Si cancela, no pasa nada
+                }
+            </script>
         </div><br><br>
 
         <div class="btnagregar-tipos-planta">
