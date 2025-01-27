@@ -90,21 +90,24 @@
   }
 
   .cerrar-sesion {
+    position: fixed;
+    top: 10px;
+    right: 10px;
     background-color: #D32F2F;
     color: white;
     border: none;
-    padding: 15px 25px;
-    font-size: 16px;
+    padding: 10px 20px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
-    text-align: center;
+    z-index: 1000;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
   }
-
+  
   .cerrar-sesion:hover {
     background-color: #C62828;
   }
+  
 
   @media (max-width: 768px) {
     .welcome-message {
