@@ -2,10 +2,10 @@ const { Client } = require('pg'); // Importar la biblioteca pg
 
 // Configuración de conexión a Azure
 const client = new Client({
-    host: 'bdd-unificada.postgres.database.azure.com', // Host de Azure
+    host: 'databaseunified.postgres.database.azure.com', // Host de Azure
     user: 'SM_B', // Usuario
     password: 'SM_B', // Contraseña
-    database: 'postgres', // Nombre de la base de datos
+    database: 'Proyecto Integrador', // Nombre de la base de datos
     port: 5432, // Puerto estándar de PostgreSQL
     ssl: { rejectUnauthorized: false } // Requerido para Azure
 });
