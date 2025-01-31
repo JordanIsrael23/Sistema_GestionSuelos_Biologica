@@ -602,7 +602,7 @@ app.post('/registrarparcela', async (req, res) => {
             nextId,            // PARC_ID: Calculado manualmente
             'T001',            // TIPOS_ID: Puedes ajustar el valor según tu lógica de negocio
             userId,            // USER_ID: ID del usuario en sesión
-            1,                 // CONS_ID: Constante definida como 1
+            0,                 // CONS_ID: Constante definida como 1
             parc_nombre,       // PARC_NOMBRE: Nombre de la parcela
             parseFloat(parc_area), // PARC_AREA: Área de la parcela
             parseFloat(parc_coord_la), // PARC_COORD_LA: Coordenada de latitud
