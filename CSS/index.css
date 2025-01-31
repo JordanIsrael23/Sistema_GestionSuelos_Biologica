@@ -41,7 +41,6 @@ a {
     flex-direction: column; /* Organiza el texto en columna */
     align-items: center; /* Centra el texto */
     flex-grow: 1; /* Hace que el texto ocupe el espacio disponible */
-     color:#ffffff
 }
 
 .Icono {
@@ -240,7 +239,7 @@ footer {
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
     font-family: Arial, sans-serif;
-    color:#ffffff
+    color:#333;
 }
 
 footer div {
