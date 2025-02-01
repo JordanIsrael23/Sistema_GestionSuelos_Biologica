@@ -56,7 +56,7 @@
                 <td>${muestra.id}</td>
                 <td>${new Date(muestra.fecha).toISOString().split('T')[0]}</td>
                 <td>${muestra.sector}</td>
-                <td><button onclick="Modificar('${muestra.id}')">Modificar</button></td>
+                <td><button onclick="modificar('${muestra.id}')">Modificar</button></td>
             `;
             tabla.appendChild(fila);
         });

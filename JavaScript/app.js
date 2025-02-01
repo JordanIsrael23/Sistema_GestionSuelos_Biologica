@@ -28,13 +28,13 @@ const session = require('express-session');
 
 ///// Jordan Rutas
 const organismosruta = require('./organismosRutas');
-app.use('/',organismosruta);
+app.use('/', organismosruta);
 
 const orden = require('./organismo2');
-app.use('/',orden);
+app.use('/', orden);
 
 const rutasmuestras = require("./muestrasRutas");
-app.use("/api",rutasmuestras);
+app.use("/api", rutasmuestras);
 
 const rutas = require("./muestra2");
 app.use("/api", rutas);
@@ -394,6 +394,85 @@ app.get('/listamuestras', async (req, res) => {
 });
 
 
+////////////////////
+//////////////////
+///////////////////
+
+app.get('/listadetalles', async (req, res) => {
+    // 1️⃣ Verificar si el usuario ha iniciado sesión
+    if (!req.session.user) {
+        console.error('⚠️ No se ha iniciado sesión.');
+        return res.status(401).json({ error: 'No has iniciado sesión' });
+    }
+
+    const userId = req.session.user.user_id; // 🔹 Obtener ID del usuario en sesión
+
+    const query = `
+    SELECT 
+        DM.DM_ID AS id_detalle, 
+        ORG.OR_ID AS id_organismo,
+        ORG.OR_NOMBRE AS organismo_nombre, 
+        DM.MU_ID AS id_muestra
+    FROM SM_B_DETALLESMUESTRAS DM
+    INNER JOIN SM_B_MUESTRAS MU ON MU.MU_ID = DM.MU_ID
+    INNER JOIN SM_B_ORGANISMOS ORG ON ORG.OR_ID = DM.OR_ID
+    WHERE MU.PARC_ID IN (
+        SELECT PARC_ID FROM SM_PARCELAS WHERE USER_ID = $1
+    )
+    ORDER BY DM.DM_ID DESC
+`;
+
+
+    try {
+        console.log(`🔎 Consultando detalles de muestras para el usuario ID: ${userId}`);
+
+        const resultado = await conexion.query(query, [userId]);
+        console.log('✅ Resultados obtenidos:', resultado.rows);
+
+        if (resultado.rows.length === 0) {
+            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario.');
+            return res.status(404).json({ error: 'No hay detalles de muestras disponibles.' });
+        }
+
+        res.status(200).json(resultado.rows);
+    } catch (error) {
+        console.error('❌ Error al obtener los detalles de muestras:', error);
+        res.status(500).json({ error: 'Error al obtener los detalles de muestras.' });
+    }
+});
+
+
+
+app.delete('/eliminardetalle/:id', async (req, res) => {
+    const { id } = req.params;
+
+    // 🛠️ Agregar logs para ver qué ID está recibiendo el servidor
+    console.log("🔍 ID recibido para eliminar:", id);
+
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+        console.warn("⚠️ ID inválido recibido en la solicitud.");
+        return res.status(400).json({ error: "ID inválido." });
+    }
+
+    try {
+        const query = 'DELETE FROM SM_B_DETALLESMUESTRAS WHERE DM_ID = $1';
+        const result = await conexion.query(query, [id]);
+
+        if (result.rowCount > 0) {
+            console.log("✅ Detalle eliminado correctamente.");
+            res.json({ success: true });
+        } else {
+            console.warn("⚠️ No se encontró el detalle en la base de datos.");
+            res.status(404).json({ error: "Detalle no encontrado." });
+        }
+    } catch (error) {
+        console.error("❌ Error al eliminar el detalle:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+
+
 
 /////////////////
 ////////////////
@@ -560,7 +639,7 @@ app.get('/listarparcelas', async (req, res) => {
     try {
         // Ejecuta la consulta
         const resultado = await conexion.query(query, [userId]);
-        
+
         // Devuelve los datos al cliente
         res.json(resultado.rows);
     } catch (error) {
@@ -628,87 +707,87 @@ app.post('/registrarparcela', async (req, res) => {
 
 app.post('/tiposplantas', async (req, res) => {
     const { detalles } = req.body;
-  
+
     // Validación
     if (!detalles) {
-      return res.status(400).json({ message: 'El campo "Detalles" es obligatorio' });
+        return res.status(400).json({ message: 'El campo "Detalles" es obligatorio' });
     }
-  
+
     try {
-      // Validar si el tipo de planta ya existe
-      const queryCheck = 'SELECT COUNT(*) AS count FROM SM_B_TIPOPLANTAS WHERE TPL_DETALLES = $1';
-      const resultCheck = await conexion.query(queryCheck, [detalles]);
-  
-      if (parseInt(resultCheck.rows[0].count) > 0) {
-        return res.status(409).json({ message: 'Este tipo de planta ya está registrado' });
-      }
-  
-      // Consulta para obtener el último ID registrado
-      const queryLastId = 'SELECT TPL_ID FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID DESC LIMIT 1';
-      const result = await conexion.query(queryLastId);
-  
-      // Generar el siguiente ID
-      let nextId;
-      if (result.rows.length > 0) {
-        // Extrae el número del último ID (asume un formato como 'TPL001')
-        const lastId = result.rows[0].tpl_id;
-        const numericPart = parseInt(lastId.slice(3)); // Extrae la parte numérica
-        nextId = `TPL${String(numericPart + 1).padStart(3, '0')}`; // Incrementa y genera el nuevo ID
-      } else {
-        nextId = 'TPL001'; // Primer ID si no hay registros
-      }
-  
-      // Inserta el nuevo tipo de planta
-      const queryInsert = 'INSERT INTO SM_B_TIPOPLANTAS (TPL_ID, TPL_DETALLES) VALUES ($1, $2)';
-      await conexion.query(queryInsert, [nextId, detalles]);
-  
-      // Respuesta al cliente
-      res.status(201).json({
-        message: 'Tipo de planta agregado exitosamente',
-        planta: { TPL_ID: nextId, TPL_DETALLES: detalles },
-      });
+        // Validar si el tipo de planta ya existe
+        const queryCheck = 'SELECT COUNT(*) AS count FROM SM_B_TIPOPLANTAS WHERE TPL_DETALLES = $1';
+        const resultCheck = await conexion.query(queryCheck, [detalles]);
+
+        if (parseInt(resultCheck.rows[0].count) > 0) {
+            return res.status(409).json({ message: 'Este tipo de planta ya está registrado' });
+        }
+
+        // Consulta para obtener el último ID registrado
+        const queryLastId = 'SELECT TPL_ID FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID DESC LIMIT 1';
+        const result = await conexion.query(queryLastId);
+
+        // Generar el siguiente ID
+        let nextId;
+        if (result.rows.length > 0) {
+            // Extrae el número del último ID (asume un formato como 'TPL001')
+            const lastId = result.rows[0].tpl_id;
+            const numericPart = parseInt(lastId.slice(3)); // Extrae la parte numérica
+            nextId = `TPL${String(numericPart + 1).padStart(3, '0')}`; // Incrementa y genera el nuevo ID
+        } else {
+            nextId = 'TPL001'; // Primer ID si no hay registros
+        }
+
+        // Inserta el nuevo tipo de planta
+        const queryInsert = 'INSERT INTO SM_B_TIPOPLANTAS (TPL_ID, TPL_DETALLES) VALUES ($1, $2)';
+        await conexion.query(queryInsert, [nextId, detalles]);
+
+        // Respuesta al cliente
+        res.status(201).json({
+            message: 'Tipo de planta agregado exitosamente',
+            planta: { TPL_ID: nextId, TPL_DETALLES: detalles },
+        });
     } catch (error) {
-      console.error('Error al agregar el tipo de planta:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
+        console.error('Error al agregar el tipo de planta:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
-  });
+});
 //////
 ///////
 //////
 
 app.get('/cargartiposplantas', async (req, res) => {
     try {
-      const query = 'SELECT TPL_ID, TPL_DETALLES FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID ASC';
-      const result = await conexion.query(query);
-      console.log('Datos obtenidos de la base de datos:', result.rows);
-  
-      res.status(200).json(result.rows);
+        const query = 'SELECT TPL_ID, TPL_DETALLES FROM SM_B_TIPOPLANTAS ORDER BY TPL_ID ASC';
+        const result = await conexion.query(query);
+        console.log('Datos obtenidos de la base de datos:', result.rows);
+
+        res.status(200).json(result.rows);
     } catch (error) {
-      console.error('Error al obtener los tipos de plantas:', error);
-      res.status(500).json({ message: 'Error al obtener los tipos de plantas' });
+        console.error('Error al obtener los tipos de plantas:', error);
+        res.status(500).json({ message: 'Error al obtener los tipos de plantas' });
     }
-  });
+});
 //////
 /////
 app.delete('/tiposplantas/:id', async (req, res) => {
     const { id } = req.params;
     console.log('ID recibido para eliminar:', id); // Verifica el ID recibido
-  
+
     try {
-      const query = 'DELETE FROM SM_B_TIPOPLANTAS WHERE TPL_ID = $1';
-      const result = await conexion.query(query, [id]);
-      console.log('Resultado de la consulta:', result.rowCount); // Muestra el número de filas afectadas
-  
-      if (result.rowCount > 0) {
-        res.status(200).json({ message: 'Tipo de planta eliminado exitosamente' });
-      } else {
-        res.status(404).json({ message: 'Tipo de planta no encontrado' });
-      }
+        const query = 'DELETE FROM SM_B_TIPOPLANTAS WHERE TPL_ID = $1';
+        const result = await conexion.query(query, [id]);
+        console.log('Resultado de la consulta:', result.rowCount); // Muestra el número de filas afectadas
+
+        if (result.rowCount > 0) {
+            res.status(200).json({ message: 'Tipo de planta eliminado exitosamente' });
+        } else {
+            res.status(404).json({ message: 'Tipo de planta no encontrado' });
+        }
     } catch (error) {
-      console.error('Error al eliminar el tipo de planta:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
+        console.error('Error al eliminar el tipo de planta:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
-  });
+});
 ////////////
 ///////////
 /////////
@@ -742,10 +821,10 @@ app.get('/listainformesadmin', async (req, res) => {
 
 ///Nathaly Rutas
 const plruta = require('./plantas');
-app.get('/',plruta);
+app.get('/', plruta);
 
 const lista2 = require('./listaplantas');
-app.get('/',lista2);
+app.get('/', lista2);
 
 
 //////////////
