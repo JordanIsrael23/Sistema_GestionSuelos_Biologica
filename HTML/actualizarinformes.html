@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Informes</title>
+    <link rel="stylesheet" href="../CSS/actualizarinformes.css"
+</head>
+<body>
+    <div class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Listado de Informes</h1>
+    </div>
+    <ul id="informes-lista"></ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const listaInformes = document.getElementById("informes-lista");
+            try {
+                const response = await fetch("/listainformes");
+                const informes = await response.json();
+                if (informes.error) {
+                    listaInformes.innerHTML = `<li>${informes.error}</li>`;
+                } else {
+                    informes.forEach(informe => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+                            <span>${informe.titulo} - ${new Date(informe.fecha).toLocaleDateString()}</span>
+                            <button onclick="actualizarInforme('${informe.id}')">Actualizar</button>
+                            <button onclick="borrarInforme('${informe.id}')">Eliminar</button>
+                        `;
+                        listaInformes.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error("Error al cargar los informes:", error);
+                listaInformes.innerHTML = `<li>Error al cargar los informes.</li>`;
+            }
+        });
+
+        function actualizarInforme(id) {
+            window.location.href = `/editar-informe.html?id=${id}`;
+        }
+
+        async function borrarInforme(id) {
+    if (confirm("¿Estás seguro de eliminar este informe?")) {
+        try {
+            const response = await fetch(`/eliminar-informe/${id}`, { 
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert("Informe eliminado correctamente");
+                location.reload();
+            } else {
+                alert("Error al eliminar el informe");
+            }
+        } catch (error) {
+            console.error("Error al eliminar informe:", error);
+            alert("Error al eliminar el informe");
+        }
+    }
+}
+
+    </script>
+</body>
+</html>

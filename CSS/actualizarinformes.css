@@ -1,0 +1,104 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f7f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* Encabezado */
+h1 {
+    color: #ffffff;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+/* Lista de informes */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #ffffff;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    border-left: 5px solid #218c74;
+    transition: transform 0.2s ease-in-out;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+/* Botones */
+button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Botón actualizar */
+button:first-child {
+    background-color: #38b000;
+    color: white;
+}
+
+button:first-child:hover {
+    background-color: #2b8a00;
+    transform: scale(1.05);
+}
+
+/* Botón eliminar */
+button:last-child {
+    background-color: #d62828;
+    color: white;
+}
+
+button:last-child:hover {
+    background-color: #ba181b;
+    transform: scale(1.05);
+}
+
+.header {
+    position: relative;
+    text-align: center;
+    padding: 15px;
+    background-color: #66BB6A; 
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.back-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.back-icon img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.back-icon img:hover {
+    transform: scale(1.1);
+}

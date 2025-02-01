@@ -1014,3 +1014,109 @@ app.get('/plantas-por-muestra/:dmId', async (req, res) => {
 });
 
 
+//////////
+//////////
+/////////
+//////
+app.delete('/eliminar-informe/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const query = 'DELETE FROM SM_B_INFORMES WHERE IN_ID = $1';
+        const result = await conexion.query(query, [id]);
+
+        if (result.rowCount > 0) {
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ success: false, message: "Informe no encontrado" });
+        }
+    } catch (error) {
+        console.error("Error al eliminar el informe:", error);
+        res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+});
+/////////
+///////
+//////
+app.get('/obtener-informe/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const query = `SELECT IN_ID AS id, 
+                              IN_TITULO AS titulo, 
+                              IN_INTRODUCCION AS introduccion, 
+                              IN_DESARROLLO AS desarrollo, 
+                              IN_RESULTADOS AS resultados, 
+                              IN_CONCLUCION AS conclusiones, 
+                              IN_RECOMENDACION AS recomendaciones, 
+                              IN_SOLUCIONES AS soluciones 
+                       FROM SM_B_INFORMES WHERE IN_ID = $1`;
+
+        const result = await conexion.query(query, [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Informe no encontrado." });
+        }
+
+        console.log("Datos obtenidos del informe:", result.rows[0]); // 👈 Verifica en la terminal
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error al obtener informe:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+
+app.put('/editar-informe/:id', async (req, res) => {
+    const { id } = req.params;
+    const { titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones } = req.body;
+
+    console.log("ID recibido en PUT:", id);
+    console.log("Datos recibidos para actualización:", req.body);
+
+    try {
+        const query = `
+            UPDATE SM_B_INFORMES 
+            SET IN_TITULO = $1, IN_INTRODUCCION = $2, IN_DESARROLLO = $3, 
+                IN_RESULTADOS = $4, IN_CONCLUCION = $5, IN_RECOMENDACION = $6, IN_SOLUCIONES = $7
+            WHERE IN_ID = $8
+        `;
+        const result = await conexion.query(query, [titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones, id]);
+
+        if (result.rowCount > 0) {
+            console.log("Informe actualizado correctamente.");
+            res.json({ success: true });
+        } else {
+            console.log("No se encontró el informe para actualizar.");
+            res.status(404).json({ success: false, message: "Informe no encontrado." });
+        }
+    } catch (error) {
+        console.error("Error al actualizar informe:", error);
+        res.status(500).json({ success: false, message: "Error interno del servidor." });
+    }
+});
+
+
+
+
+
+
+
+app.get('/obtener-informe/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const query = `SELECT * FROM SM_B_INFORMES WHERE IN_ID = $1`;
+        const result = await conexion.query(query, [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Informe no encontrado." });
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error al obtener informe:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});

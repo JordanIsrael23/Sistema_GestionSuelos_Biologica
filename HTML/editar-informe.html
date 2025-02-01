@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Informe</title>
+    <link rel="stylesheet" href="../CSS/crearinforme.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+
+    <div class="form-container">
+        <form id="formEditarInforme" class="formulario">
+            <!-- Campo oculto para el ID del informe -->
+            <input type="hidden" id="informe_id" name="informe_id">
+
+            <div class="columna-izquierda">
+                <h2>Editar Informe</h2>
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Ingresa el título" required>
+
+                <label for="introduccion">Introducción</label>
+                <textarea id="introduccion" name="introduccion" rows="4" placeholder="Escribe la introducción..." required></textarea>
+
+                <label for="desarrollo">Desarrollo</label>
+                <textarea id="desarrollo" name="desarrollo" rows="5" placeholder="Escribe el desarrollo..." required></textarea>
+            </div>
+
+            <div class="columna-derecha">
+                <label for="resultados">Resultados</label>
+                <textarea id="resultados" name="resultados" rows="5" placeholder="Escribe los resultados obtenidos..." required></textarea>
+
+                <label for="conclusiones">Conclusiones</label>
+                <textarea id="conclusiones" name="conclusiones" rows="4" placeholder="Escribe las conclusiones..." required></textarea>
+
+                <label for="recomendaciones">Recomendaciones</label>
+                <textarea id="recomendaciones" name="recomendaciones" rows="6" placeholder="Escribe las recomendaciones..." required></textarea>
+
+                <label for="soluciones">Soluciones</label>
+                <textarea id="soluciones" name="soluciones" rows="6" placeholder="Escribe las soluciones..." required></textarea>
+
+                <button type="submit" class="boton-crear">Actualizar Informe</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const informeId = urlParams.get("id");
+
+    if (!informeId) {
+        alert("ID de informe no encontrado.");
+        window.history.back();
+        return;
+    }
+
+    document.getElementById("informe_id").value = informeId;
+
+    try {
+        const response = await fetch(`/obtener-informe/${informeId}`);
+        const informe = await response.json();
+
+        if (informe.error) {
+            alert("No se pudo cargar el informe.");
+            window.history.back();
+            return;
+        }
+
+        console.log("Informe cargado:", informe); 
+
+        document.getElementById("titulo").value = informe.titulo || "";
+        document.getElementById("introduccion").value = informe.introduccion || "";
+        document.getElementById("desarrollo").value = informe.desarrollo || "";
+        document.getElementById("resultados").value = informe.resultados || "";
+        document.getElementById("conclusiones").value = informe.conclusiones || "";
+        document.getElementById("recomendaciones").value = informe.recomendaciones || "";
+        document.getElementById("soluciones").value = informe.soluciones || "";
+
+    } catch (error) {
+        console.error("Error al obtener los datos:", error);
+        alert("Error al cargar los datos del informe.");
+    }
+});
+
+
+
+document.getElementById("formEditarInforme").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const informeId = document.getElementById("informe_id").value;
+    const titulo = document.getElementById("titulo").value;
+    const introduccion = document.getElementById("introduccion").value;
+    const desarrollo = document.getElementById("desarrollo").value;
+    const resultados = document.getElementById("resultados").value;
+    const conclusiones = document.getElementById("conclusiones").value;
+    const recomendaciones = document.getElementById("recomendaciones").value;
+    const soluciones = document.getElementById("soluciones").value;
+
+    console.log("ID de informe a actualizar:", informeId);
+    console.log("Datos enviados:", { titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones });
+
+    try {
+        const response = await fetch(`/editar-informe/${informeId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ titulo, introduccion, desarrollo, resultados, conclusiones, recomendaciones, soluciones })
+        });
+
+        const result = await response.json();
+        console.log("Respuesta del servidor:", result);
+
+        if (result.success) {
+            alert("Informe actualizado correctamente.");
+            window.location.href = "/pagusuario.html";
+        } else {
+            alert("Error al actualizar el informe.");
+        }
+    } catch (error) {
+        console.error("Error al actualizar informe:", error);
+        alert("Error al actualizar el informe.");
+    }
+});
+
+    </script>
+</body>
+</html>
