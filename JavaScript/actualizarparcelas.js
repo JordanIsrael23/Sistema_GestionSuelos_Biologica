@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!parcelaId) {
         alert('No se encontró la parcela.');
-        window.location.href = '/listaparcela.html';
+        window.location.href = '/listaparcelas.html';
         return;
     }
 
