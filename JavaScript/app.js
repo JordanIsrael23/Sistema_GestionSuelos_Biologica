@@ -1249,51 +1249,45 @@ app.delete('/eliminarplanta/:id', async (req, res) => {
 //////////////
 //////////////
 /////////////
-app.get('/listadetallesplantas', async (req, res) => {
-    // Verifica si el usuario ha iniciado sesión
+app.get('/listadetalles', async (req, res) => {
+    // 1️⃣ Verificar si el usuario ha iniciado sesión
     if (!req.session.user) {
         console.error('⚠️ No se ha iniciado sesión.');
         return res.status(401).json({ error: 'No has iniciado sesión' });
     }
 
-    const userId = req.session.user.user_id; // Obtener el ID del usuario en sesión
+    const userId = req.session.user.user_id; // 🔹 Obtener ID del usuario en sesión
 
     const query = `
-        SELECT 
-            DM.DM_ID AS id_detalle, 
-            PL.ID_PLANTA AS id_planta,
-            PL.NOMBRE_PLANTA AS nombre_planta, 
-            DM.MU_ID AS id_muestra, 
-            TP.ID_TIP_PLANTA AS id_tip
-        FROM SM_B_PLANTAS DM
-        INNER JOIN SM_B_MUESTRAS MU ON MU.MU_ID = DM.MU_ID
-        INNER JOIN SM_B_PLANTAS PL ON PL.ID_PLANTA = DM.PL_ID
-        INNER JOIN SM_B_TIPO_PLANTAS TP ON TP.ID_TIP_PLANTA = PL.ID_TIP_PLANTA
-        WHERE MU.PARC_ID IN (
-            SELECT PARC_ID FROM SM_PARCELAS WHERE USER_ID = $1
-        )
-        ORDER BY DM.DM_ID DESC
-    `;
+    SELECT 
+        DM.DM_ID AS id_detalle, 
+        ORG.OR_ID AS id_organismo,
+        ORG.OR_NOMBRE AS organismo_nombre, 
+        DM.MU_ID AS id_muestra
+    FROM SM_B_PLANTAS DM
+    INNER JOIN SM_B_MUESTRAS MU ON MU.MU_ID = DM.MU_ID
+    INNER JOIN SM_B_ORGANISMOS ORG ON ORG.OR_ID = DM.OR_ID
+    WHERE MU.PARC_ID IN (
+        SELECT PARC_ID FROM SM_PARCELAS WHERE USER_ID = $1
+    )
+    ORDER BY DM.DM_ID DESC
+`;
+
 
     try {
-        console.log(`🔎 Consultando detalles de plantas para el usuario ID: ${userId}`);
+        console.log(`🔎 Consultando detalles de muestras para el usuario ID: ${userId}`);
 
         const resultado = await conexion.query(query, [userId]);
         console.log('✅ Resultados obtenidos:', resultado.rows);
 
-        // Verifica si no hay resultados
         if (resultado.rows.length === 0) {
-            console.warn('⚠️ No hay detalles de plantas disponibles para el usuario.');
-            return res.status(404).json({ error: 'No hay detalles de plantas disponibles.' });
+            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario.');
+            return res.status(404).json({ error: 'No hay detalles de muestras disponibles.' });
         }
 
-        // Devuelve los resultados al cliente
         res.status(200).json(resultado.rows);
     } catch (error) {
-        console.error('❌ Error al obtener los detalles de plantas:', error);
-        res.status(500).json({ error: 'Error al obtener los detalles de plantas.' });
+        console.error('❌ Error al obtener los detalles de muestras:', error);
+        res.status(500).json({ error: 'Error al obtener los detalles de muestras.' });
     }
 });
-
-
-
