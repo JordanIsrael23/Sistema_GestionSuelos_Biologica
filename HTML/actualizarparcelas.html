@@ -1,20 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar Parcelas</title>
-    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
-    <link rel="stylesheet" href="../CSS/modificarparcelas.css">
+    <title>Actualizar Parcela</title>
+    <link rel="stylesheet" href="../CSS/registrarparcela.css">
 </head>
 <body>
     <header class="header">
         <a href="javascript:history.back()" class="back-icon">
             <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
         </a>
-        <h1>Gestión Biológica de Suelos</h1>
+        <h1>Actualizar Parcela</h1>
     </header>
 
-    
+    <div class="form-container">
+        <h1>Editar Parcela</h1>
+        <form id="formActualizarParcela">
+            <input type="hidden" id="parc_id" name="parc_id">
+            
+            <div class="form-group">
+                <label for="parc_nombre">Nombre de la Parcela</label>
+                <input type="text" id="parc_nombre" name="parc_nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="parc_area">Área de la Parcela</label>
+                <input type="number" id="parc_area" name="parc_area" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="parc_coord_la">Latitud</label>
+                <input type="number" id="parc_coord_la" name="parc_coord_la" step="0.000001" required>
+            </div>
+            <div class="form-group">
+                <label for="parc_coord_lo">Longitud</label>
+                <input type="number" id="parc_coord_lo" name="parc_coord_lo" step="0.000001" required>
+            </div>
+            <div class="form-group">
+                <label for="parc_descripcion">Descripción</label>
+                <textarea id="parc_descripcion" name="parc_descripcion" rows="4" required></textarea>
+            </div>
+            <button type="submit">Actualizar Parcela</button>
+        </form>
+    </div>
+
+    <script src="../js/actualizarparcelas.js"></script>
 </body>
 </html>

@@ -39,6 +39,8 @@ app.use("/api",rutasmuestras);
 const rutas = require("./muestra2");
 app.use("/api", rutas);
 
+const rutasParcelas = require("./rutasparcelas");
+app.use("/", rutasParcelas);
 
 
 app.use(
