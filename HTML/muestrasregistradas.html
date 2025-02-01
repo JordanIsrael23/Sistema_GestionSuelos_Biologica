@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Muestras</title>
+    <link rel="stylesheet" href="../CSS/muestrasregistradas.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Lista de Muestras</h1>
+    </header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Muestra</th>
+                    <th>Fecha</th>
+                    <th>Sector</th>
+                    <th>Modificar</th>
+                </tr>
+            </thead>
+            <tbody id="tablaMuestras">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+     document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/listamuestras');
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Error del servidor:', error);
+            alert('Error: ' + (error.error || 'No se pudieron cargar las muestras.'));
+            return;
+        }
+
+        const muestras = await response.json();
+
+        if (muestras.length === 0) {
+            alert('No hay muestras disponibles.');
+            return;
+        }
+
+        // Mostrar las muestras en la tabla
+        const tabla = document.getElementById('tablaMuestras');
+        muestras.forEach((muestra) => {
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td>${muestra.id}</td>
+                <td>${new Date(muestra.fecha).toISOString().split('T')[0]}</td>
+                <td>${muestra.sector}</td>
+                <td><button onclick="Modificar('${muestra.id}')">Modificar</button></td>
+            `;
+            tabla.appendChild(fila);
+        });
+    } catch (error) {
+        console.error('Error al cargar las muestras:', error);
+        alert('Hubo un error al cargar las muestras.');
+    }
+});
+
+function modificar(id) {
+    window.location.href = `/modificarorganismos.html?id=${id}`;
+}
+
+    </script>
+</body>
+</html>
