@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/listarparcelas');
+        const response = await fetch('/listaparcelas');
         if (!response.ok) throw new Error('Error al obtener las parcelas');
 
         const parcelas = await response.json();
