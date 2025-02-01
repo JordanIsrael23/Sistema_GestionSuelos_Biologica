@@ -1,0 +1,37 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #F1E7D0   ;
+    background-size: cover;
+    background-position: center;
+}
+
+.header {
+    background-color: rgba(0, 153, 51, 0.9); 
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+}
+
+.header .back-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.header .back-icon img {
+    width: 24px;
+    height: 24px;
+}
