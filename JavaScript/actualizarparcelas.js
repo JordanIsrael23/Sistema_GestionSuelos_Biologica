@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const response = await fetch(`/actualizarparcela/${parcelaId}`, {
+            const response = await fetch(`/actualizarparcelas/${parcelaId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datos),

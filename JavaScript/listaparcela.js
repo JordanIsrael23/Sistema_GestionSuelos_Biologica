@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.edit-button').forEach(boton => {
             boton.addEventListener('click', (e) => {
                 const parcelaId = e.target.getAttribute('data-id');
-                window.location.href = `/actualizarParcelas.html?parcelaId=${parcelaId}`;
+                window.location.href = `/actualizarparcelas.html?parcelaId=${parcelaId}`;
             });
         });
 
