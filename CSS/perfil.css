@@ -1,6 +1,7 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-image: url('../imagenes/login.jpg');
+   /* background-color:#D3D3D3;*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

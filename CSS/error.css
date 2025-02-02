@@ -10,6 +10,8 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
+    font-family: Arial, sans-serif;
+
 }
 
 .container {
@@ -21,6 +23,8 @@ body {
     font-size: 3rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    font-family: Arial, sans-serif;
+
 }
 
 .container p {

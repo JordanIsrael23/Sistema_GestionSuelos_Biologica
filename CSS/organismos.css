@@ -4,7 +4,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-image: url('../IMG/Organismos/fondo.png'); /* Fondo decorativo */
+    /*background-image: url('../IMG/Organismos/fondo.png'); /* Fondo decorativo */
+    background-color:#D3D3D3;
     background-size: cover;
     background-position: center;
 }

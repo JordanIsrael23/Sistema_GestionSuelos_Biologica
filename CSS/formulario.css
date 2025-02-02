@@ -1,6 +1,7 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-image: url('../IMG/login.jpg');
+    /*background-color:#D3D3D3;*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -98,6 +99,7 @@ button[type="reset"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 button[type="submit"]:hover, 

@@ -1,8 +1,9 @@
 body{
     font-family: 'Times New Roman', Times, serif;
-    background-color: #F1E7D0   ;
+   /* background-color: #F1E7D0   ;*/
     background-size: cover;
     background-position: center;
+    background-color:#D3D3D3;
 }
 
 .header {

@@ -2,10 +2,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Asegura que el padding y el border no afecten el ancho/alto */
+    font-family: 'Times New Roman', Times, serif;
 }
 nav {
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 10px; /* Espaciado interno */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Estilo para la lista */
@@ -101,7 +103,7 @@ p {
 }
 body {
     margin: 20px; /* Ajusta el margen en todos los lados de la página */
-    font-family: Arial, sans-serif; /* Define una fuente para el texto */
+    font-family: 'Times New Roman', Times, serif; /* Define una fuente para el texto */
 }
 
 /* Estilo para el footer en modo claro */

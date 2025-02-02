@@ -2,7 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Asegura que el padding y el border no afecten el ancho/alto */
+    font-family: 'Times New Roman', Times, serif; /* Establece la fuente global */
 }
+
 nav {
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 10px; /* Espaciado interno */
@@ -46,7 +48,6 @@ a {
 .Icono {
     flex-shrink: 0; /* Evita que la imagen se reduzca */
     margin: 20px; /* Ajusta el margen en todos los lados de la página */
-
 }
 
 .tiposuelos {
@@ -67,7 +68,6 @@ a {
     gap: 20px; /* Espaciado entre la imagen y el texto */
 }
 
-
 h3 {
     margin: 0; /* Elimina márgenes adicionales del título */
 }
@@ -77,6 +77,7 @@ p {
     line-height: 1.5; /* Mejora la legibilidad */
     text-align: justify; /* Justifica el texto */
 }
+
 /* Estilo global predeterminado (modo claro) */
 body {
     background-color: white;
@@ -121,34 +122,6 @@ body {
 .busqueda button img,
 .login img {
     vertical-align: middle;
-}
-
-/* Modo oscuro cuando el checkbox está seleccionado */
-/*body:has(.modo-checkbox:checked) {
-    background-color: black;
-    color: white;
-}
-
-/* Aplicar modo oscuro al contenedor */
-/*body:has(.modo-checkbox:checked) .buscar-login {
-    background-color: #333;
-    border-color: #555;
-}
-
-/* Aplicar modo oscuro a botones y campos */
-/*body:has(.modo-checkbox:checked) .busqueda input,
-body:has(.modo-checkbox:checked) .busqueda button,
-body:has(.modo-checkbox:checked) .login {
-    background-color: #444;
-    color: white;
-    border-color: #666;
-}*/
-
-.buscar-login {
-    display: flex; /* Organiza los elementos en fila */
-    justify-content: space-between; /* Coloca los elementos a los extremos (izquierda y derecha) */
-    align-items: center; /* Centra los elementos verticalmente */
-    width: 100%; /* Asegura que el contenedor ocupe el ancho completo */
 }
 
 .buscar-login {
@@ -228,9 +201,10 @@ body:has(.modo-checkbox:checked) h3 {
     width: 20px; /* Tamaño de la imagen */
     height: 20px; /* Tamaño de la imagen */
 }
+
 body {
     margin: 20px; /* Ajusta el margen en todos los lados de la página */
-    font-family: Arial, sans-serif; /* Define una fuente para el texto */
+    font-family: 'Times New Roman', Times, serif; /* Se mantiene la fuente en todo el documento */
 }
 
 /* Estilo para el footer en modo claro */
@@ -239,7 +213,7 @@ footer {
     justify-content: space-between;
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     color: #333; /* Texto oscuro en modo claro */
 }
 
@@ -253,14 +227,11 @@ footer div {
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 footer div:last-child {
     margin-right: 0;
-   
-}
-/*.ref{
-    color: #333;
 }
 
 /* Estilos para el modo oscuro */
