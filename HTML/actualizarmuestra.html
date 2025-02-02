@@ -63,43 +63,65 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/listamuestras');
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('Error del servidor:', error);
-            alert('Error: ' + (error.error || 'No se pudieron cargar las muestras.'));
-            return;
-        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/listamuestras');
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.error('Error del servidor:', error);
+                    alert('Error: ' + (error.error || 'No se pudieron cargar las muestras.'));
+                    return;
+                }
 
-        const muestras = await response.json();
-        if (muestras.length === 0) {
-            alert('No hay muestras disponibles.');
-            return;
-        }
+                const muestras = await response.json();
+                if (muestras.length === 0) {
+                    alert('No hay muestras disponibles.');
+                    return;
+                }
 
-        // Mostrar las muestras en la tabla
-        const tabla = document.getElementById('tablaMuestras');
-        muestras.forEach((muestra) => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-                <td>${muestra.id}</td>
-                <td>${new Date(muestra.fecha).toISOString().split('T')[0]}</td>
-                <td>${muestra.sector}</td>
-                <td>
-                    <button class="btn-modificar" onclick="modificarMuestra('${muestra.id}')">Modificar</button>
-                    <button class="btn-eliminar" onclick="eliminarMuestra('${muestra.id}')">Eliminar</button>
-                </td>
-            `;
-            tabla.appendChild(fila);
+                // Mostrar las muestras en la tabla
+                const tabla = document.getElementById('tablaMuestras');
+                tabla.innerHTML = ''; // Limpiar tabla antes de insertar datos
+                muestras.forEach((muestra) => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${muestra.id}</td>
+                        <td>${new Date(muestra.fecha).toISOString().split('T')[0]}</td>
+                        <td>${muestra.sector}</td>
+                        <td>
+                            <button class="btn-modificar" onclick="modificarMuestra('${muestra.id}')">Modificar</button>
+                            <button class="btn-eliminar" onclick="eliminarMuestra('${muestra.id}')">Eliminar</button>
+                        </td>
+                    `;
+                    tabla.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar las muestras:', error);
+                alert('Hubo un error al cargar las muestras.');
+            }
         });
-    } catch (error) {
-        console.error('Error al cargar las muestras:', error);
-        alert('Hubo un error al cargar las muestras.');
-    }
-});
 
+        function modificarMuestra(id) {
+            window.location.href = `/modificarmuestra.html?id=${id}`;
+        }
+
+        async function eliminarMuestra(id) {
+            if (confirm('¿Seguro que deseas eliminar esta muestra?')) {
+                try {
+                    const response = await fetch(`/eliminarMuestra/${id}`, { method: 'DELETE' });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Muestra eliminada correctamente.');
+                        location.reload();
+                    } else {
+                        alert('No se pudo eliminar la muestra.');
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar la muestra:', error);
+                    alert('Error al eliminar la muestra.');
+                }
+            }
+        }
     </script>
 </body>
 </html>
