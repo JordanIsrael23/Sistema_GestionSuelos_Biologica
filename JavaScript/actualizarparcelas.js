@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const parcela = await response.json();
 
-        // Asegurar que los datos se asignen correctamente
+        // Verificar si los datos existen antes de asignarlos
+        document.getElementById('parc_id').value = parcelaId; // Asegurar que el ID está presente
         document.getElementById('parc_nombre').value = parcela.parc_nombre || '';
         document.getElementById('parc_area').value = parcela.parc_area || 0;
         document.getElementById('parc_coord_la').value = parcela.parc_coord_la || 0;
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('Error al actualizar:', error);
+            alert('Error en la solicitud.');
         }
     });
 });
