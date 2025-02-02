@@ -14,17 +14,18 @@
         </a>
         <h1>Modificar Muestra</h1>
     </header>
+
     <style>
         #calidad-materia {
             color: black !important;
         }
     </style>
-    
+
     <div class="caja">
         <h1>Edición de Muestras</h1>
         <form id="formulario-muestra">
             <input type="hidden" id="muestra-id">  <!-- ID de la muestra oculta -->
-            
+
             <label>Ubicación:</label>
             <input type="text" id="ubicacion" required>
 
@@ -63,7 +64,6 @@
                 return;
             }
 
-            // Cargar datos de la muestra en el formulario
             try {
                 const response = await fetch(`/api/obtenerMuestra/${muestraId}`);
                 if (!response.ok) throw new Error("No se pudo obtener la muestra.");
@@ -75,14 +75,17 @@
                 document.getElementById("cantidad-muestra").value = muestra.cantidad;
                 document.getElementById("cantidad-materia").value = muestra.materia;
                 document.getElementById("calidad-materia").value = muestra.calidad;
-                document.getElementById("descripcion-fertilidad").value = muestra.descripcion;
+
+                // ✅ CORRECCIÓN: Si la descripción ya existe, no se sobrescribe
+                // document.getElementById("descripcion-fertilidad").value = muestra.descripcion || "No especificado";
+
             } catch (error) {
                 console.error("Error al cargar la muestra:", error);
                 alert("Hubo un error al cargar la muestra.");
             }
 
-            // Función para calcular calidad y fertilidad según la cantidad de materia orgánica
-            const determinarCalidadYFertilidad = async () => {
+            // Función corregida para calcular calidad y fertilidad
+            const determinarCalidadYFertilidad = () => {
                 const materiaOrganica = parseFloat(document.getElementById("cantidad-materia").value);
                 let calidad, descripcion;
 
@@ -92,9 +95,12 @@
                 } else if (materiaOrganica >= 50) {
                     calidad = "Media fertilidad";
                     descripcion = "Medio";
-                } else {
+                } else if (materiaOrganica > 0) {
                     calidad = "Baja fertilidad";
                     descripcion = "Bajo";
+                } else {
+                    // ✅ Mantiene la descripción original si no se modifica
+                    descripcion = document.getElementById("descripcion-fertilidad").value || "No especificado";
                 }
 
                 document.getElementById("calidad-materia").value = calidad;
