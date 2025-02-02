@@ -49,18 +49,30 @@
                     <th>Eliminar</th>
                 </tr>
             </thead>
+            <tbody id="tablaPlantas">
+                <!-- Filas dinámicas aquí -->
+            </tbody>
         </table>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            // 1️⃣ Obtener el ID de la muestra desde la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const idMuestra = urlParams.get('id');
+
+            if (!idMuestra) {
+                alert('❌ Error: No se proporcionó un ID de muestra.');
+                return;
+            }
+
             try {
-                // 1️⃣ Hacer la petición para obtener los detalles de muestra
-                const response = await fetch('/listadetalles');
+                // 2️⃣ Hacer la petición para obtener los detalles de muestra filtrados por usuario y muestra
+                const response = await fetch(`/listadetalles/${idMuestra}`);
 
                 if (!response.ok) {
                     const error = await response.json();
                     console.error('⚠️ Error del servidor:', error);
-                    alert('Error: ' + (error.error || 'No se pudieron cargar las muestras.'));
+                    alert('Error: ' + (error.error || 'No se pudieron cargar los detalles.'));
                     return;
                 }
 
@@ -71,46 +83,22 @@
                     return;
                 }
 
-                // 2️⃣ Mostrar los detalles en la tabla
+                // 3️⃣ Mostrar los detalles en la tabla
                 const tabla = document.getElementById('tablaDetallesMuestras');
                 detalles.forEach((detalle) => {
                     const fila = document.createElement('tr');
                     fila.innerHTML = `
-                        <td>${detalle.id_detalle}</td>
-                        <td>${detalle.id_organismo}</td>
-                        <td>${detalle.organismo_nombre}</td>
-                        <td>${detalle.id_muestra}</td>
-                        <td><button onclick="modificar('${detalle.id_detalle}')">Modificar</button></td>
-                        <td><button onclick="eliminar('${detalle.id_detalle}')">Eliminar</button></td>
-                    `;
+        <td>${detalle.id_detalle}</td>
+        <td>${detalle.id_organismo}</td>
+        <td>${detalle.organismo_nombre}</td>
+        <td>${detalle.id_muestra}</td>
+        <td><button onclick="modificar('${detalle.id_organismo}')">Modificar</button></td>
+        <td><button onclick="eliminar('${detalle.id_detalle}')">Eliminar</button></td>
+    `;
                     tabla.appendChild(fila);
                 });
 
 
-
-                // 2️⃣ Obtener detalles de plantas
-                const responsePlantas = await fetch('/listarplantas');
-                if (!responsePlantas.ok) {
-                    alert('Ingrese plantas para visualizarlas aquí.');
-                    return;
-                }
-                const plantas = await responsePlantas.json();
-
-                // Mostrar detalles de plantas en la tabla
-                const tablaPlantas = document.getElementById('tablaDetallesPlantas');
-                plantas.forEach(planta => {
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${detalle.id_detalle}</td>
-                         <td>${detalle.id_muestra}</td>
-                        <td>${detalle.id_planta}</td>
-                        <td>${detalle.id_tipplanta}</td>
-                        <td>${detalle.planta_nombre}</td>
-                        <td><button onclick="modificarPlanta('${planta.id}')">Modificar</button></td>
-                        <td><button onclick="eliminarPlanta('${planta.id}')">Eliminar</button></td>
-                    `;
-                    tablaPlantas.appendChild(fila);
-                });
             } catch (error) {
                 console.error('❌ Error al cargar los detalles de muestra:', error);
                 alert('Hubo un error al cargar los detalles.');
@@ -118,9 +106,20 @@
         });
 
 
-        function modificar(id) {
-            window.location.href = `/modificarorganismos.html?id=${id}`;
+        function modificar(idOrganismo) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idMuestra = urlParams.get("id"); // Obtener el ID de la muestra de la URL
+
+            if (!idMuestra) {
+                alert("⚠️ No se proporcionó un ID de muestra.");
+                return;
+            }
+
+            // Redirigir a actualizarOrganismo.html con idMuestra e idOrganismo
+            window.location.href = `/actualizarOrganismo.html?id=${idOrganismo}&idMuestra=${idMuestra}`;
         }
+
+
 
         async function eliminar(id) {
             console.log("🛠️ Intentando eliminar el detalle con ID:", id); // 👈 Agrega esta línea para verificar el ID
@@ -141,33 +140,6 @@
             } catch (error) {
                 console.error('❌ Error al eliminar el detalle:', error);
                 alert('Hubo un error al eliminar el detalle.');
-            }
-        }
-
-
-
-        // Funciones de modificación y eliminación de plantas
-        function modificarPlanta(id) {
-            window.location.href = `/modificarplantas.html?id=${id}`;
-        }
-
-        async function eliminarPlanta(id) {
-            const confirmacion = confirm("⚠️ ¿Seguro que deseas eliminar esta planta?");
-            if (!confirmacion) return;
-
-            try {
-                const response = await fetch(`/eliminardetalleplanta/${encodeURIComponent(id)}`, { method: 'DELETE' });
-
-                if (response.ok) {
-                    alert('✅ Planta eliminada correctamente.');
-                    location.reload();
-                } else {
-                    const errorData = await response.json();
-                    alert(`❌ Error: ${errorData.error || 'No se pudo eliminar la planta.'}`);
-                }
-            } catch (error) {
-                console.error('❌ Error al eliminar la planta:', error);
-                alert('Hubo un error al eliminar la planta.');
             }
         }
 

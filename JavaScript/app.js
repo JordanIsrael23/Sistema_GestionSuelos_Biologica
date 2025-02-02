@@ -398,7 +398,7 @@ app.get('/listamuestras', async (req, res) => {
 //////////////////
 ///////////////////
 
-app.get('/listadetalles', async (req, res) => {
+app.get('/listadetalles/:idMuestra', async (req, res) => {
     // 1️⃣ Verificar si el usuario ha iniciado sesión
     if (!req.session.user) {
         console.error('⚠️ No se ha iniciado sesión.');
@@ -406,6 +406,11 @@ app.get('/listadetalles', async (req, res) => {
     }
 
     const userId = req.session.user.user_id; // 🔹 Obtener ID del usuario en sesión
+    const idMuestra = req.params.idMuestra; // 🔹 Obtener el ID de la muestra seleccionada
+
+    if (!idMuestra) {
+        return res.status(400).json({ error: "ID de muestra no proporcionado." });
+    }
 
     const query = `
     SELECT 
@@ -418,19 +423,19 @@ app.get('/listadetalles', async (req, res) => {
     INNER JOIN SM_B_ORGANISMOS ORG ON ORG.OR_ID = DM.OR_ID
     WHERE MU.PARC_ID IN (
         SELECT PARC_ID FROM SM_PARCELAS WHERE USER_ID = $1
-    )
+    ) 
+    AND DM.MU_ID = $2
     ORDER BY DM.DM_ID DESC
-`;
-
+    `;
 
     try {
-        console.log(`🔎 Consultando detalles de muestras para el usuario ID: ${userId}`);
+        console.log(`🔎 Consultando detalles de muestra ID: ${idMuestra} para el usuario ID: ${userId}`);
 
-        const resultado = await conexion.query(query, [userId]);
+        const resultado = await conexion.query(query, [userId, idMuestra]);
         console.log('✅ Resultados obtenidos:', resultado.rows);
 
         if (resultado.rows.length === 0) {
-            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario.');
+            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario y la muestra seleccionada.');
             return res.status(404).json({ error: 'No hay detalles de muestras disponibles.' });
         }
 
@@ -440,6 +445,7 @@ app.get('/listadetalles', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los detalles de muestras.' });
     }
 });
+
 
 
 
@@ -471,7 +477,93 @@ app.delete('/eliminardetalle/:id', async (req, res) => {
     }
 });
 
+app.get('/obtenerOrganismo/:id', async (req, res) => {
+    const idOrganismo = req.params.id;
 
+    if (!idOrganismo) {
+        return res.status(400).json({ error: "ID de organismo no proporcionado." });
+    }
+
+    const query = `
+        SELECT OR_ID AS id, TO_ID AS tipo_id, TOR_ID AS orden_id, OR_NOMBRE AS nombre
+        FROM SM_B_ORGANISMOS 
+        WHERE OR_ID = $1
+    `;
+
+    try {
+        console.log(`🔎 Buscando datos del organismo con ID: ${idOrganismo}`);
+        const resultado = await conexion.query(query, [idOrganismo]);
+
+        if (resultado.rows.length === 0) {
+            console.warn("⚠️ No se encontró el organismo.");
+            return res.status(404).json({ error: "Organismo no encontrado." });
+        }
+
+        res.status(200).json(resultado.rows[0]);
+    } catch (error) {
+        console.error("❌ Error al obtener el organismo:", error);
+        res.status(500).json({ error: "Error interno al obtener el organismo." });
+    }
+});
+
+
+
+
+app.put('/actualizarOrganismo/:id', async (req, res) => {
+    const idOrganismo = req.params.id;
+    const { nombre, tipo_id, orden_id } = req.body;
+
+    if (!idOrganismo || !nombre || !tipo_id || !orden_id) {
+        return res.status(400).json({ error: "Faltan datos para actualizar el organismo." });
+    }
+
+    const query = `
+        UPDATE SM_B_ORGANISMOS 
+        SET OR_NOMBRE = $1, TO_ID = $2, TOR_ID = $3
+        WHERE OR_ID = $4
+    `;
+
+    try {
+        console.log(`🔄 Actualizando organismo ID: ${idOrganismo}`);
+        const resultado = await conexion.query(query, [nombre, tipo_id, orden_id, idOrganismo]);
+
+        if (resultado.rowCount === 0) {
+            console.warn("⚠️ No se encontró el organismo para actualizar.");
+            return res.status(404).json({ error: "Organismo no encontrado." });
+        }
+
+        res.status(200).json({ message: "✅ Organismo actualizado correctamente." });
+    } catch (error) {
+        console.error("❌ Error al actualizar el organismo:", error);
+        res.status(500).json({ error: "Error interno al actualizar el organismo." });
+    }
+});
+
+
+
+// Obtener todos los tipos de organismos
+app.get('/tiposOrganismos', async (req, res) => {
+    try {
+        const query = `SELECT TO_ID, TO_NOMBRE FROM SM_B_TIPOSORGANISMOS ORDER BY TO_NOMBRE`;
+        const resultado = await conexion.query(query);
+        res.status(200).json(resultado.rows);
+    } catch (error) {
+        console.error("❌ Error al obtener tipos de organismos:", error);
+        res.status(500).json({ error: "Error al obtener tipos de organismos." });
+    }
+});
+
+// Obtener todas las órdenes
+app.get('/ordenes', async (req, res) => {
+    try {
+        const query = `SELECT TOR_ID, TOR_NOMBRES FROM SM_B_TIPOORDENES ORDER BY TOR_NOMBRES`;
+        const resultado = await conexion.query(query);
+        res.status(200).json(resultado.rows);
+    } catch (error) {
+        console.error("❌ Error al obtener órdenes:", error);
+        res.status(500).json({ error: "Error al obtener órdenes." });
+    }
+});
 
 
 /////////////////
