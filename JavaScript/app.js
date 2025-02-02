@@ -1207,56 +1207,55 @@ app.get('/obtener-informe/:id', async (req, res) => {
 
 
 
-////////////////
-///////////////
-//////////////
-//////////////
-//////////////
+////////////
+///////////
 app.delete('/eliminarplanta/:id', async (req, res) => {
     const { id } = req.params;
 
     console.log("🔍 ID recibido para eliminar:", id);
 
-    if (!id || typeof id !== 'string' || id.trim() === '') {
+    if (!id || isNaN(parseInt(id))) {
         console.warn("⚠️ ID inválido recibido en la solicitud.");
         return res.status(400).json({ error: "ID inválido." });
     }
 
     try {
-        // Primero, eliminar la referencia en la tabla sm_b_plantas (si es necesario)
+        // 1️⃣ Eliminar referencias en `sm_b_plantas`
         const updateQuery = 'UPDATE sm_b_plantas SET dm_id = NULL WHERE dm_id = $1';
         await conexion.query(updateQuery, [id]);
 
-        // Luego, eliminar el detalle en sm_b_detallesmuestras
+        // 2️⃣ Intentar eliminar la planta en `sm_b_detallesmuestras`
         const deleteQuery = 'DELETE FROM sm_b_detallesmuestras WHERE dm_id = $1';
         const result = await conexion.query(deleteQuery, [id]);
 
         if (result.rowCount > 0) {
             console.log("✅ Planta eliminada correctamente.");
-            res.json({ success: true });
+            return res.json({ success: true, message: "Planta eliminada correctamente." });
         } else {
-            console.warn("⚠️ No se encontró el detalle en la base de datos.");
-            res.status(404).json({ error: "Planta no encontrado." });
+            console.warn("⚠️ No se encontró la planta en la base de datos.");
+            return res.status(404).json({ error: "Planta no encontrada." });
         }
     } catch (error) {
         console.error("❌ Error al eliminar la planta:", error);
-        res.status(500).json({ error: "Error interno del servidor." });
+        return res.status(500).json({ error: "Error interno del servidor." });
     }
 });
-
-
-///////////////
-//////////////
-//////////////
-/////////////
+////////
+////////
+///////
 app.get('/listadetalles', async (req, res) => {
     // 1️⃣ Verificar si el usuario ha iniciado sesión
-    if (!req.session.user) {
+    if (!req.session || !req.session.user) {
         console.error('⚠️ No se ha iniciado sesión.');
-        return res.status(401).json({ error: 'No has iniciado sesión' });
+        return res.status(401).json({ error: 'No has iniciado sesión. Inicia sesión para ver los detalles.' });
     }
 
     const userId = req.session.user.user_id; // 🔹 Obtener ID del usuario en sesión
+
+    if (!userId) {
+        console.error('⚠️ Usuario no válido en sesión.');
+        return res.status(403).json({ error: 'Acceso no autorizado.' });
+    }
 
     const query = `
     SELECT 
@@ -1271,23 +1270,23 @@ app.get('/listadetalles', async (req, res) => {
         SELECT PARC_ID FROM SM_PARCELAS WHERE USER_ID = $1
     )
     ORDER BY DM.DM_ID DESC
-`;
-
+    `;
 
     try {
         console.log(`🔎 Consultando detalles de muestras para el usuario ID: ${userId}`);
 
         const resultado = await conexion.query(query, [userId]);
-        console.log('✅ Resultados obtenidos:', resultado.rows);
-
+        
         if (resultado.rows.length === 0) {
-            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario.');
-            return res.status(404).json({ error: 'No hay detalles de muestras disponibles.' });
+            console.warn('⚠️ No hay detalles de muestras disponibles.');
+            return res.status(200).json({ message: 'No hay detalles de muestras disponibles.' });
         }
 
-        res.status(200).json(resultado.rows);
+        console.log('✅ Resultados obtenidos:', resultado.rows);
+        return res.status(200).json(resultado.rows);
     } catch (error) {
         console.error('❌ Error al obtener los detalles de muestras:', error);
-        res.status(500).json({ error: 'Error al obtener los detalles de muestras.' });
+        return res.status(500).json({ error: 'Error interno del servidor al obtener detalles de muestras.' });
     }
 });
+
