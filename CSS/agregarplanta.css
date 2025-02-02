@@ -78,6 +78,7 @@ input, textarea {
     border-radius: 6px;
     font-size: 16px;
     transition: border-color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 textarea {
@@ -115,6 +116,7 @@ button[type="reset"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Estilo para el botón "Guardar" */
@@ -130,6 +132,7 @@ button[type="reset"] {
     transition: background-color 0.3s, transform 0.3s;
     text-align: center;
     display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .btn-guardar:hover {
@@ -168,6 +171,7 @@ button[type="reset"] {
     transition: background-color 0.3s, transform 0.3s;
     text-align: center;
     display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
 
 }
 select {
@@ -177,6 +181,7 @@ select {
     border: 1px solid #cccccc; /* Gris claro seguro */
     border-radius: 6px;
     font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
 }
 .btn-cancelar{
     width: 150px;
@@ -190,5 +195,6 @@ select {
     transition: background-color 0.3s, transform 0.3s;
     text-align: center;
     display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
 
 }

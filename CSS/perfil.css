@@ -23,6 +23,7 @@ body {
     width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .header h1 {
@@ -54,6 +55,7 @@ form {
     margin-top: 100px; /* Espaciado para evitar solapamiento con el header */
     width: 100%;
     max-width: 400px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 form h2 {
@@ -68,6 +70,7 @@ label {
     margin-bottom: 8px;
     font-weight: bold;
     color: #333333; /* Gris seguro */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 input {
@@ -78,6 +81,7 @@ input {
     border-radius: 6px;
     font-size: 16px;
     transition: border-color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 input:focus {
@@ -99,6 +103,7 @@ button[type="reset"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 button[type="submit"]:hover, 
@@ -140,6 +145,7 @@ button[type="reset"]:hover {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .boton-regresar:hover {
@@ -166,6 +172,7 @@ button[type="reset"]:hover {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .modal-content button:hover {
@@ -176,4 +183,10 @@ button[type="reset"]:hover {
 .modal-content button:active {
     background-color: #004085; /* Azul más oscuro al presionar */
     transform: scale(0.95); /* Reduce ligeramente al presionar */
+}
+/* Cambiar estilo de la fuente del botón de selección de archivo */
+input[type="button"] {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;  /* Ajusta el tamaño de la fuente según sea necesario */
+    color: black;     /* Cambia el color del texto si es necesario */
 }

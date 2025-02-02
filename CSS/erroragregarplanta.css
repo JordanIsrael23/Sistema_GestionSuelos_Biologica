@@ -19,11 +19,13 @@ body {
     font-size: 3rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .container p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .container .icon {
@@ -42,6 +44,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .container button:hover {

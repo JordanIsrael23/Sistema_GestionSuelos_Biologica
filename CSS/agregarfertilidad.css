@@ -39,6 +39,7 @@ body {
   text-align: center;
   animation: fadeIn 0.8s ease-in-out;
   width: 320px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .login-container h2 {
@@ -63,6 +64,7 @@ input, textarea {
   border-radius: 6px;
   font-size: 16px;
   transition: border-color 0.3s;
+   font-family: 'Times New Roman', Times, serif;
 }
 
 input:focus, textarea:focus {
@@ -85,6 +87,7 @@ button {
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 button:hover {

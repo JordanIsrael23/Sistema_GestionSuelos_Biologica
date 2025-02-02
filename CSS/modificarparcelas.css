@@ -16,6 +16,7 @@ body{
     width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .header h1 {
@@ -60,6 +61,7 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 button:hover {

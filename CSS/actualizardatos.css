@@ -81,6 +81,7 @@ button {
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 button:hover {

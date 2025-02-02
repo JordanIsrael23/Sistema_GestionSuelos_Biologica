@@ -17,7 +17,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
     max-width: 400px;
     margin: auto;
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .caja label {
@@ -26,6 +26,7 @@ body {
     font-weight: bold;
     font-size: 16px;
     color: #333;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .caja select, 
@@ -40,6 +41,7 @@ body {
     border-radius: 5px;
     margin-bottom: 20px; /* Espaciado entre los inputs */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .caja select option {
@@ -107,4 +109,5 @@ button{
     border: none;
     position: relative;
     left: 37%;
+    font-family: 'Times New Roman', Times, serif;
 }

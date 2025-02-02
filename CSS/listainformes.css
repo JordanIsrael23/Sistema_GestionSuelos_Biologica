@@ -26,6 +26,7 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 table {
@@ -33,6 +34,7 @@ table {
     border-collapse: collapse;
     margin: 20px 0;
     background-color: #ffffff; /* Fondo blanco */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 th, td {
@@ -60,6 +62,7 @@ button {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 button:hover {
