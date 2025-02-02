@@ -128,13 +128,21 @@ body {
     font-family: Arial, sans-serif; /* Define una fuente para el texto */
 }
 
+/* Estilo para el footer en modo claro */
 footer {
     display: flex;
     justify-content: space-between;
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
     font-family: Arial, sans-serif;
+    color: #333; /* Texto oscuro en modo claro */
 }
+
+/* Estilo para el footer en modo oscuro */
+body.modo-oscuro footer {
+    color: white; /* Texto blanco en modo oscuro */
+}
+
 
 footer div {
     display: flex;
@@ -189,26 +197,7 @@ body {
     vertical-align: middle;
 }
 
-body:has(.modo-checkbox:checked) {
-    background-color: black;
-    color: white;
-}
 
-body:has(.modo-checkbox:checked) .buscar-login {
-    background-color: #333;
-    border-color: #555;
-}
-
-body:has(.modo-checkbox:checked) .busqueda input,
-body:has(.modo-checkbox:checked) .busqueda button,
-body:has(.modo-checkbox:checked) .login {
-    background-color: #444;
-    color: white;
-    border-color: #666;
-}
-body:has(.modo-checkbox:checked) h3 {
-    color: white; /* Cambia el color de las letras a blanco en modo oscuro */
-}
 
 .modo {
     position: relative;
@@ -244,5 +233,72 @@ body:has(.modo-checkbox:checked) .modo .sol {
     display: none;  /* Oculta el checkbox, ya que solo usamos el label para cambiar el modo */
 }
 .ref{
-    color: #333;
+    color: #ffffff;
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #2C2C2C;  /* Fondo oscuro */
+    color: white;  /* Texto en blanco */
+}
+
+/* Títulos en el modo oscuro */
+body.dark-mode h3 {
+    color: white !important;  /* Asegura que el color sea blanco */
+}
+
+/* Otros elementos que cambian en el modo oscuro */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode p, body.dark-mode a {
+    color: white;
+}
+
+/* Modo claro (por defecto) */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos de h3 en modo claro */
+body h3 {
+    color: black;  /* Títulos en negro en modo claro */
+}
+
+/* Modo oscuro */
+body.modo-oscuro {
+    background-color: #2C2C2C;  /* Fondo oscuro */
+    color: #E0E0E0;  /* Texto gris claro */
+}
+
+/* Estilos adicionales */
+.modo-oscuro a {
+    color: #fff;
+}
+
+.modo-oscuro button {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #bbb;
+}
+
+.modo-oscuro input,
+.modo-oscuro textarea {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+/* Modo claro */
+h3 {
+    color: #2C2C2C;
+}
+
+/* Modo oscuro */
+body.modo-oscuro h3 {
+    color: white;
 }

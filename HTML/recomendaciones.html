@@ -283,7 +283,24 @@
         </p>
 
     </div>
+    <script>
+        // Detectar el modo de color preferido por el sistema
+        const preferenciaModo = window.matchMedia("(prefers-color-scheme: dark)");
 
+        function aplicarModoPreferido() {
+            if (preferenciaModo.matches) {
+                document.body.classList.add("modo-oscuro"); // Aplicar modo oscuro
+            } else {
+                document.body.classList.remove("modo-oscuro"); // Aplicar modo claro
+            }
+        }
+
+        // Llamar a la función para aplicar el modo cuando la página se carga
+        aplicarModoPreferido();
+
+        // Escuchar cambios en la preferencia del sistema
+        preferenciaModo.addEventListener("change", aplicarModoPreferido);
+    </script>
 </body>
 <br>
 <footer>

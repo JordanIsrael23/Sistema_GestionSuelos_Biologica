@@ -104,19 +104,21 @@ body {
     font-family: Arial, sans-serif; /* Define una fuente para el texto */
 }
 
+/* Estilo para el footer en modo claro */
 footer {
     display: flex;
     justify-content: space-between;
     background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
     padding: 20px;
     font-family: Arial, sans-serif;
+    color: #333; /* Texto oscuro en modo claro */
 }
 
-footer div {
-    display: flex;
-    flex-direction: column;
-    margin-right: 20px;
+/* Estilo para el footer en modo oscuro */
+body.modo-oscuro footer {
+    color: white; /* Texto blanco en modo oscuro */
 }
+
 
 footer div:last-child {
     margin-right: 0;
@@ -230,5 +232,61 @@ body:has(.modo-checkbox:checked) .modo .sol {
     display: none;  /* Oculta el checkbox, ya que solo usamos el label para cambiar el modo */
 }
 .ref{
-    color: #333;
+    color: #fff;
+}
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #2C2C2C;  /* Fondo oscuro pero más suave */
+    color: white;  /* Texto blanco */
+}
+
+/* Personaliza otros elementos del modo oscuro */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode p, body.dark-mode a {
+    color: white;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Modo claro (por defecto) */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Modo oscuro */
+body.modo-oscuro {
+    background-color: #2C2C2C;  /* Fondo oscuro pero más suave */
+    color: #E0E0E0;  /* Texto gris claro para ser más suave */
+}
+
+/* Estilos adicionales para mejorar la apariencia */
+.modo-oscuro a {
+    color: #fff;  /* Color de enlaces más suave */
+}
+
+.modo-oscuro button {
+    background-color: #444;  /* Fondo más suave para botones */
+    color: #fff;
+    border: 1px solid #bbb;
+}
+
+.modo-oscuro input,
+.modo-oscuro textarea {
+    background-color: #333;  /* Fondo más suave para inputs */
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.modo-oscuro .card {
+    background-color: #3A3A3A;  /* Fondo de tarjeta más suave */
+    border: 1px solid #555;
+}
+
+.modo-oscuro .navbar {
+    background-color: #333333;  /* Fondo de navbar más suave */
+    border-bottom: 1px solid #444;
 }
