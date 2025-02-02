@@ -11,7 +11,7 @@
 
 <body>
     <header class="header">
-        <a href="javascript:history.back()" class="back-icon">
+        <a href="modificarorganismos.html" class="back-icon">
             <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
         </a>
         <h1>Gestión Biológica de Suelos</h1>
@@ -41,22 +41,22 @@
         document.addEventListener("DOMContentLoaded", async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const idOrganismo = urlParams.get("id");
-            const idMuestra = urlParams.get("idMuestra"); // 🔥 Obtener ID de la muestra
+            const idMuestra = urlParams.get("idMuestra"); //  Obtener ID de la muestra
 
             if (!idOrganismo || !idMuestra) {
-                alert("⚠️ No se proporcionó un ID de organismo o de muestra.");
+                alert(" No se proporcionó un ID de organismo o de muestra.");
                 window.location.href = "/modificarorganismos.html";
                 return;
             }
 
-            console.log(`🔎 Cargando datos del organismo ID: ${idOrganismo} para la muestra ID: ${idMuestra}`);
+            console.log(` Cargando datos del organismo ID: ${idOrganismo} para la muestra ID: ${idMuestra}`);
 
             const tiposSelect = document.getElementById("tipos");
             const ordenesSelect = document.getElementById("ordenes");
             const nombreInput = document.getElementById("nombre");
 
             try {
-                // 1️⃣ Obtener los tipos de organismos
+                //  Obtener los tipos de organismos
                 const tiposResponse = await fetch("/tiposOrganismos");
                 const tipos = await tiposResponse.json();
                 tipos.forEach((item) => {
@@ -66,7 +66,7 @@
                     tiposSelect.appendChild(option);
                 });
 
-                // 2️⃣ Obtener las órdenes
+                //  Obtener las órdenes
                 const ordenesResponse = await fetch("/ordenes");
                 const ordenes = await ordenesResponse.json();
                 ordenes.forEach((item) => {
@@ -76,7 +76,7 @@
                     ordenesSelect.appendChild(option);
                 });
 
-                // 3️⃣ Obtener los datos del organismo y preseleccionar los valores
+                //  Obtener los datos del organismo y preseleccionar los valores
                 const organismoResponse = await fetch(`/obtenerOrganismo/${idOrganismo}`);
                 if (!organismoResponse.ok) throw new Error("No se pudo obtener el organismo.");
 
@@ -86,24 +86,24 @@
                 ordenesSelect.value = organismo.orden_id;
 
             } catch (error) {
-                console.error("❌ Error al cargar los datos:", error);
+                console.error(" Error al cargar los datos:", error);
                 alert("Hubo un error al cargar los datos.");
             }
 
-            // 4️⃣ Función para cancelar y regresar a modificarorganismos.html con el idMuestra
+            //  Función para cancelar y regresar a modificarorganismos.html con el idMuestra
             document.getElementById("btnCancelar").addEventListener("click", () => {
                 window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
             });
         });
 
-        // 5️⃣ Función para actualizar el organismo y regresar con el idMuestra
+        //  Función para actualizar el organismo y regresar con el idMuestra
         document.getElementById("btnActualizar").addEventListener("click", async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const idOrganismo = urlParams.get("id");
             const idMuestra = urlParams.get("idMuestra"); // Mantener el ID de la muestra
 
             if (!idOrganismo || !idMuestra) {
-                alert("⚠️ No se proporcionó un ID de organismo o de muestra.");
+                alert(" No se proporcionó un ID de organismo o de muestra.");
                 return;
             }
 
@@ -122,15 +122,15 @@
 
                 if (!response.ok) {
                     const error = await response.json();
-                    console.error("❌ Error al actualizar el organismo:", error);
+                    console.error(" Error al actualizar el organismo:", error);
                     alert("No se pudo actualizar el organismo.");
                     return;
                 }
 
-                alert("✅ Organismo actualizado correctamente.");
+                alert("Organismo actualizado correctamente.");
                 window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
             } catch (error) {
-                console.error("❌ Error al actualizar el organismo:", error);
+                console.error(" Error al actualizar el organismo:", error);
                 alert("Hubo un error al actualizar el organismo.");
             }
         });
