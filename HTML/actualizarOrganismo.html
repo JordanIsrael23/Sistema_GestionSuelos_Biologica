@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/agregarOrganismo.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+    <title>Actualizar Organismos</title>
+</head>
+
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+    
+    <div class="caja">
+        <form>
+            <label>Elije el tipo:</label>
+            <select id="tipos" required>
+                <option value="">Seleccione un tipo</option>
+            </select>
+
+            <label>Nombre:</label>
+            <input type="text" id="nombre" placeholder="Escribe el nombre" required>
+
+            <label>Elije el orden:</label>
+            <select id="ordenes" required>
+                <option value="">Seleccione un orden</option>
+            </select>
+
+            <button type="button" id="btnActualizar">Actualizar</button>
+            <button type="button" id="btnCancelar">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idOrganismo = urlParams.get("id");
+            const idMuestra = urlParams.get("idMuestra"); // 🔥 Obtener ID de la muestra
+
+            if (!idOrganismo || !idMuestra) {
+                alert("⚠️ No se proporcionó un ID de organismo o de muestra.");
+                window.location.href = "/modificarorganismos.html";
+                return;
+            }
+
+            console.log(`🔎 Cargando datos del organismo ID: ${idOrganismo} para la muestra ID: ${idMuestra}`);
+
+            const tiposSelect = document.getElementById("tipos");
+            const ordenesSelect = document.getElementById("ordenes");
+            const nombreInput = document.getElementById("nombre");
+
+            try {
+                // 1️⃣ Obtener los tipos de organismos
+                const tiposResponse = await fetch("/tiposOrganismos");
+                const tipos = await tiposResponse.json();
+                tipos.forEach((item) => {
+                    const option = document.createElement("option");
+                    option.value = item.to_id;
+                    option.textContent = item.to_nombre;
+                    tiposSelect.appendChild(option);
+                });
+
+                // 2️⃣ Obtener las órdenes
+                const ordenesResponse = await fetch("/ordenes");
+                const ordenes = await ordenesResponse.json();
+                ordenes.forEach((item) => {
+                    const option = document.createElement("option");
+                    option.value = item.tor_id;
+                    option.textContent = item.tor_nombres;
+                    ordenesSelect.appendChild(option);
+                });
+
+                // 3️⃣ Obtener los datos del organismo y preseleccionar los valores
+                const organismoResponse = await fetch(`/obtenerOrganismo/${idOrganismo}`);
+                if (!organismoResponse.ok) throw new Error("No se pudo obtener el organismo.");
+
+                const organismo = await organismoResponse.json();
+                nombreInput.value = organismo.nombre;
+                tiposSelect.value = organismo.tipo_id;
+                ordenesSelect.value = organismo.orden_id;
+
+            } catch (error) {
+                console.error("❌ Error al cargar los datos:", error);
+                alert("Hubo un error al cargar los datos.");
+            }
+
+            // 4️⃣ Función para cancelar y regresar a modificarorganismos.html con el idMuestra
+            document.getElementById("btnCancelar").addEventListener("click", () => {
+                window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
+            });
+        });
+
+        // 5️⃣ Función para actualizar el organismo y regresar con el idMuestra
+        document.getElementById("btnActualizar").addEventListener("click", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idOrganismo = urlParams.get("id");
+            const idMuestra = urlParams.get("idMuestra"); // Mantener el ID de la muestra
+
+            if (!idOrganismo || !idMuestra) {
+                alert("⚠️ No se proporcionó un ID de organismo o de muestra.");
+                return;
+            }
+
+            const organismoActualizado = {
+                nombre: document.getElementById("nombre").value,
+                tipo_id: document.getElementById("tipos").value,
+                orden_id: document.getElementById("ordenes").value
+            };
+
+            try {
+                const response = await fetch(`/actualizarOrganismo/${idOrganismo}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(organismoActualizado)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.error("❌ Error al actualizar el organismo:", error);
+                    alert("No se pudo actualizar el organismo.");
+                    return;
+                }
+
+                alert("✅ Organismo actualizado correctamente.");
+                window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
+            } catch (error) {
+                console.error("❌ Error al actualizar el organismo:", error);
+                alert("Hubo un error al actualizar el organismo.");
+            }
+        });
+    </script>
+
+</body>
+</html>

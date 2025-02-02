@@ -49,7 +49,7 @@
                     <th>Eliminar</th>
                 </tr>
             </thead>
-            <tbody id="tablaPlantas"> 
+            <tbody id="tablaPlantas">
                 <!-- Aquí se insertarán dinámicamente las filas -->
             </tbody>
         </table>
@@ -106,27 +106,27 @@
             }
         };
 
-            ////////////plantas//////////////////////
+        ////////////plantas//////////////////////
 
-            document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/listaplantas');
-        if (!response.ok) {
-            throw new Error('Error al obtener las plantas.');
-        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/listarplantas');
+                if (!response.ok) {
+                    throw new Error('Error al obtener las plantas.');
+                }
 
-        const plantas = await response.json();
-        const tabla = document.getElementById('tablaPlantas');
+                const plantas = await response.json();
+                const tabla = document.getElementById('tablaPlantas');
 
-        if (plantas.length === 0) {
-            console.warn('⚠️ No hay plantas registradas.');
-            return;
-        }
+                if (plantas.length === 0) {
+                    console.warn('⚠️ No hay plantas registradas.');
+                    return;
+                }
 
-        plantas.forEach(planta => {
-            const fila = document.createElement('tr');
+                plantas.forEach(planta => {
+                    const fila = document.createElement('tr');
 
-            fila.innerHTML = `
+                    fila.innerHTML = `
                 <td>${planta.id}</td>
                 <td>${planta.tipo}</td>
                 <td>${planta.nombre}</td>
@@ -138,39 +138,40 @@
                 </td>
             `;
 
-            tabla.appendChild(fila);
+                    tabla.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('❌ Error:', error);
+                alert('Hubo un problema al cargar las plantas.');
+            }
         });
-    } catch (error) {
-        console.error('❌ Error:', error);
-        alert('Hubo un problema al cargar las plantas.');
-    }
-});
 
-// Función para modificar planta
-function modificarPlanta(id) {
-    window.location.href = `/modificarplanta.html?id=${id}`;
-}
-
-// Función para eliminar planta
-async function eliminarPlanta(id) {
-    const confirmacion = confirm("⚠️ ¿Seguro que deseas eliminar esta planta?");
-    if (!confirmacion) return;
-
-    try {
-        const response = await fetch(`/eliminarplanta/${encodeURIComponent(id)}`, { method: 'DELETE' });
-
-        if (response.ok) {
-            alert('✅ Planta eliminada correctamente.');
-            location.reload();
-        } else {
-            const errorData = await response.json();
-            alert(`❌ Error: ${errorData.error || 'No se pudo eliminar la planta.'}`);
+        // Función para modificar planta
+        function modificarPlanta(id) {
+            window.location.href = `/modificarplanta.html?id=${id}`;
         }
-    } catch (error) {
-        console.error('❌ Error al eliminar la planta:', error);
-        alert('Hubo un error al eliminar la planta.');
-    }
-}
+
+        // Función para eliminar planta
+        async function eliminarPlanta(id) {
+            const confirmacion = confirm("⚠️ ¿Seguro que deseas eliminar esta planta?");
+            if (!confirmacion) return;
+
+            try {
+                const response = await fetch(`/eliminarplanta/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+                if (response.ok) {
+                    alert('✅ Planta eliminada correctamente.');
+                    location.reload();
+                } else {
+                    const errorData = await response.json();
+                    alert(`❌ Error: ${errorData.error || 'No se pudo eliminar la planta.'}`);
+                }
+            } catch (error) {
+                console.error('❌ Error al eliminar la planta:', error);
+                alert('Hubo un error al eliminar la planta.');
+            }
+        }
+
 
     </script>
 
