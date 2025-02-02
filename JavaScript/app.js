@@ -266,7 +266,7 @@ app.post('/recuperar', async (req, res) => {
 /////////////
 ///////////
 /////////
-app.get('/perfil', (req, res) => {
+app.get('/perfil', async (req, res) => {
     if (!req.session.user) {
         console.error('Usuario no logueado');
         return res.status(401).json({ error: 'No has iniciado sesión' });
@@ -279,18 +279,35 @@ app.get('/perfil', (req, res) => {
 
     const cedula = req.session.user.user_cedula;
 
-    const user = {
-        nombre: req.session.user.user_nombre,
-        apellido: req.session.user.user_apellido,
-        email: req.session.user.user_email,
-        telefono: req.session.user.user_telefono,
-        rol: roles[req.session.user.tipus_id] || 'Desconocido',
-        foto: `/imagen/${cedula}` // Generar la URL de la imagen basada en la cédula
-    };
+    try {
+        // Consulta a la base de datos para obtener los datos más recientes
+        const query = `SELECT * FROM USUARIOS WHERE USER_CEDULA = $1`;
+        const resultado = await conexion.query(query, [cedula]);
 
-    console.log('Datos del usuario enviados:', user);
-    res.json(user);
+        if (resultado.rows.length === 0) {
+            console.warn('Usuario no encontrado en la base de datos.');
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        const user = resultado.rows[0];
+
+        const usuarioActualizado = {
+            nombre: user.user_nombre,
+            apellido: user.user_apellido,
+            email: user.user_email,
+            telefono: user.user_telefono,
+            rol: roles[user.tipus_id] || 'Desconocido',
+            foto: `/imagen/${cedula}` // URL de la imagen basada en la cédula
+        };
+
+        console.log('Datos del usuario enviados:', usuarioActualizado);
+        res.json(usuarioActualizado);
+    } catch (error) {
+        console.error('Error al obtener los datos del usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
+
 
 
 
