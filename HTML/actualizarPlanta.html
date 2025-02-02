@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/agregarplanta.css">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+    <title>Modificar Planta</title>
+</head>
+
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Gestión Biológica de Suelos</h1>
+    </header>
+
+    <form id="formulario-planta">
+        <h2>Modificar Planta</h2>
+
+        <label for="plant-name">Nombre de la Planta:</label>
+        <input type="text" id="plant-name" name="plant-name" required>
+
+        <label for="plantas">Tipo de la planta:</label>
+        <select id="plantas" name="plantas" required>
+            <option value="">Seleccione un tipo</option>
+        </select>
+
+        <div class="buttons">
+            <button type="button" id="btnActualizar" class="btn-guardar">Actualizar</button>
+            <button type="button" id="btnCancelar" class="btn-cancelar">Cancelar</button>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idPlanta = urlParams.get("id");
+            const idMuestra = urlParams.get("idMuestra"); // Mantener el ID de la muestra
+
+            if (!idPlanta || !idMuestra) {
+                alert("⚠️ No se proporcionó un ID de planta o de muestra.");
+                window.location.href = "/modificarorganismos.html";
+                return;
+            }
+
+            console.log(`🔍 Cargando datos de la planta ID: ${idPlanta}, perteneciente a la muestra ID: ${idMuestra}`);
+
+            const nombreInput = document.getElementById("plant-name");
+            const tipoSelect = document.getElementById("plantas");
+
+            try {
+                // 1️⃣ Obtener los tipos de plantas
+                const tiposResponse = await fetch("/cargartiposplantas");
+                const tipos = await tiposResponse.json();
+
+                tipos.forEach(tipo => {
+                    const option = document.createElement("option");
+                    option.value = tipo.tpl_id;
+                    option.textContent = tipo.tpl_detalles;
+                    tipoSelect.appendChild(option);
+                });
+
+                // 2️⃣ Obtener los datos de la planta y preseleccionar los valores
+                const plantaResponse = await fetch(`/obtenerPlanta/${idPlanta}`);
+                if (!plantaResponse.ok) throw new Error("No se pudo obtener la planta.");
+
+                const planta = await plantaResponse.json();
+                nombreInput.value = planta.nombre_planta;
+                tipoSelect.value = planta.id_tipo_planta;
+
+            } catch (error) {
+                console.error("❌ Error al cargar los datos:", error);
+                alert("Hubo un error al cargar los datos.");
+            }
+
+            // 📌 Función para cancelar y regresar a modificarorganismos.html con el idMuestra
+            document.getElementById("btnCancelar").addEventListener("click", () => {
+                window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
+            });
+
+            // 📌 Función para actualizar los datos de la planta
+            document.getElementById("btnActualizar").addEventListener("click", async () => {
+                const plantaActualizada = {
+                    nombre: nombreInput.value,
+                    tipo_id: tipoSelect.value
+                };
+
+                try {
+                    const response = await fetch(`/actualizarPlanta/${idPlanta}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(plantaActualizada)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error("❌ Error al actualizar la planta:", error);
+                        alert("No se pudo actualizar la planta.");
+                        return;
+                    }
+
+                    alert("✅ Planta actualizada correctamente.");
+                    window.location.href = `/modificarorganismos.html?id=${idMuestra}`;
+                } catch (error) {
+                    console.error("❌ Error al actualizar la planta:", error);
+                    alert("Hubo un error al actualizar la planta.");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -399,14 +399,14 @@ app.get('/listamuestras', async (req, res) => {
 ///////////////////
 
 app.get('/listadetalles/:idMuestra', async (req, res) => {
-    // 1️⃣ Verificar si el usuario ha iniciado sesión
+    //  Verificar si el usuario ha iniciado sesión
     if (!req.session.user) {
-        console.error('⚠️ No se ha iniciado sesión.');
+        console.error(' No se ha iniciado sesión.');
         return res.status(401).json({ error: 'No has iniciado sesión' });
     }
 
-    const userId = req.session.user.user_id; // 🔹 Obtener ID del usuario en sesión
-    const idMuestra = req.params.idMuestra; // 🔹 Obtener el ID de la muestra seleccionada
+    const userId = req.session.user.user_id; //
+    const idMuestra = req.params.idMuestra; // 
 
     if (!idMuestra) {
         return res.status(400).json({ error: "ID de muestra no proporcionado." });
@@ -429,34 +429,77 @@ app.get('/listadetalles/:idMuestra', async (req, res) => {
     `;
 
     try {
-        console.log(`🔎 Consultando detalles de muestra ID: ${idMuestra} para el usuario ID: ${userId}`);
+        console.log(` Consultando detalles de muestra ID: ${idMuestra} para el usuario ID: ${userId}`);
 
         const resultado = await conexion.query(query, [userId, idMuestra]);
-        console.log('✅ Resultados obtenidos:', resultado.rows);
+        console.log(' Resultados obtenidos:', resultado.rows);
 
         if (resultado.rows.length === 0) {
-            console.warn('⚠️ No hay detalles de muestras disponibles para el usuario y la muestra seleccionada.');
+            console.warn(' No hay detalles de muestras disponibles para el usuario y la muestra seleccionada.');
             return res.status(404).json({ error: 'No hay detalles de muestras disponibles.' });
         }
 
         res.status(200).json(resultado.rows);
     } catch (error) {
-        console.error('❌ Error al obtener los detalles de muestras:', error);
+        console.error(' Error al obtener los detalles de muestras:', error);
         res.status(500).json({ error: 'Error al obtener los detalles de muestras.' });
     }
 });
 
 
+////////////////////
+//////////////////
+///////////////////
 
+app.get('/listarplantas/:idMuestra', async (req, res) => {
+    const idMuestra = req.params.idMuestra;
+
+    if (!idMuestra) {
+        return res.status(400).json({ error: "ID de muestra no proporcionado." });
+    }
+
+    console.log(`🔍 Buscando plantas para la muestra ID: ${idMuestra}`);
+
+    const query = `
+        SELECT 
+            P.PL_ID AS id_planta,
+            P.DM_ID AS id_detalle,
+            P.TPL_ID AS id_tipo_planta,
+            P.PL_NOMBRE AS nombre_planta,
+            DM.MU_ID AS id_muestra
+        FROM SM_B_PLANTAS P
+        INNER JOIN SM_B_DETALLESMUESTRAS DM ON P.DM_ID = DM.DM_ID
+        WHERE DM.MU_ID = $1
+    `;
+
+    try {
+        const resultado = await conexion.query(query, [idMuestra]);
+
+        if (resultado.rows.length === 0) {
+            console.warn("⚠️ No se encontraron plantas para la muestra.");
+            return res.status(404).json({ error: "No hay plantas asociadas a esta muestra." });
+        }
+
+        res.status(200).json(resultado.rows);
+    } catch (error) {
+        console.error("❌ Error al obtener las plantas:", error);
+        res.status(500).json({ error: "Error interno al obtener las plantas." });
+    }
+});
+
+
+///////////////
+////////////
+//////////
 
 app.delete('/eliminardetalle/:id', async (req, res) => {
     const { id } = req.params;
 
-    // 🛠️ Agregar logs para ver qué ID está recibiendo el servidor
-    console.log("🔍 ID recibido para eliminar:", id);
+    //  Agregar logs para ver qué ID está recibiendo el servidor
+    console.log(" ID recibido para eliminar:", id);
 
     if (!id || typeof id !== 'string' || id.trim() === '') {
-        console.warn("⚠️ ID inválido recibido en la solicitud.");
+        console.warn(" ID inválido recibido en la solicitud.");
         return res.status(400).json({ error: "ID inválido." });
     }
 
@@ -465,17 +508,124 @@ app.delete('/eliminardetalle/:id', async (req, res) => {
         const result = await conexion.query(query, [id]);
 
         if (result.rowCount > 0) {
-            console.log("✅ Detalle eliminado correctamente.");
+            console.log("Detalle eliminado correctamente.");
             res.json({ success: true });
         } else {
-            console.warn("⚠️ No se encontró el detalle en la base de datos.");
+            console.warn(" No se encontró el detalle en la base de datos.");
             res.status(404).json({ error: "Detalle no encontrado." });
         }
     } catch (error) {
-        console.error("❌ Error al eliminar el detalle:", error);
+        console.error("Error al eliminar el detalle:", error);
         res.status(500).json({ error: "Error interno del servidor." });
     }
 });
+
+///////////////
+////////////////
+//////////
+
+app.delete('/eliminarplanta/:idPlanta', async (req, res) => {
+    const idPlanta = req.params.idPlanta;
+
+    if (!idPlanta) {
+        return res.status(400).json({ error: "ID de planta no proporcionado." });
+    }
+
+    console.log(`🗑️ Eliminando planta con ID: ${idPlanta}`);
+
+    try {
+        const query = 'DELETE FROM SM_B_PLANTAS WHERE PL_ID = $1';
+        const result = await conexion.query(query, [idPlanta]);
+
+        if (result.rowCount > 0) {
+            console.log("✅ Planta eliminada correctamente.");
+            res.json({ success: true });
+        } else {
+            console.warn("⚠️ No se encontró la planta en la base de datos.");
+            res.status(404).json({ error: "Planta no encontrada." });
+        }
+    } catch (error) {
+        console.error("❌ Error al eliminar la planta:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+/////////////
+///////////////
+////////////
+
+
+app.get('/obtenerPlanta/:idPlanta', async (req, res) => {
+    const idPlanta = req.params.idPlanta;
+
+    if (!idPlanta) {
+        return res.status(400).json({ error: "ID de planta no proporcionado." });
+    }
+
+    console.log(`🔎 Buscando datos de la planta con ID: ${idPlanta}`);
+
+    const query = `
+        SELECT 
+            PL_ID AS id_planta,
+            TPL_ID AS id_tipo_planta,
+            PL_NOMBRE AS nombre_planta
+        FROM SM_B_PLANTAS
+        WHERE PL_ID = $1
+    `;
+
+    try {
+        const resultado = await conexion.query(query, [idPlanta]);
+
+        if (resultado.rows.length === 0) {
+            console.warn("⚠️ No se encontró la planta.");
+            return res.status(404).json({ error: "Planta no encontrada." });
+        }
+
+        res.status(200).json(resultado.rows[0]);
+    } catch (error) {
+        console.error("❌ Error al obtener los datos de la planta:", error);
+        res.status(500).json({ error: "Error interno al obtener los datos de la planta." });
+    }
+});
+////////////
+////////////
+//////////////
+
+app.put('/actualizarPlanta/:idPlanta', async (req, res) => {
+    const idPlanta = req.params.idPlanta;
+    const { nombre, tipo_id } = req.body;
+
+    if (!idPlanta || !nombre || !tipo_id) {
+        return res.status(400).json({ error: "Datos incompletos para actualizar la planta." });
+    }
+
+    console.log(`🔄 Actualizando planta ID: ${idPlanta}`);
+
+    try {
+        const query = `
+            UPDATE SM_B_PLANTAS
+            SET PL_NOMBRE = $1, TPL_ID = $2
+            WHERE PL_ID = $3
+        `;
+        const result = await conexion.query(query, [nombre, tipo_id, idPlanta]);
+
+        if (result.rowCount > 0) {
+            console.log("✅ Planta actualizada correctamente.");
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ error: "Planta no encontrada." });
+        }
+    } catch (error) {
+        console.error("❌ Error al actualizar la planta:", error);
+        res.status(500).json({ error: "Error interno al actualizar la planta." });
+    }
+});
+
+/////////////
+//////////////
+////////////
+
+
 
 app.get('/obtenerOrganismo/:id', async (req, res) => {
     const idOrganismo = req.params.id;
@@ -491,17 +641,17 @@ app.get('/obtenerOrganismo/:id', async (req, res) => {
     `;
 
     try {
-        console.log(`🔎 Buscando datos del organismo con ID: ${idOrganismo}`);
+        console.log(` Buscando datos del organismo con ID: ${idOrganismo}`);
         const resultado = await conexion.query(query, [idOrganismo]);
 
         if (resultado.rows.length === 0) {
-            console.warn("⚠️ No se encontró el organismo.");
+            console.warn("No se encontró el organismo.");
             return res.status(404).json({ error: "Organismo no encontrado." });
         }
 
         res.status(200).json(resultado.rows[0]);
     } catch (error) {
-        console.error("❌ Error al obtener el organismo:", error);
+        console.error("Error al obtener el organismo:", error);
         res.status(500).json({ error: "Error interno al obtener el organismo." });
     }
 });
@@ -524,17 +674,17 @@ app.put('/actualizarOrganismo/:id', async (req, res) => {
     `;
 
     try {
-        console.log(`🔄 Actualizando organismo ID: ${idOrganismo}`);
+        console.log(`Actualizando organismo ID: ${idOrganismo}`);
         const resultado = await conexion.query(query, [nombre, tipo_id, orden_id, idOrganismo]);
 
         if (resultado.rowCount === 0) {
-            console.warn("⚠️ No se encontró el organismo para actualizar.");
+            console.warn(" No se encontró el organismo para actualizar.");
             return res.status(404).json({ error: "Organismo no encontrado." });
         }
 
-        res.status(200).json({ message: "✅ Organismo actualizado correctamente." });
+        res.status(200).json({ message: " Organismo actualizado correctamente." });
     } catch (error) {
-        console.error("❌ Error al actualizar el organismo:", error);
+        console.error(" Error al actualizar el organismo:", error);
         res.status(500).json({ error: "Error interno al actualizar el organismo." });
     }
 });
@@ -548,7 +698,7 @@ app.get('/tiposOrganismos', async (req, res) => {
         const resultado = await conexion.query(query);
         res.status(200).json(resultado.rows);
     } catch (error) {
-        console.error("❌ Error al obtener tipos de organismos:", error);
+        console.error(" Error al obtener tipos de organismos:", error);
         res.status(500).json({ error: "Error al obtener tipos de organismos." });
     }
 });
@@ -560,7 +710,7 @@ app.get('/ordenes', async (req, res) => {
         const resultado = await conexion.query(query);
         res.status(200).json(resultado.rows);
     } catch (error) {
-        console.error("❌ Error al obtener órdenes:", error);
+        console.error(" Error al obtener órdenes:", error);
         res.status(500).json({ error: "Error al obtener órdenes." });
     }
 });
