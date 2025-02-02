@@ -1532,3 +1532,136 @@ app.get('/listadetalles', async (req, res) => {
     }
 });
 
+//////
+////////
+//////
+/////
+/////
+app.delete('/eliminarMuestra/:id', async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "ID inválido." });
+    }
+
+    try {
+        // Eliminar primero las plantas asociadas a los detalles de la muestra
+        await conexion.query(`
+            DELETE FROM SM_B_PLANTAS 
+            WHERE DM_ID IN (
+                SELECT DM_ID FROM SM_B_DETALLESMUESTRAS WHERE MU_ID = $1
+            )
+        `, [id]);
+
+        // Ahora eliminar los detalles de la muestra
+        await conexion.query('DELETE FROM SM_B_DETALLESMUESTRAS WHERE MU_ID = $1', [id]);
+
+        // Finalmente, eliminar la muestra de `SM_B_MUESTRAS`
+        const deleteMuestraQuery = 'DELETE FROM SM_B_MUESTRAS WHERE MU_ID = $1';
+        const result = await conexion.query(deleteMuestraQuery, [id]);
+
+        if (result.rowCount > 0) {
+            res.json({ success: true, message: "Muestra eliminada correctamente." });
+        } else {
+            res.status(404).json({ error: "Muestra no encontrada." });
+        }
+    } catch (error) {
+        console.error("Error al eliminar la muestra:", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+
+
+
+
+
+
+app.get('/api/obtenerMuestra/:id', async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ error: "ID de muestra no proporcionado." });
+
+    try {
+        const query = `
+            SELECT MU_ID AS id, MU_SECTOR AS ubicacion, MU_FECHA AS fecha, 
+                   MU_CANTIDAD AS cantidad, MU_CANTIDADMATERIAORGANICA AS materia, 
+                   MU_CALIDADMATERIAORGANICA AS calidad, MU_SECTOR AS descripcion 
+            FROM SM_B_MUESTRAS WHERE MU_ID = $1
+        `;
+        const result = await conexion.query(query, [id]);
+
+        if (result.rows.length === 0) return res.status(404).json({ error: "Muestra no encontrada." });
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error al obtener la muestra:", error);
+        res.status(500).json({ error: "Error interno al obtener la muestra." });
+    }
+});
+
+
+
+
+app.put('/api/actualizarMuestra/:id', async (req, res) => {
+    const { id } = req.params;
+    const { ubicacion, fecha, cantidad, materia, calidad } = req.body; // Se eliminó 'descripcion' ya que no es una columna
+
+    if (!id || !ubicacion || !fecha || !cantidad || !materia || !calidad) {
+        return res.status(400).json({ error: "Datos incompletos para actualizar la muestra." });
+    }
+
+    try {
+        const query = `
+            UPDATE SM_B_MUESTRAS 
+            SET MU_SECTOR = $1, 
+                MU_FECHA = $2, 
+                MU_CANTIDAD = $3, 
+                MU_CANTIDADMATERIAORGANICA = $4, 
+                MU_CALIDADMATERIAORGANICA = $5
+            WHERE MU_ID = $6
+        `;
+
+        const result = await conexion.query(query, [ubicacion, fecha, cantidad, materia, calidad, id]);
+
+        if (result.rowCount > 0) {
+            res.status(200).json({ message: "Muestra actualizada correctamente." });
+        } else {
+            res.status(404).json({ error: "Muestra no encontrada." });
+        }
+    } catch (error) {
+        console.error("Error al actualizar la muestra:", error);
+        res.status(500).json({ error: "Error interno al actualizar la muestra." });
+    }
+});
+
+
+
+
+app.post('/actualizaradmin', async (req, res) => {
+    const { telefono, email, password } = req.body;
+    const user_id = req.session.user?.user_id;
+
+    if (!user_id) {
+        return res.status(401).send('No autorizado. Inicia sesión nuevamente.');
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10); // Hashear contraseña
+
+        const query = `
+            UPDATE USUARIOS 
+            SET user_telefono = $1, user_email = $2, user_password = $3, updated_at = NOW()
+            WHERE user_id = $4
+        `;
+        const result = await conexion.query(query, [telefono, email, hashedPassword, user_id]);
+
+        if (result.rowCount > 0) {
+            res.redirect('/actualizacionexitoadmin.html?success=true');
+        } else {
+            res.redirect('/mensaje-actualizacion.html?success=false');
+        }
+    } catch (err) {
+        res.redirect('/mensaje-actualizacion.html?success=false');
+    }
+});

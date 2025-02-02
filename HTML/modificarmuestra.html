@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../ICONOS/LogoSistema.png" type="image/png">
+    <link rel="stylesheet" href="../CSS/muestra.css">
+    <title>Modificar Muestra</title>
+</head>
+<body>
+    <header class="header">
+        <a href="actualizarmuestra.html" class="back-icon">
+            <img src="../ICONOS/icons8-left-2-50.png" alt="Regresar" class="icon">
+        </a>
+        <h1>Modificar Muestra</h1>
+    </header>
+    <style>
+        #calidad-materia {
+            color: black !important;
+        }
+    </style>
+    
+    <div class="caja">
+        <h1>Edición de Muestras</h1>
+        <form id="formulario-muestra">
+            <input type="hidden" id="muestra-id">  <!-- ID de la muestra oculta -->
+            
+            <label>Ubicación:</label>
+            <input type="text" id="ubicacion" required>
+
+            <label>Fecha:</label>
+            <input type="date" id="fecha" required>
+
+            <label>Cantidad de muestra (gr):</label>
+            <input type="number" id="cantidad-muestra" min="1" required>
+
+            <label>Cantidad de materia orgánica (gr):</label>
+            <input type="number" id="cantidad-materia" min="1" required>   
+
+            <label>Calidad de materia orgánica:</label>
+            <input type="text" id="calidad-materia" readonly>
+
+            <label>Descripción de fertilidad:</label>
+            <input type="text" id="descripcion-fertilidad" readonly>
+
+            <button type="button" id="actualizar-muestra">Actualizar</button>
+        </form>
+    </div>
+
+    <script src="/js/fecha.js"></script> <!-- Mantiene fecha.js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const obtenerParametroURL = (parametro) => {
+                const params = new URLSearchParams(window.location.search);
+                return params.get(parametro);
+            };
+
+            const muestraId = obtenerParametroURL("id");
+
+            if (!muestraId) {
+                alert("No se proporcionó un ID de muestra válido.");
+                window.location.href = "listamuestras.html";
+                return;
+            }
+
+            // Cargar datos de la muestra en el formulario
+            try {
+                const response = await fetch(`/api/obtenerMuestra/${muestraId}`);
+                if (!response.ok) throw new Error("No se pudo obtener la muestra.");
+                const muestra = await response.json();
+
+                document.getElementById("muestra-id").value = muestra.id;
+                document.getElementById("ubicacion").value = muestra.ubicacion;
+                document.getElementById("fecha").value = muestra.fecha.split('T')[0];
+                document.getElementById("cantidad-muestra").value = muestra.cantidad;
+                document.getElementById("cantidad-materia").value = muestra.materia;
+                document.getElementById("calidad-materia").value = muestra.calidad;
+                document.getElementById("descripcion-fertilidad").value = muestra.descripcion;
+            } catch (error) {
+                console.error("Error al cargar la muestra:", error);
+                alert("Hubo un error al cargar la muestra.");
+            }
+
+            // Función para calcular calidad y fertilidad según la cantidad de materia orgánica
+            const determinarCalidadYFertilidad = async () => {
+                const materiaOrganica = parseFloat(document.getElementById("cantidad-materia").value);
+                let calidad, descripcion;
+
+                if (materiaOrganica >= 75) {
+                    calidad = "Alta fertilidad";
+                    descripcion = "Alto";
+                } else if (materiaOrganica >= 50) {
+                    calidad = "Media fertilidad";
+                    descripcion = "Medio";
+                } else {
+                    calidad = "Baja fertilidad";
+                    descripcion = "Bajo";
+                }
+
+                document.getElementById("calidad-materia").value = calidad;
+                document.getElementById("descripcion-fertilidad").value = descripcion;
+            };
+
+            document.getElementById("cantidad-materia").addEventListener("input", determinarCalidadYFertilidad);
+
+            // Función para actualizar la muestra
+            document.getElementById("actualizar-muestra").addEventListener("click", async () => {
+                const id = document.getElementById("muestra-id").value;
+                const ubicacion = document.getElementById("ubicacion").value;
+                const fecha = document.getElementById("fecha").value;
+                const cantidad = document.getElementById("cantidad-muestra").value;
+                const materia = document.getElementById("cantidad-materia").value;
+                const calidad = document.getElementById("calidad-materia").value;
+                const descripcion = document.getElementById("descripcion-fertilidad").value;
+
+                if (!ubicacion || !fecha || !cantidad || !materia) {
+                    alert("Todos los campos son obligatorios.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/actualizarMuestra/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ ubicacion, fecha, cantidad, materia, calidad, descripcion }),
+                    });
+
+                    if (!response.ok) throw new Error("No se pudo actualizar la muestra.");
+                    
+                    alert("Muestra actualizada correctamente.");
+                    window.location.href = "menu.html";
+                } catch (error) {
+                    console.error("Error al actualizar la muestra:", error);
+                    alert("Hubo un error al actualizar la muestra.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

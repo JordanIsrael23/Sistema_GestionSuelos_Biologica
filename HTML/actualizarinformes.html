@@ -28,7 +28,7 @@
                         const li = document.createElement("li");
                         li.innerHTML = `
                             <span>${informe.titulo} - ${new Date(informe.fecha).toLocaleDateString()}</span>
-                            <button onclick="actualizarInforme('${informe.id}')">Actualizar</button>
+                            <button onclick="actualizarInforme('${informe.id}')">Modificar</button>
                             <button onclick="borrarInforme('${informe.id}')">Eliminar</button>
                         `;
                         listaInformes.appendChild(li);
