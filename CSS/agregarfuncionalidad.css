@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-color: #e8f5e9; /* Verde claro para el fondo */
+    background-color: #e8f5e9; 
     margin: 0;
     padding: 0;
     display: flex;
@@ -65,7 +65,7 @@ input[readonly] {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #43a047; /* Verde seguro */
+    background-color: #009933e6; /* Verde seguro */
     color: white;
     border: none;
     border-radius: 5px;
@@ -77,5 +77,5 @@ button {
 }
 
 button:hover {
-    background-color: #2e7d32; /* Verde más oscuro al pasar el cursor */
+    background-color: #009933e6; /* Verde más oscuro al pasar el cursor */
 }

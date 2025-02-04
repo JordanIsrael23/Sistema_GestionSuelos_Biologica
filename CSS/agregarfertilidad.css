@@ -1,6 +1,7 @@
 body {
   font-family: 'Times New Roman', Times, serif;
-  background-image: url('../IMG/fondofertilidad.jpeg'); 
+  /*background-color: #e8f5e9;*/
+  background-color:#D3D3D3;
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 
@@ -68,7 +69,7 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-  border-color: #009900; /* Verde seguro */
+  border-color:#009933e6; /* Verde seguro */
   outline: none;
   box-shadow: 0 0 5px rgba(0, 153, 0, 0.5); /* Verde seguro */
 }
@@ -80,7 +81,7 @@ textarea {
 button {
   width: 100%;
   padding: 12px;
-  background-color: #009900; /* Verde seguro */
+  background-color:#009933e6; /* Verde seguro */
   color: white;
   border: none;
   border-radius: 6px;
@@ -91,7 +92,7 @@ button {
 }
 
 button:hover {
-  background-color: #00cc00; /* Verde claro seguro */
+  background-color: #009933e6; /* Verde claro seguro */
   transform: scale(1.05);
 }
 

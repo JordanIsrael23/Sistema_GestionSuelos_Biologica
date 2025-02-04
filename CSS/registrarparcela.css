@@ -1,6 +1,7 @@
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-image: url('../IMG/recuperarcontra.jfif');
+   /* background-image: url('../IMG/recuperarcontra.jfif');*/
+    background-color:#D3D3D3;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13,7 +14,7 @@ body {
 }
 
 .header {
-    background-color: rgba(0, 153, 51, 0.9);
+    background-color: #009933e6;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -87,7 +88,7 @@ button {
 }
 
 button:hover {
-    background-color: #00cc00;
+    background-color: #009900;
     transform: scale(1.05);
 }
 

@@ -1,6 +1,7 @@
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-image: url('../IMG/login.jpg');
+    /*background-image: url('../IMG/login.jpg');*/
+    background-color:#D3D3D3;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13,7 +14,7 @@ body {
 }
 
 .header {
-    background-color: rgba(0, 153, 51, 0.9); /* Verde con transparencia */
+    background-color: #009900; /* Verde con transparencia */
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -51,7 +52,7 @@ form {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     animation: fadeIn 0.8s ease-in-out;
-    margin-top: 120px; /* Espaciado para evitar solapamiento con el header */
+    margin-top: 0px; /* Espaciado para evitar solapamiento con el header */
     width: 100%;
     max-width: 450px;
 }
@@ -109,7 +110,7 @@ button[type="reset"] {
     width: 120px;
     padding: 10px;
     margin: 5px;
-    background-color: #009900; /* Verde seguro */
+    background-color: #009933e6; /* Verde seguro */
     color: white;
     border: none;
     border-radius: 6px;
@@ -123,7 +124,7 @@ button[type="reset"] {
 .btn-guardar {
     width: 150px;
     padding: 12px;
-    background-color: #009900; /* Verde seguro */
+    background-color: #009933e6; /* Verde seguro */
     color: white;
     border: none;
     border-radius: 6px;
@@ -136,7 +137,7 @@ button[type="reset"] {
 }
 
 .btn-guardar:hover {
-    background-color: #00cc00; /* Verde claro */
+    background-color: #009933e6; /* Verde claro */
     transform: scale(1.05); /* Efecto de escala */
 }
 
@@ -162,7 +163,7 @@ button[type="reset"] {
 .btn-agregar{
     width: 150px;
     padding: 12px;
-    background-color: #009900; /* Verde seguro */
+    background-color: #009933e6; /* Verde seguro */
     color: white;
     border: none;
     border-radius: 6px;

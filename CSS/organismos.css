@@ -3,7 +3,7 @@ body {
     background-color: #f0f4f8; /* Fondo claro neutro */
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     /*background-image: url('../IMG/Organismos/fondo.png'); /* Fondo decorativo */
     background-color:#D3D3D3;
     background-size: cover;
@@ -21,6 +21,7 @@ body {
     width: 100%;
     z-index: 1000;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .header h1 {
@@ -62,6 +63,7 @@ body {
     max-width: 500px;
     text-align: center;
     width: 100%;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Formularios */
@@ -80,6 +82,7 @@ form select {
     background-color: #f9f9f9;
     font-size: 16px;
     color: #333;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 select option {
@@ -97,24 +100,29 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Botón Aceptar */
 #botonAceptar {
     background-color: #4caf50; /* Verde */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 #botonAceptar:hover {
     background-color: #45a049; /* Verde más oscuro */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Botón Agregar Organismo */
 button[onclick*='agregarOrganismo'] {
     background-color: #2196f3; /* Azul */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 button[onclick*='agregarOrganismo']:hover {
     background-color: #1976d2; /* Azul más oscuro */
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Botón Agregar Plantas */
@@ -155,6 +163,7 @@ button:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 #botonsalir:hover {

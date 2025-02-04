@@ -1,5 +1,5 @@
 body{
-    background-image: url('../IMG/muestra.jpg');
+    background-color: #D3D3D3;
     background-size: cover;
     background-position: center;
     font-family: 'Times New Roman', Times, serif;
@@ -104,7 +104,7 @@ button:hover {
 }
 
 .caja button:last-of-type {
-    background-color: #18e748; 
+    background-color: #009933e6; 
     color: white;
 }
 

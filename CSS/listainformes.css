@@ -44,17 +44,17 @@ th, td {
 }
 
 th {
-    background-color: #4caf50; /* Verde medio seguro */
+    background-color: #009933e6; /* Verde medio seguro */
     color: white;
     font-weight: bold;
 }
 
 td {
-    color: #2e7d32; /* Texto en verde oscuro seguro */
+    color: #009933e6; /* Texto en verde oscuro seguro */
 }
 
 button {
-    background-color: #43a047; /* Verde seguro */
+    background-color: #009933e6; /* Verde seguro */
     color: white;
     border: none;
     padding: 10px 15px;

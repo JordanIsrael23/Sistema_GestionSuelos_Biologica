@@ -1,6 +1,7 @@
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-image: url('../IMG/login.jpg');
+    /*background-image: url('../IMG/login.jpg');*/
+    background-color:#D3D3D3;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13,7 +14,7 @@ body {
   }
 
   .header {
-    background-color: rgba(0, 153, 51, 0.9); /* Verde seguro */
+    background-color:#009933e6; /* Verde seguro */
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -60,7 +61,7 @@ body {
   .container h2 {
     font-size: 22px;
     margin-bottom: 20px;
-    color: #009900;
+    color:#009933e6;
     text-align: center;
   }
 
@@ -85,7 +86,7 @@ body {
   button {
     width: 100%;
     padding: 12px;
-    background-color: #009900;
+    background-color: #009933e6;
     color: white;
     border: none;
     border-radius: 6px;
@@ -96,7 +97,7 @@ body {
   }
 
   button:hover {
-    background-color: #00cc00;
+    background-color: #009933e6;
     transform: scale(1.05);
   }
 
@@ -106,7 +107,7 @@ body {
 
   .existing-plants h3 {
     font-size: 18px;
-    color: #009900;
+    color: #009933e6;
     margin-bottom: 10px;
   }
 
@@ -133,7 +134,7 @@ body {
 
   .success {
     color: white;
-    background-color: green;
+    background-color: #009933e6;
   }
 
   .error {
